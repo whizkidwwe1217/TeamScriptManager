@@ -1,0 +1,10 @@
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\JeonsoftTeamScriptManager.Utils\bin\Debug\JeonsoftTeamScriptManager.Utils.dll
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\JeonsoftTeamScriptManager.Utils\bin\Debug\JeonsoftTeamScriptManager.Utils.pdb
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\JeonsoftTeamScriptManager.Utils\obj\Debug\JeonsoftTeamScriptManager.Utils.dll
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\JeonsoftTeamScriptManager.Utils\obj\Debug\JeonsoftTeamScriptManager.Utils.pdb
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\JeonsoftTeamScriptManager.Utils\obj\Debug\JeonsoftTeamScriptManager.Utils.csprojResolveAssemblyReference.cache
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\JeonsoftTeamScriptManager.Utils\bin\Debug\JeonsoftTeamScriptManager.Utils.dll
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\JeonsoftTeamScriptManager.Utils\bin\Debug\JeonsoftTeamScriptManager.Utils.pdb
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\JeonsoftTeamScriptManager.Utils\obj\Debug\JeonsoftTeamScriptManager.Utils.dll
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\JeonsoftTeamScriptManager.Utils\obj\Debug\JeonsoftTeamScriptManager.Utils.pdb
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\JeonsoftTeamScriptManager.Utils\obj\Debug\JeonsoftTeamScriptManager.Utils.csprojResolveAssemblyReference.cache

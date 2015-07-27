@@ -1,0 +1,7 @@
+[Script]
+Name=Prefixed Files 8/15/2014 3:17 PM
+
+[Tasks]
+Task: SetCompany; Parameters: 1
+Task: Patch; FileName: .\template.sql
+Task: Import; FileName: .\00_Patches.xls

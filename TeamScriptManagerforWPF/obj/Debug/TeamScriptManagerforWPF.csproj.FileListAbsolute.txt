@@ -1,0 +1,26 @@
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\TeamScriptManagerforWPF\bin\Debug\TeamScriptManagerforWPF.exe.config
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\TeamScriptManagerforWPF\bin\Debug\TeamScriptManagerforWPF.exe
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\TeamScriptManagerforWPF\bin\Debug\TeamScriptManagerforWPF.pdb
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\TeamScriptManagerforWPF\obj\Debug\TeamScriptManagerforWPF.csprojResolveAssemblyReference.cache
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\TeamScriptManagerforWPF\obj\Debug\MainWindow.baml
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\TeamScriptManagerforWPF\obj\Debug\MainWindow.g.cs
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\TeamScriptManagerforWPF\obj\Debug\App.g.cs
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\TeamScriptManagerforWPF\obj\Debug\TeamScriptManagerforWPF_MarkupCompile.cache
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\TeamScriptManagerforWPF\obj\Debug\TeamScriptManagerforWPF.g.resources
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\TeamScriptManagerforWPF\obj\Debug\TeamScriptManagerforWPF.Properties.Resources.resources
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\TeamScriptManagerforWPF\obj\Debug\TeamScriptManagerforWPF.csproj.GenerateResource.Cache
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\TeamScriptManagerforWPF\obj\Debug\TeamScriptManagerforWPF.exe
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\TeamScriptManagerforWPF\obj\Debug\TeamScriptManagerforWPF.pdb
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\TeamScriptManagerforWPF\bin\Debug\TeamScriptManagerforWPF.exe.config
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\TeamScriptManagerforWPF\bin\Debug\TeamScriptManagerforWPF.exe
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\TeamScriptManagerforWPF\bin\Debug\TeamScriptManagerforWPF.pdb
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\TeamScriptManagerforWPF\obj\Debug\MainWindow.baml
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\TeamScriptManagerforWPF\obj\Debug\MainWindow.g.cs
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\TeamScriptManagerforWPF\obj\Debug\App.g.cs
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\TeamScriptManagerforWPF\obj\Debug\TeamScriptManagerforWPF_MarkupCompile.cache
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\TeamScriptManagerforWPF\obj\Debug\TeamScriptManagerforWPF.g.resources
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\TeamScriptManagerforWPF\obj\Debug\TeamScriptManagerforWPF.Properties.Resources.resources
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\TeamScriptManagerforWPF\obj\Debug\TeamScriptManagerforWPF.csproj.GenerateResource.Cache
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\TeamScriptManagerforWPF\obj\Debug\TeamScriptManagerforWPF.exe
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\TeamScriptManagerforWPF\obj\Debug\TeamScriptManagerforWPF.pdb
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\TeamScriptManagerforWPF\obj\Debug\TeamScriptManagerforWPF.csprojResolveAssemblyReference.cache

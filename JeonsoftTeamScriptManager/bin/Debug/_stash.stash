@@ -1,0 +1,13 @@
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Latest JPS\jps plugins\Packages\Betonbau\Database\Schema\02 Tables\ tblCompanies IsEnableDefaultDTRProject.sql
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Latest JPS\jps plugins\Packages\Betonbau\Database\Schema\02 Tables\Add ProjectGroupId, CostCenterId on tblClasses.sql
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Latest JPS\jps plugins\Packages\Betonbau\Database\Schema\02 Tables\Add Shift ScheduleId on tblProjects.sql
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Latest JPS\jps plugins\Packages\Betonbau\Database\Schema\02 Tables\tblBetonbauProjectGroups.sql
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Latest JPS\jps plugins\Packages\Betonbau\Database\Schema\02 Tables\tblCompanies IsEnableDefaultDTRProject.sql
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Latest JPS\jps plugins\Packages\Betonbau\Database\Schema\02 Tables\tblPayrollEmployees - Add ProjectGroupId.sql
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Latest JPS\jps plugins\Packages\Betonbau\Database\Schema\03 Functions\fnBetonBauGetTotalAbsences.1.4.sql
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Latest JPS\jps plugins\Packages\Betonbau\Database\Schema\03 Functions\fnBetonBauGetTotalAbsences.sql
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Latest JPS\jps plugins\Packages\Betonbau\Database\Schema\03 Functions\fnBetonBauGetTotalLWOPs.sql
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Latest JPS\jps plugins\Packages\Betonbau\Database\Schema\03 Functions\fnBetonBauPayrollRegisterByProject.sql
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Latest JPS\jps plugins\Packages\Betonbau\Database\Schema\03 Functions\fnBetonBauProjectAmountsDetailed.sql
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Latest JPS\jps plugins\Packages\Betonbau\Database\Schema\03 Functions\fnBetonBauProjectCostCenterAmounts.sql
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Latest JPS\jps plugins\Packages\Betonbau\Database\Schema\03 Functions\fnLeaveLedgerCustom.sql

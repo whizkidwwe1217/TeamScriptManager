@@ -1,0 +1,10 @@
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\Test\bin\Debug\Test.exe
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\Test\bin\Debug\Test.pdb
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\Test\obj\Debug\Test.csprojResolveAssemblyReference.cache
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\Test\obj\Debug\Test.exe
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\Test\obj\Debug\Test.pdb
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\Test\bin\Debug\Test.exe
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\Test\bin\Debug\Test.pdb
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\Test\obj\Debug\Test.csprojResolveAssemblyReference.cache
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\Test\obj\Debug\Test.exe
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\Test\obj\Debug\Test.pdb

@@ -1,0 +1,24 @@
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\SQLDependencyWalker\bin\Debug\SQLDependencyWalker.exe.config
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\SQLDependencyWalker\obj\Debug\SQLDependencyWalker.csprojResolveAssemblyReference.cache
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\SQLDependencyWalker\obj\Debug\SQLDependencyWalker.SQLDependencyWalkerForm.resources
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\SQLDependencyWalker\obj\Debug\SQLDependencyWalker.Properties.Resources.resources
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\SQLDependencyWalker\obj\Debug\SQLDependencyWalker.csproj.GenerateResource.Cache
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\SQLDependencyWalker\bin\Debug\SQLDependencyWalker.exe
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\SQLDependencyWalker\bin\Debug\SQLDependencyWalker.pdb
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\SQLDependencyWalker\obj\Debug\SQLDependencyWalker.exe
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\SQLDependencyWalker\obj\Debug\SQLDependencyWalker.pdb
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\SQLDependencyWalker\bin\Debug\Microsoft.SqlServer.ConnectionInfo.dll
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\SQLDependencyWalker\bin\Debug\Microsoft.SqlServer.Management.Sdk.Sfc.dll
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\SQLDependencyWalker\bin\Debug\Microsoft.SqlServer.Smo.dll
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQLDependencyWalker\bin\Debug\SQLDependencyWalker.exe.config
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQLDependencyWalker\bin\Debug\SQLDependencyWalker.exe
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQLDependencyWalker\bin\Debug\SQLDependencyWalker.pdb
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQLDependencyWalker\bin\Debug\Microsoft.SqlServer.ConnectionInfo.dll
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQLDependencyWalker\bin\Debug\Microsoft.SqlServer.Management.Sdk.Sfc.dll
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQLDependencyWalker\bin\Debug\Microsoft.SqlServer.Smo.dll
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQLDependencyWalker\obj\Debug\SQLDependencyWalker.csprojResolveAssemblyReference.cache
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQLDependencyWalker\obj\Debug\SQLDependencyWalker.SQLDependencyWalkerForm.resources
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQLDependencyWalker\obj\Debug\SQLDependencyWalker.Properties.Resources.resources
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQLDependencyWalker\obj\Debug\SQLDependencyWalker.csproj.GenerateResource.Cache
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQLDependencyWalker\obj\Debug\SQLDependencyWalker.exe
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQLDependencyWalker\obj\Debug\SQLDependencyWalker.pdb

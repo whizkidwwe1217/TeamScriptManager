@@ -1,0 +1,22 @@
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\CVSTest\bin\Debug\ICSharpCode.SharpCvsLib.dll
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\CVSTest\obj\Debug\CVSTest.csprojResolveAssemblyReference.cache
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\CVSTest\obj\Debug\CVSTest.Form1.resources
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\CVSTest\obj\Debug\CVSTest.Properties.Resources.resources
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\CVSTest\obj\Debug\CVSTest.csproj.GenerateResource.Cache
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\CVSTest\bin\Debug\log4net.dll
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\CVSTest\bin\Debug\CVSTestaf.exe.config
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\CVSTest\bin\Debug\CVSTestaf.exe
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\CVSTest\bin\Debug\CVSTestaf.pdb
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\CVSTest\obj\Debug\CVSTestaf.exe
+C:\Users\Wendell Wayne\documents\visual studio 2013\Projects\JeonsoftTools\CVSTest\obj\Debug\CVSTestaf.pdb
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\CVSTest\bin\Debug\CVSTestaf.exe.config
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\CVSTest\bin\Debug\CVSTestaf.exe
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\CVSTest\bin\Debug\CVSTestaf.pdb
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\CVSTest\bin\Debug\ICSharpCode.SharpCvsLib.dll
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\CVSTest\bin\Debug\log4net.dll
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\CVSTest\obj\Debug\CVSTest.Form1.resources
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\CVSTest\obj\Debug\CVSTest.Properties.Resources.resources
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\CVSTest\obj\Debug\CVSTest.csproj.GenerateResource.Cache
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\CVSTest\obj\Debug\CVSTestaf.exe
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\CVSTest\obj\Debug\CVSTestaf.pdb
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\CVSTest\obj\Debug\CVSTest.csprojResolveAssemblyReference.cache
