@@ -641,10 +641,18 @@ namespace JeonsoftTeamScriptManager
                         lblStatus.Text = string.Format("Scanning default directory {0}...", s);
                         ddCnt++;
                         string[] dirs = Directory.GetDirectories(Path.GetDirectoryName(filename));
+                        string indexedFile = s;
+
+                        if (!Path.IsPathRooted(s))
+                        {
+                            FileInfo fi = Utils.FileUtils.GetAbsolutePath(filename, s);
+                            indexedFile = fi.FullName;
+                        }
+                            
                         foreach (string d in dirs)
                         {
                             DirectoryInfo di = new DirectoryInfo(d);
-                            if (di.Name.ToLower() == s.ToLower().Trim())
+                            if (di.Name.ToLower() == indexedFile.ToLower().Trim())
                             {
                                 FileInfo[] fileInfos = di.GetFiles("*.sql");
                                 tbtProgress.Value = 0;
@@ -694,6 +702,11 @@ namespace JeonsoftTeamScriptManager
                         string file;
                         while ((file = sr.ReadLine()) != null)
                         {
+                            if (!Path.IsPathRooted(file))
+                            {
+                                FileInfo fi = Utils.FileUtils.GetAbsolutePath(Path.GetDirectoryName(GetStashFilePath()), file);
+                                file = fi.FullName;
+                            }
                             if (File.Exists(file))
                             {
                                 FileInfo fi = new FileInfo(file);
