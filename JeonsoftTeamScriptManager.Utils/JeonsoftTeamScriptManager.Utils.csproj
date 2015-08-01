@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="DictionaryKeyPair.cs" />
     <Compile Include="DictionarySection.cs" />
+    <Compile Include="FileUtils.cs" />
     <Compile Include="IniDictionaryParser.cs" />
     <Compile Include="IniParser.cs" />
     <Compile Include="IniParserException.cs" />
@@ -52,6 +53,7 @@
     <Compile Include="UpdateManager.cs" />
     <Compile Include="IUpdateStrategy.cs" />
     <Compile Include="VersionInfo.cs" />
+    <Compile Include="Win32.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
