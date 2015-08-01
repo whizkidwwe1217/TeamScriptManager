@@ -645,7 +645,7 @@ namespace JeonsoftTeamScriptManager
 
                         if (!Path.IsPathRooted(s))
                         {
-                            FileInfo fi = Utils.FileUtils.GetAbsolutePath(filename, s);
+                            FileInfo fi = Utils.FileUtils.GetAbsolutePath(Path.GetDirectoryName(filename), s);
                             indexedFile = fi.FullName;
                         }
                             
@@ -1050,6 +1050,12 @@ namespace JeonsoftTeamScriptManager
                     {
                         while ((file = sr.ReadLine()) != null)
                         {
+                            if (!Path.IsPathRooted(file))
+                            {
+                                FileInfo fi = Utils.FileUtils.GetAbsolutePath(Path.GetDirectoryName(filename), file);
+                                file = fi.FullName;
+                            }
+
                             if (!string.IsNullOrEmpty(file) && File.Exists(file))
                             {
                                 FileInfo fi = new FileInfo(file);
@@ -1061,7 +1067,7 @@ namespace JeonsoftTeamScriptManager
                             }
                             else
                             {
-                                rtbLogs.AppendText("Cannot find the file: '" + file + "'");
+                                rtbLogs.AppendText("Merge error: Cannot find the file: '" + file + "'");
                                 rtbLogs.AppendText(Environment.NewLine);
                             }
                         }

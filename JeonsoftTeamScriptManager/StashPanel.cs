@@ -59,7 +59,12 @@ namespace JeonsoftTeamScriptManager
                 StringBuilder sb = new StringBuilder();
                 foreach (ListViewItem item in lvStash.Items)
                 {
-                    sb.AppendLine(item.SubItems[2].Text);
+                    string file = item.SubItems[2].Text;
+                    if (!GlobalOptions.Instance.SaveStashFilesWithFullPath)
+                    {
+                        file = Utils.FileUtils.GetRelativePathFromFile(Path.GetDirectoryName(filename), Utils.FileUtils.GetAbsolutePath(Path.GetDirectoryName(filename), file).FullName);
+                    }
+                    sb.AppendLine(file);
                 }
                 sw.WriteLine(sb.ToString());
             }

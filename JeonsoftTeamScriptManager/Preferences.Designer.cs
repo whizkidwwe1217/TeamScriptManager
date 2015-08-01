@@ -55,12 +55,13 @@
             this.chbFileTracking = new System.Windows.Forms.CheckBox();
             this.chbCheckUpdates = new System.Windows.Forms.CheckBox();
             this.chkResolveHosts = new System.Windows.Forms.CheckBox();
+            this.chbUseFullPath = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(425, 341);
+            this.btnCancel.Location = new System.Drawing.Point(425, 391);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 15;
@@ -70,7 +71,7 @@
             // btnSave
             // 
             this.btnSave.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnSave.Location = new System.Drawing.Point(344, 341);
+            this.btnSave.Location = new System.Drawing.Point(344, 391);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 14;
@@ -318,14 +319,25 @@
             this.chkResolveHosts.Text = "Resolve Host Name Addresses";
             this.chkResolveHosts.UseVisualStyleBackColor = true;
             // 
+            // chbUseFullPath
+            // 
+            this.chbUseFullPath.AutoSize = true;
+            this.chbUseFullPath.Location = new System.Drawing.Point(132, 363);
+            this.chbUseFullPath.Name = "chbUseFullPath";
+            this.chbUseFullPath.Size = new System.Drawing.Size(183, 17);
+            this.chbUseFullPath.TabIndex = 22;
+            this.chbUseFullPath.Text = "Save Stashed Files with Full Path";
+            this.chbUseFullPath.UseVisualStyleBackColor = true;
+            // 
             // Preferences
             // 
             this.AcceptButton = this.btnSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(520, 398);
+            this.ClientSize = new System.Drawing.Size(520, 426);
             this.ControlBox = false;
+            this.Controls.Add(this.chbUseFullPath);
             this.Controls.Add(this.chkResolveHosts);
             this.Controls.Add(this.chbCheckUpdates);
             this.Controls.Add(this.chbFileTracking);
@@ -392,5 +404,6 @@
         private System.Windows.Forms.CheckBox chbFileTracking;
         private System.Windows.Forms.CheckBox chbCheckUpdates;
         private System.Windows.Forms.CheckBox chkResolveHosts;
+        private System.Windows.Forms.CheckBox chbUseFullPath;
     }
 }

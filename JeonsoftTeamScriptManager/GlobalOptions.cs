@@ -155,6 +155,7 @@ namespace JeonsoftTeamScriptManager
             WriteUserSettings(root, "Enable File Tracking", EnableFileTracking);
             WriteUserSettings(root, "Enable Auto Check Updates", EnableAutoCheckUpdates);
             WriteUserSettings(root, "Resolve Host Name Addresses", ResolveHostNameAddresses);
+            WriteUserSettings(root, "Use Full Path when Adding to Stash", SaveStashFilesWithFullPath);
             if (root != null)
                 root.Close();
         }
@@ -174,6 +175,7 @@ namespace JeonsoftTeamScriptManager
             EnableFileTracking = ReadBooleanUserSettings(root, "Enable File Tracking");
             EnableAutoCheckUpdates = ReadBooleanUserSettings(root, "Enable Auto Check Updates");
             ResolveHostNameAddresses = ReadBooleanUserSettings(root, "Resolve Host Name Addresses");
+            SaveStashFilesWithFullPath = ReadBooleanUserSettings(root, "Use Full Path when Adding to Stash");
             if (root != null)
                 root.Close();
         }
@@ -222,6 +224,14 @@ namespace JeonsoftTeamScriptManager
         {
             get { return resolveHostNameAddresses; }
             set { resolveHostNameAddresses = value; }
+        }
+
+        private bool addToStashWithFullPath;
+
+        public bool SaveStashFilesWithFullPath
+        {
+            get { return addToStashWithFullPath; }
+            set { addToStashWithFullPath = value; }
         }
 
         private bool includePrefixedFiles;
