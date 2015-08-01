@@ -633,9 +633,10 @@ namespace JeonsoftTeamScriptManager
                     string[] lines = GlobalOptions.Instance.DefaultDirectories.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
                     tbtProgress.Maximum = lines.Length;
                     int ddCnt = 0;
-
+                    
                     foreach (string s in lines)
                     {
+ 
                         tbtProgress.Maximum = lines.Length;
                         tbtProgress.Value = ddCnt;
                         lblStatus.Text = string.Format("Scanning default directory {0}...", s);
@@ -643,11 +644,11 @@ namespace JeonsoftTeamScriptManager
                         string[] dirs = Directory.GetDirectories(Path.GetDirectoryName(filename));
                         string indexedFile = s;
 
-                        if (!Path.IsPathRooted(s))
-                        {
-                            FileInfo fi = Utils.FileUtils.GetAbsolutePath(Path.GetDirectoryName(filename), s);
-                            indexedFile = fi.FullName;
-                        }
+                        //if (!Path.IsPathRooted(s))
+                        //{
+                        //    FileInfo fi = Utils.FileUtils.GetAbsolutePath(Path.GetDirectoryName(filename), s);
+                        //    indexedFile = fi.FullName;
+                        //}
                             
                         foreach (string d in dirs)
                         {
