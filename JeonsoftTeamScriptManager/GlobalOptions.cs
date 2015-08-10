@@ -156,6 +156,7 @@ namespace JeonsoftTeamScriptManager
             WriteUserSettings(root, "Enable Auto Check Updates", EnableAutoCheckUpdates);
             WriteUserSettings(root, "Resolve Host Name Addresses", ResolveHostNameAddresses);
             WriteUserSettings(root, "Use Full Path when Adding to Stash", SaveStashFilesWithFullPath);
+            WriteUserSettings(root, "Save Stash on Merge", SaveStashOnMerge);
             if (root != null)
                 root.Close();
         }
@@ -176,10 +177,17 @@ namespace JeonsoftTeamScriptManager
             EnableAutoCheckUpdates = ReadBooleanUserSettings(root, "Enable Auto Check Updates");
             ResolveHostNameAddresses = ReadBooleanUserSettings(root, "Resolve Host Name Addresses");
             SaveStashFilesWithFullPath = ReadBooleanUserSettings(root, "Use Full Path when Adding to Stash");
+            SaveStashOnMerge = ReadBooleanUserSettings(root, "Save Stash on Merge");
             if (root != null)
                 root.Close();
         }
 
+        private bool saveStashOnMerge;
+        public bool SaveStashOnMerge
+        {
+            get { return saveStashOnMerge; }
+            set { saveStashOnMerge = value; }
+        }
         private string stashConfigName;
 
         public string StashConfigName

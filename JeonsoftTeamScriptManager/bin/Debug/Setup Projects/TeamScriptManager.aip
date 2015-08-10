@@ -12,10 +12,10 @@
     <ROW Property="ARPSYSTEMCOMPONENT" Value="1"/>
     <ROW Property="CTRLS" Value="2"/>
     <ROW Property="Manufacturer" Value="Jeonsoft Corporation"/>
-    <ROW Property="ProductCode" Value="1033:{5D6A1529-8E3F-4AB6-B13F-96E349855067} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{FBFE0E25-495E-474B-A528-1FCECB4D1071} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="Team Script Manager"/>
-    <ROW Property="ProductVersion" Value="1.2.4" Type="32"/>
+    <ROW Property="ProductVersion" Value="1.2.5" Type="32"/>
     <ROW Property="RUNAPPLICATION" Value="1" Type="4"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND;AI_SETUPEXEPATH;SETUPEXEDIR"/>
     <ROW Property="UpgradeCode" Value="{2E7B6D73-096B-4AE0-93C4-A05E589F5389}"/>
@@ -302,7 +302,7 @@
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.XmlElementComponent">
     <ROW XmlElement="swidbuild" ParentElement="swidnumeric" Name="swid:build" Order="2" Flags="14" Text="0"/>
-    <ROW XmlElement="swidbuild_1" ParentElement="swidnumeric_1" Name="swid:build" Order="2" Flags="14" Text="4"/>
+    <ROW XmlElement="swidbuild_1" ParentElement="swidnumeric_1" Name="swid:build" Order="2" Flags="14" Text="5"/>
     <ROW XmlElement="swidchannel_name" ParentElement="swidlicense_linkage" Name="swid:channel_name" Order="1" Flags="14"/>
     <ROW XmlElement="swidchannel_name_1" ParentElement="swidlicense_linkage_1" Name="swid:channel_name" Order="1" Flags="14"/>
     <ROW XmlElement="swidchannel_type" ParentElement="swidlicense_linkage" Name="swid:channel_type" Order="0" Flags="14" Text="Retail"/>
