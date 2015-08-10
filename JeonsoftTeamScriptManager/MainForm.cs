@@ -633,10 +633,9 @@ namespace JeonsoftTeamScriptManager
                     string[] lines = GlobalOptions.Instance.DefaultDirectories.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
                     tbtProgress.Maximum = lines.Length;
                     int ddCnt = 0;
-                    
+
                     foreach (string s in lines)
                     {
- 
                         tbtProgress.Maximum = lines.Length;
                         tbtProgress.Value = ddCnt;
                         lblStatus.Text = string.Format("Scanning default directory {0}...", s);
@@ -649,7 +648,7 @@ namespace JeonsoftTeamScriptManager
                         //    FileInfo fi = Utils.FileUtils.GetAbsolutePath(Path.GetDirectoryName(filename), s);
                         //    indexedFile = fi.FullName;
                         //}
-                            
+
                         foreach (string d in dirs)
                         {
                             DirectoryInfo di = new DirectoryInfo(d);
@@ -969,6 +968,7 @@ namespace JeonsoftTeamScriptManager
                 return;
             }
             InputBox ib = new InputBox(output);
+            ib.Text = "Merged File Output";
             ib.OKClick += ib_OKClick;
             ib.ShowDialog(this);
         }
@@ -976,7 +976,8 @@ namespace JeonsoftTeamScriptManager
         void ib_OKClick(object sender, EventArgs e)
         {
             output = ((TextBox)sender).Text.Trim();
-            stash.SaveStash(GetStashFilePath());
+            if (GlobalOptions.Instance.SaveStashOnMerge)
+                stash.SaveStash(GetStashFilePath());
             GenerateFromStash(GetStashFilePath(), GetMergedFilePath());
         }
 
@@ -1043,6 +1044,80 @@ namespace JeonsoftTeamScriptManager
                         }
                     }
                 }
+
+                if (GlobalOptions.Instance.EnableDefaultDirectories && GlobalOptions.Instance.SaveStashOnMerge == false)
+                {
+                    string[] delimiter = new string[] { Environment.NewLine };
+                    string[] lines = GlobalOptions.Instance.DefaultDirectories.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
+                    tbtProgress.Maximum = lines.Length;
+                    int ddCnt = 0;
+
+                    foreach (string s in lines)
+                    {
+                        tbtProgress.Maximum = lines.Length;
+                        tbtProgress.Value = ddCnt;
+                        lblStatus.Text = string.Format("Scanning default directory {0}...", s);
+                        ddCnt++;
+                        string[] dirs = Directory.GetDirectories(Path.GetDirectoryName(filename));
+                        string indexedFile = s;
+
+                        //if (!Path.IsPathRooted(s))
+                        //{
+                        //    FileInfo fi = Utils.FileUtils.GetAbsolutePath(Path.GetDirectoryName(filename), s);
+                        //    indexedFile = fi.FullName;
+                        //}
+
+                        foreach (string d in dirs)
+                        {
+                            DirectoryInfo di = new DirectoryInfo(d);
+                            if (di.Name.ToLower() == indexedFile.ToLower().Trim())
+                            {
+                                FileInfo[] fileInfos = di.GetFiles("*.sql");
+                                tbtProgress.Value = 0;
+                                tbtProgress.Maximum = fileInfos.Length + 1;
+
+                                foreach (FileInfo fi in fileInfos)
+                                {
+                                    tbtProgress.Value++;
+                                    lblStatus.Text = string.Format("Indexing {0}...", fi.Name);
+
+                                    string dirname = fi.Directory.Name;
+                                    string dirpath = fi.DirectoryName;
+                                    string host = string.Empty;
+                                    string name = fi.Name;
+                                    string fullName = fi.FullName;
+
+                                    if (GlobalOptions.Instance.ResolveHostNameAddresses)
+                                    {
+                                        UriHostNameType hostType = NetworkUtils.GetHostType(fi.FullName, ref host);
+
+                                        if (hostType != UriHostNameType.Basic || hostType != UriHostNameType.Unknown)
+                                        {
+                                            if (!mappedHosts.ContainsKey(host) && !string.IsNullOrEmpty(host))
+                                            {
+                                                MappedHost mh = new MappedHost()
+                                                {
+                                                    Name = host.ToLower(),
+                                                    HostName = string.Empty
+                                                };
+                                                if (!mappedHosts.ContainsKey(mh.Name))
+                                                    mappedHosts.Add(mh.Name, mh);
+                                            }
+                                        }
+                                    }
+
+                                    using (StreamWriter sw = new StreamWriter(outputFilename, true))
+                                    {
+                                        sw.WriteLine(File.ReadAllText(fullName));
+                                        rtbLogs.AppendText("File written to merged output file: " + fullName);
+                                        rtbLogs.AppendText(Environment.NewLine);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
                 using (StreamReader sr = new StreamReader(filename))
                 {
                     string file = "";
@@ -1074,6 +1149,7 @@ namespace JeonsoftTeamScriptManager
                         }
                     }
                 }
+
                 if (GlobalOptions.Instance.IncludePostFixedFiles)
                 {
                     if (Directory.Exists(GetPostFixedFiles()))

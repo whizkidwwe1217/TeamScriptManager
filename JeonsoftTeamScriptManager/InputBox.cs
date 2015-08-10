@@ -14,6 +14,7 @@ namespace JeonsoftTeamScriptManager
         {
             InitializeComponent();
             textBox1.Text = defaultvalue;
+            chbSaveStash.Checked = GlobalOptions.Instance.SaveStashOnMerge;
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -24,7 +25,8 @@ namespace JeonsoftTeamScriptManager
         public event EventHandler OKClick;
         private void button1_Click(object sender, EventArgs e)
         {
-            
+            GlobalOptions.Instance.SaveStashOnMerge = chbSaveStash.Checked;
+            GlobalOptions.Instance.SaveSettings();
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)
