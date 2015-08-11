@@ -16,6 +16,7 @@ using System.Collections;
 using JeonsoftTeamScriptManager.Utils;
 using System.Threading;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 //using System.Runtime.Caching;
 
@@ -28,6 +29,7 @@ namespace JeonsoftTeamScriptManager
         private StashPanel stash;
         private RichTextBox rtbLogs;
         private ImageList imgTree;
+        private ListView lvErrors;
         private string root = string.Empty;
         private string stashArg = string.Empty;
 
@@ -81,6 +83,24 @@ namespace JeonsoftTeamScriptManager
             DockPane pane3 = dPanel.DockPaneFactory.CreateDockPane(paneLogMessages, DockState.DockBottom, true);
             //pane3.DockState = DockState.DockBottomAutoHide;
 
+
+            lvErrors = new ListView();
+            lvErrors.GridLines = true;
+            lvErrors.SmallImageList = imageList1;
+            lvErrors.FullRowSelect = true;
+            lvErrors.View = View.Details;
+            lvErrors.Columns.Add("Message", 350, HorizontalAlignment.Left);
+            lvErrors.Columns.Add("File", 200, HorizontalAlignment.Left);
+            lvErrors.Columns.Add("Line", 60, HorizontalAlignment.Left);
+            lvErrors.Columns.Add("Path", 150, HorizontalAlignment.Left);
+            lvErrors.DoubleClick += lvErrors_DoubleClick;
+            lvErrors.Dock = DockStyle.Fill;
+            paneErrors = new DockContent();
+            paneErrors.Text = "Warnings/Errors";
+            paneErrors.Controls.Add(lvErrors);
+            paneErrors.Show(dPanel);
+            DockPane pane4 = dPanel.DockPaneFactory.CreateDockPane(paneErrors, DockState.DockBottom, true);
+            
             trvFileExplorer.NodeMouseDoubleClick += trvFileExplorer_NodeMouseDoubleClick;
             trvFileExplorer.AfterCheck += trvFileExplorer_AfterCheck;
             imgTree = new ImageList();
@@ -94,6 +114,9 @@ namespace JeonsoftTeamScriptManager
             contextMenuStrip1.Opening += contextMenuStrip1_Opening;
             this.stashArg = stashArg;
         }
+
+        private DockContent paneErrors;
+        private 
 
         void trvFileExplorer_AfterSelect(object sender, TreeViewEventArgs e)
         {
@@ -169,8 +192,10 @@ namespace JeonsoftTeamScriptManager
             }
         }
 
-        private void CheckManifestChanges(TextEditorControl rtb, string filename)
+        private void CheckManifestChanges(TextEditorControl rtb, string filename, bool isStash)
         {
+            if (!isStash)
+                return;
             FileInfo fi = new FileInfo(filename);
             if (rtb.Text.Length != fi.Length)
             {
@@ -183,59 +208,18 @@ namespace JeonsoftTeamScriptManager
                 }
             }
         }
+
         private void OpenFile(string name, string filename, string syntax)
         {
-            bool isOpened = false;
-            bool _highlightingProviderLoaded = false;
-            foreach (IDockContent c in dPanel.Documents)
-            {
-                if (c is DockContent)
-                {
-                    DockContent dc = (DockContent)c;
-                    isOpened = (dc.Name == filename);
-                    if (isOpened)
-                    {
-                        dc.Activate();
-                        TextEditorControl rtb = (TextEditorControl)dc.Controls[0];
-                        CheckManifestChanges(rtb, filename);
-                        break;
-                    }
-                }
-            }
-            if (!isOpened)
-            {
-                DockContent doc = new DockContent();
-                doc.Name = filename;
-                TextEditorControl rtb = new TextEditorControl();
-                rtb.Enter += rtb_Enter;
-                if (!_highlightingProviderLoaded)
-                {
-                    // Attach to the text editor.
-                    HighlightingManager.Manager.AddSyntaxModeFileProvider(
-                        new AppSyntaxModeProvider());
-                    _highlightingProviderLoaded = true;
-                }
-                rtb.SetHighlighting(syntax);
-                rtb.Dock = DockStyle.Fill;
-                rtb.ShowSpaces = true;
-                rtb.ShowTabs = true;
-                rtb.TextEditorProperties.LineViewerStyle = LineViewerStyle.FullRow;
-                doc.Controls.Add(rtb);
-
-                using (StreamReader sr = new StreamReader(filename))
-                {
-                    rtb.Text = sr.ReadToEnd();
-                }
-
-                doc.DockAreas = DockAreas.Document;
-                doc.Text = name;
-                doc.Show(dPanel);
-            }
+            OpenFile(name, filename, syntax, 0, 0, 0, 0);
         }
+        
 
         void rtb_Enter(object sender, EventArgs e)
         {
-            CheckManifestChanges((TextEditorControl)sender, ((DockContent)((TextEditorControl)sender).Parent).Name);
+            string filename = ((DockContent)((TextEditorControl)sender).Parent).Name;
+            
+            CheckManifestChanges((TextEditorControl)sender, filename, filename.ToLower().Trim() == GetStashFileName().ToLower().Trim());
         }
 
         public static bool IsLocalIpAddress(string host)
@@ -287,7 +271,7 @@ namespace JeonsoftTeamScriptManager
             base.OnLoad(e);
             lblMachineName.Text = MainForm.GetMachineInfo();
 
-            if ((GlobalOptions.Instance.MergeFileOutputDirectory == null || GlobalOptions.Instance.MergeFileOutputDirectory.Trim() == "") ||
+            if ((GlobalOptions.Instance.DefaultWorkspace == null || GlobalOptions.Instance.DefaultWorkspace.Trim() == "") || (GlobalOptions.Instance.MergeFileOutputDirectory == null || GlobalOptions.Instance.MergeFileOutputDirectory.Trim() == "") ||
                 (GlobalOptions.Instance.StashManifestDirectory == null || GlobalOptions.Instance.StashManifestDirectory.Trim() == ""))
             {
                 Preferences pf = new Preferences();
@@ -440,7 +424,7 @@ namespace JeonsoftTeamScriptManager
                 if (root != string.Empty)
                     baseDir = root;
                 else
-                    baseDir = Path.GetDirectoryName(GetStashFilePath());
+                    baseDir = Path.GetDirectoryName(GlobalOptions.Instance.DefaultWorkspace);
 
                 var directories = Directory.EnumerateDirectories(baseDir).OrderBy(filename => filename);
                 
@@ -981,7 +965,343 @@ namespace JeonsoftTeamScriptManager
             GenerateFromStash(GetStashFilePath(), GetMergedFilePath());
         }
 
+        private void ValidateActiveScript()
+        {
+            IDockContent ic = dPanel.ActiveDocument;
+            if (ic != null)
+            {
+                if (ic is DockContent)
+                {
+                    lvErrors.Items.Clear();
+                    lvErrors.BeginUpdate();
+                    try
+                    {
+                        DockContent dc = (DockContent)ic;
+                        TextEditorControl rtb = (TextEditorControl)dc.Controls[0];
+                        string filename = dc.Name;
+                        ValidateScript(filename, new FileInfo(filename).Name, rtb.Text);
+                        if (numOfErrors == 0)
+                            MessageBox.Show("Script is valid.");
+                    }
+                    catch (Exception ex) 
+                    {
+                        rtbLogs.AppendText(ex.Message + Environment.NewLine);
+                    }
+                    finally
+                    {
+                        lvErrors.EndUpdate();
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please open a script in a new tab document to validate.", "There's nothing to validate", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+            }
+        }
+
+        private void CleanUpAllScripts() 
+        {
+            cleanupWorker = new BackgroundWorker();
+            cleanupWorker.DoWork += cleanupWorker_DoWork;
+            cleanupWorker.RunWorkerCompleted += cleanupWorker_RunWorkerCompleted;
+            tbtProgress.Minimum = 0;
+            tbtProgress.Maximum = StashManager.Instance.Count;
+            cleanupWorker.RunWorkerAsync();
+        }
+
+        void cleanupWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            tbtProgress.Value = 0;
+            MessageBox.Show("Cleanup complete.", "Clean Up Scripts", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        void cleanupWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            string filename = GetStashFilePath();
+            lvErrors.Items.Clear();
+            #region Default Directories
+            if (GlobalOptions.Instance.EnableDefaultDirectories && GlobalOptions.Instance.SaveStashOnMerge == false)
+            {
+                string[] delimiter = new string[] { Environment.NewLine };
+                string[] lines = GlobalOptions.Instance.DefaultDirectories.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
+                tbtProgress.Maximum = lines.Length;
+                int ddCnt = 0;
+
+                foreach (string s in lines)
+                {
+                    tbtProgress.Maximum = lines.Length;
+                    tbtProgress.Value = ddCnt;
+                    lblStatus.Text = string.Format("Scanning default directory {0}...", s);
+                    ddCnt++;
+                    string[] dirs = Directory.GetDirectories(Path.GetDirectoryName(filename));
+                    string indexedFile = s;
+
+                    foreach (string d in dirs)
+                    {
+                        DirectoryInfo di = new DirectoryInfo(d);
+                        if (di.Name.ToLower() == indexedFile.ToLower().Trim())
+                        {
+                            FileInfo[] fileInfos = di.GetFiles("*.sql");
+                            tbtProgress.Value = 0;
+                            tbtProgress.Maximum = fileInfos.Length + 1;
+
+                            foreach (FileInfo fi in fileInfos)
+                            {
+                                tbtProgress.Value++;
+                                lblStatus.Text = string.Format("Cleaning up {0}...", fi.Name);
+
+                                string dirname = fi.Directory.Name;
+                                string dirpath = fi.DirectoryName;
+                                string host = string.Empty;
+                                string name = fi.Name;
+                                string fullName = fi.FullName;
+
+                                if (GlobalOptions.Instance.ResolveHostNameAddresses)
+                                {
+                                    UriHostNameType hostType = NetworkUtils.GetHostType(fi.FullName, ref host);
+
+                                    if (hostType != UriHostNameType.Basic || hostType != UriHostNameType.Unknown)
+                                    {
+                                        if (!mappedHosts.ContainsKey(host) && !string.IsNullOrEmpty(host))
+                                        {
+                                            MappedHost mh = new MappedHost()
+                                            {
+                                                Name = host.ToLower(),
+                                                HostName = string.Empty
+                                            };
+                                            if (!mappedHosts.ContainsKey(mh.Name))
+                                                mappedHosts.Add(mh.Name, mh);
+                                        }
+                                    }
+                                }
+                                try
+                                {
+                                    string content = File.ReadAllText(fullName);
+                                    content = GetCleanString(content);
+
+                                    using (StreamWriter sw = new StreamWriter(fullName, false))
+                                    {
+                                        sw.WriteLine(content);
+                                        rtbLogs.AppendText("File cleaned up: " + fullName);
+                                        rtbLogs.AppendText(Environment.NewLine);
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    rtbLogs.AppendText(ex.Message + Environment.NewLine);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            #endregion
+
+            using (StreamReader sr = new StreamReader(filename))
+            {
+                string file = "";
+
+                while ((file = sr.ReadLine()) != null)
+                {
+                    if (!Path.IsPathRooted(file))
+                    {
+                        FileInfo fi = Utils.FileUtils.GetAbsolutePath(Path.GetDirectoryName(filename), file);
+                        file = fi.FullName;
+                    }
+
+                    if (!string.IsNullOrEmpty(file) && File.Exists(file))
+                    {
+                        FileInfo fi = new FileInfo(file);
+                        lblStatus.Text = string.Format("Cleaning up {0}...", fi.Name);
+                        try
+                        {
+                            string content = File.ReadAllText(file);
+                            content = GetCleanString(content);
+
+                            using (StreamWriter sw = new StreamWriter(file, false))
+                            {
+                                sw.WriteLine(content);
+                                rtbLogs.AppendText("File cleaned up: " + file);
+                                rtbLogs.AppendText(Environment.NewLine);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            rtbLogs.AppendText(fi.Name + ": " + ex.Message + Environment.NewLine);
+                        }
+                    }
+                    else
+                    {
+                        rtbLogs.AppendText("Clean up error: Cannot find the file: '" + file + "'");
+                        rtbLogs.AppendText(Environment.NewLine);
+                    }
+                }
+            }
+        }
+
+        private string GetCleanString(string source)
+        {
+            string content = Regex.Replace(source, @"^\s*$\n", string.Empty, RegexOptions.Multiline).TrimEnd();
+            content = content.Replace(":", "CHAR(58)");
+            int lastNewLineIndex = Math.Max(0, content.LastIndexOf(Environment.NewLine));
+
+            string strGo = content.Substring(lastNewLineIndex + (lastNewLineIndex == 0 ? 0 : 2), content.Length - lastNewLineIndex - (lastNewLineIndex == 0 ? 0 : 2));
+            if (!strGo.Contains("GO"))
+            {
+                return content.Trim() + Environment.NewLine + Environment.NewLine + Environment.NewLine + "GO" + Environment.NewLine;
+            }
+            else
+                return content.Substring(0, content.Length - (lastNewLineIndex == 0 ? 0 : 2)).Trim() + Environment.NewLine + Environment.NewLine + Environment.NewLine + "GO";
+        }
+
         private BackgroundWorker worker;
+        private BackgroundWorker validateWorker;
+        private BackgroundWorker cleanupWorker;
+
+        public void ValidateAllScripts()
+        {
+            validateWorker = new BackgroundWorker();
+            validateWorker.DoWork += validateWorker_DoWork;
+            validateWorker.RunWorkerCompleted += validateWorker_RunWorkerCompleted;
+            tbtProgress.Minimum = 0;
+            tbtProgress.Maximum = StashManager.Instance.Count;
+            validateWorker.RunWorkerAsync(new string[] { GetStashFilePath() });
+        }
+
+        void validateWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            tbtProgress.Value = 0;
+            MessageBox.Show("Validation complete.", "Validate Scripts", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            LockControls(false);
+            paneErrors.Text = "Warnings/Errors (" + numOfErrors.ToString() + ")";
+        }
+
+        void validateWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            rtbLogs.Clear();
+            numOfErrors = 0;
+            lvErrors.BeginUpdate();
+            lvErrors.Items.Clear();
+            string[] args = (string[])e.Argument;
+            string filename = args[0];
+            try
+            {
+                if (File.Exists(filename))
+                {
+                    if (GlobalOptions.Instance.EnableDefaultDirectories && GlobalOptions.Instance.SaveStashOnMerge == false)
+                    {
+                        string[] delimiter = new string[] { Environment.NewLine };
+                        string[] lines = GlobalOptions.Instance.DefaultDirectories.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
+                        tbtProgress.Maximum = lines.Length;
+                        int ddCnt = 0;
+
+                        foreach (string s in lines)
+                        {
+                            tbtProgress.Maximum = lines.Length;
+                            tbtProgress.Value = ddCnt;
+                            lblStatus.Text = string.Format("Scanning default directory {0}...", s);
+                            ddCnt++;
+                            string[] dirs = Directory.GetDirectories(Path.GetDirectoryName(filename));
+                            string indexedFile = s;
+
+                            //if (!Path.IsPathRooted(s))
+                            //{
+                            //    FileInfo fi = Utils.FileUtils.GetAbsolutePath(Path.GetDirectoryName(filename), s);
+                            //    indexedFile = fi.FullName;
+                            //}
+
+                            foreach (string d in dirs)
+                            {
+                                DirectoryInfo di = new DirectoryInfo(d);
+                                if (di.Name.ToLower() == indexedFile.ToLower().Trim())
+                                {
+                                    FileInfo[] fileInfos = di.GetFiles("*.sql");
+                                    tbtProgress.Value = 0;
+                                    tbtProgress.Maximum = fileInfos.Length + 1;
+
+                                    foreach (FileInfo fi in fileInfos)
+                                    {
+                                        tbtProgress.Value++;
+                                        lblStatus.Text = string.Format("Indexing {0}...", fi.Name);
+
+                                        string dirname = fi.Directory.Name;
+                                        string dirpath = fi.DirectoryName;
+                                        string host = string.Empty;
+                                        string name = fi.Name;
+                                        string fullName = fi.FullName;
+
+                                        if (GlobalOptions.Instance.ResolveHostNameAddresses)
+                                        {
+                                            UriHostNameType hostType = NetworkUtils.GetHostType(fi.FullName, ref host);
+
+                                            if (hostType != UriHostNameType.Basic || hostType != UriHostNameType.Unknown)
+                                            {
+                                                if (!mappedHosts.ContainsKey(host) && !string.IsNullOrEmpty(host))
+                                                {
+                                                    MappedHost mh = new MappedHost()
+                                                    {
+                                                        Name = host.ToLower(),
+                                                        HostName = string.Empty
+                                                    };
+                                                    if (!mappedHosts.ContainsKey(mh.Name))
+                                                        mappedHosts.Add(mh.Name, mh);
+                                                }
+                                            }
+                                        }
+
+                                        string content = File.ReadAllText(fullName);
+                                        ValidateScript(fullName, name, content);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    using (StreamReader sr = new StreamReader(filename))
+                    {
+                        string file = "";
+
+                        while ((file = sr.ReadLine()) != null)
+                        {
+                            if (!Path.IsPathRooted(file))
+                            {
+                                FileInfo fi = Utils.FileUtils.GetAbsolutePath(Path.GetDirectoryName(filename), file);
+                                file = fi.FullName;
+                            }
+
+                            if (!string.IsNullOrEmpty(file) && File.Exists(file))
+                            {
+                                string strDirName = new DirectoryInfo(new FileInfo(file).DirectoryName).Name;
+                                string[] delimiter = new string[] { Environment.NewLine };
+                                string[] lines = GlobalOptions.Instance.DefaultDirectories.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
+                                if (!lines.Contains(strDirName))
+                                {
+                                    FileInfo fi = new FileInfo(file);
+
+                                    string content = File.ReadAllText(file);
+                                    ValidateScript(file, fi.Name, content);
+                                }
+                                tbtProgress.Value++;
+                            }
+                            else
+                            {
+                                rtbLogs.AppendText("Validation error: Cannot find the file: '" + file + "'");
+                                rtbLogs.AppendText(Environment.NewLine);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    rtbLogs.AppendText("Cannot find the file: '" + filename + "'");
+                    rtbLogs.AppendText(Environment.NewLine);
+                }
+            }
+            finally
+            {
+                lvErrors.EndUpdate();
+            }
+        }
 
         public void GenerateFromStash(string filename, string outputFilename)
         {
@@ -1011,105 +1331,169 @@ namespace JeonsoftTeamScriptManager
             isGenerating = false;
             MessageBox.Show("Merge complete.", "Merge", MessageBoxButtons.OK, MessageBoxIcon.Information);
             LockControls(false);
+            paneErrors.Text = "Warnings/Errors (" + numOfErrors.ToString() + ")";
             //MessageBox.Show("Merged file generated to: " + GetMergedFilePath(), "Merge Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         void worker_DoWork(object sender, DoWorkEventArgs e)
         {
             rtbLogs.Clear();
+            numOfErrors = 0;
+            lvErrors.BeginUpdate();
+            lvErrors.Items.Clear();
             string[] args = (string[])e.Argument;
             string filename = args[0];
             string outputFilename = args[1];
-            if (File.Exists(outputFilename))
-                File.Delete(outputFilename);
-            if (File.Exists(filename))
+            try
             {
-                rtbLogs.AppendText("Reading files from " + filename);
-                rtbLogs.AppendText(Environment.NewLine);
-                if (GlobalOptions.Instance.IncludePrefixedFiles)
+                if (File.Exists(outputFilename))
+                    File.Delete(outputFilename);
+                if (File.Exists(filename))
                 {
-                    if (Directory.Exists(GetPreFixedFiles()))
+                    rtbLogs.AppendText("Reading files from " + filename);
+                    rtbLogs.AppendText(Environment.NewLine);
+                    if (GlobalOptions.Instance.IncludePrefixedFiles)
                     {
+                        if (Directory.Exists(GetPreFixedFiles()))
+                        {
+                            using (StreamWriter sw = new StreamWriter(outputFilename, true))
+                            {
+                                foreach (string f in Directory.GetFiles(GetPreFixedFiles(), "*.sql"))
+                                {
+                                    using (StreamReader reader = new StreamReader(f))
+                                    {
+                                        sw.WriteLine(reader.ReadToEnd());
+                                        rtbLogs.AppendText("Prefixed file written to merged output file: " + f);
+                                        rtbLogs.AppendText(Environment.NewLine);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (GlobalOptions.Instance.EnableDefaultDirectories && GlobalOptions.Instance.SaveStashOnMerge == false)
+                    {
+                        string[] delimiter = new string[] { Environment.NewLine };
+                        string[] lines = GlobalOptions.Instance.DefaultDirectories.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
+                        tbtProgress.Maximum = lines.Length;
+                        int ddCnt = 0;
+
+                        foreach (string s in lines)
+                        {
+                            tbtProgress.Maximum = lines.Length;
+                            tbtProgress.Value = ddCnt;
+                            lblStatus.Text = string.Format("Scanning default directory {0}...", s);
+                            ddCnt++;
+                            string[] dirs = Directory.GetDirectories(Path.GetDirectoryName(filename));
+                            string indexedFile = s;
+
+                            //if (!Path.IsPathRooted(s))
+                            //{
+                            //    FileInfo fi = Utils.FileUtils.GetAbsolutePath(Path.GetDirectoryName(filename), s);
+                            //    indexedFile = fi.FullName;
+                            //}
+
+                            foreach (string d in dirs)
+                            {
+                                DirectoryInfo di = new DirectoryInfo(d);
+                                if (di.Name.ToLower() == indexedFile.ToLower().Trim())
+                                {
+                                    FileInfo[] fileInfos = di.GetFiles("*.sql");
+                                    tbtProgress.Value = 0;
+                                    tbtProgress.Maximum = fileInfos.Length + 1;
+
+                                    foreach (FileInfo fi in fileInfos)
+                                    {
+                                        tbtProgress.Value++;
+                                        lblStatus.Text = string.Format("Indexing {0}...", fi.Name);
+
+                                        string dirname = fi.Directory.Name;
+                                        string dirpath = fi.DirectoryName;
+                                        string host = string.Empty;
+                                        string name = fi.Name;
+                                        string fullName = fi.FullName;
+
+                                        if (GlobalOptions.Instance.ResolveHostNameAddresses)
+                                        {
+                                            UriHostNameType hostType = NetworkUtils.GetHostType(fi.FullName, ref host);
+
+                                            if (hostType != UriHostNameType.Basic || hostType != UriHostNameType.Unknown)
+                                            {
+                                                if (!mappedHosts.ContainsKey(host) && !string.IsNullOrEmpty(host))
+                                                {
+                                                    MappedHost mh = new MappedHost()
+                                                    {
+                                                        Name = host.ToLower(),
+                                                        HostName = string.Empty
+                                                    };
+                                                    if (!mappedHosts.ContainsKey(mh.Name))
+                                                        mappedHosts.Add(mh.Name, mh);
+                                                }
+                                            }
+                                        }
+
+                                        using (StreamWriter sw = new StreamWriter(outputFilename, true))
+                                        {
+                                            string content = File.ReadAllText(fullName);
+                                            sw.WriteLine(content);
+                                            if (GlobalOptions.Instance.ValidateOnMerge)
+                                                ValidateScript(fullName, name, content);
+                                            rtbLogs.AppendText("File written to merged output file: " + fullName);
+                                            rtbLogs.AppendText(Environment.NewLine);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    using (StreamReader sr = new StreamReader(filename))
+                    {
+                        string file = "";
+
                         using (StreamWriter sw = new StreamWriter(outputFilename, true))
                         {
-                            foreach (string f in Directory.GetFiles(GetPreFixedFiles(), "*.sql"))
+                            while ((file = sr.ReadLine()) != null)
                             {
-                                using (StreamReader reader = new StreamReader(f))
+                                if (!Path.IsPathRooted(file))
                                 {
-                                    sw.WriteLine(reader.ReadToEnd());
-                                    rtbLogs.AppendText("Prefixed file written to merged output file: " + f);
+                                    FileInfo fi = Utils.FileUtils.GetAbsolutePath(Path.GetDirectoryName(filename), file);
+                                    file = fi.FullName;
+                                }
+
+                                if (!string.IsNullOrEmpty(file) && File.Exists(file))
+                                {
+                                    FileInfo fi = new FileInfo(file);
+
+                                    string content = File.ReadAllText(file);
+                                    sw.WriteLine(content);
+                                    if (GlobalOptions.Instance.ValidateOnMerge)
+                                        ValidateScript(file, fi.Name, content);
+                                    tbtProgress.Value++;
+                                    rtbLogs.AppendText("File written to merged output file: " + file);
+                                    rtbLogs.AppendText(Environment.NewLine);
+                                }
+                                else
+                                {
+                                    rtbLogs.AppendText("Merge error: Cannot find the file: '" + file + "'");
                                     rtbLogs.AppendText(Environment.NewLine);
                                 }
                             }
                         }
                     }
-                }
 
-                if (GlobalOptions.Instance.EnableDefaultDirectories && GlobalOptions.Instance.SaveStashOnMerge == false)
-                {
-                    string[] delimiter = new string[] { Environment.NewLine };
-                    string[] lines = GlobalOptions.Instance.DefaultDirectories.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
-                    tbtProgress.Maximum = lines.Length;
-                    int ddCnt = 0;
-
-                    foreach (string s in lines)
+                    if (GlobalOptions.Instance.IncludePostFixedFiles)
                     {
-                        tbtProgress.Maximum = lines.Length;
-                        tbtProgress.Value = ddCnt;
-                        lblStatus.Text = string.Format("Scanning default directory {0}...", s);
-                        ddCnt++;
-                        string[] dirs = Directory.GetDirectories(Path.GetDirectoryName(filename));
-                        string indexedFile = s;
-
-                        //if (!Path.IsPathRooted(s))
-                        //{
-                        //    FileInfo fi = Utils.FileUtils.GetAbsolutePath(Path.GetDirectoryName(filename), s);
-                        //    indexedFile = fi.FullName;
-                        //}
-
-                        foreach (string d in dirs)
+                        if (Directory.Exists(GetPostFixedFiles()))
                         {
-                            DirectoryInfo di = new DirectoryInfo(d);
-                            if (di.Name.ToLower() == indexedFile.ToLower().Trim())
+                            using (StreamWriter sw = new StreamWriter(outputFilename, true))
                             {
-                                FileInfo[] fileInfos = di.GetFiles("*.sql");
-                                tbtProgress.Value = 0;
-                                tbtProgress.Maximum = fileInfos.Length + 1;
-
-                                foreach (FileInfo fi in fileInfos)
+                                foreach (string f in Directory.GetFiles(GetPostFixedFiles(), "*.sql"))
                                 {
-                                    tbtProgress.Value++;
-                                    lblStatus.Text = string.Format("Indexing {0}...", fi.Name);
-
-                                    string dirname = fi.Directory.Name;
-                                    string dirpath = fi.DirectoryName;
-                                    string host = string.Empty;
-                                    string name = fi.Name;
-                                    string fullName = fi.FullName;
-
-                                    if (GlobalOptions.Instance.ResolveHostNameAddresses)
+                                    using (StreamReader reader = new StreamReader(f))
                                     {
-                                        UriHostNameType hostType = NetworkUtils.GetHostType(fi.FullName, ref host);
-
-                                        if (hostType != UriHostNameType.Basic || hostType != UriHostNameType.Unknown)
-                                        {
-                                            if (!mappedHosts.ContainsKey(host) && !string.IsNullOrEmpty(host))
-                                            {
-                                                MappedHost mh = new MappedHost()
-                                                {
-                                                    Name = host.ToLower(),
-                                                    HostName = string.Empty
-                                                };
-                                                if (!mappedHosts.ContainsKey(mh.Name))
-                                                    mappedHosts.Add(mh.Name, mh);
-                                            }
-                                        }
-                                    }
-
-                                    using (StreamWriter sw = new StreamWriter(outputFilename, true))
-                                    {
-                                        sw.WriteLine(File.ReadAllText(fullName));
-                                        rtbLogs.AppendText("File written to merged output file: " + fullName);
+                                        sw.WriteLine(reader.ReadToEnd());
+                                        rtbLogs.AppendText("Postfixed file written to merged output file: " + f);
                                         rtbLogs.AppendText(Environment.NewLine);
                                     }
                                 }
@@ -1117,62 +1501,165 @@ namespace JeonsoftTeamScriptManager
                         }
                     }
                 }
-
-                using (StreamReader sr = new StreamReader(filename))
+                else
                 {
-                    string file = "";
-
-                    using (StreamWriter sw = new StreamWriter(outputFilename, true))
-                    {
-                        while ((file = sr.ReadLine()) != null)
-                        {
-                            if (!Path.IsPathRooted(file))
-                            {
-                                FileInfo fi = Utils.FileUtils.GetAbsolutePath(Path.GetDirectoryName(filename), file);
-                                file = fi.FullName;
-                            }
-
-                            if (!string.IsNullOrEmpty(file) && File.Exists(file))
-                            {
-                                FileInfo fi = new FileInfo(file);
-
-                                sw.WriteLine(File.ReadAllText(file));
-                                tbtProgress.Value++;
-                                rtbLogs.AppendText("File written to merged output file: " + file);
-                                rtbLogs.AppendText(Environment.NewLine);
-                            }
-                            else
-                            {
-                                rtbLogs.AppendText("Merge error: Cannot find the file: '" + file + "'");
-                                rtbLogs.AppendText(Environment.NewLine);
-                            }
-                        }
-                    }
+                    rtbLogs.AppendText("Cannot find the file: '" + filename + "'");
+                    rtbLogs.AppendText(Environment.NewLine);
                 }
+            }
+            finally
+            {
+                lvErrors.EndUpdate();
+            }
+        }
 
-                if (GlobalOptions.Instance.IncludePostFixedFiles)
+        private int numOfErrors = 0;
+
+        private void ValidateScript(string fileName, string name, string content)
+        {
+            string[] delimiter = new string[] { Environment.NewLine };
+            string[] lines = content.Split(delimiter, StringSplitOptions.None);
+
+            if (!content.EndsWith(Environment.NewLine))
+                AddBookmark(fileName, name, "", 0, lines.Length-1, 0, 0, "Missing line feed found at the end of file.", BookmarkType.Warning);
+            else
+            {
+                string strContent = content.TrimEnd();
+                int lastNewLineIndex = strContent.LastIndexOf(Environment.NewLine);
+                string strGo = strContent.Substring(lastNewLineIndex, strContent.Length - lastNewLineIndex);
+                if (strGo.Contains("GO"))
                 {
-                    if (Directory.Exists(GetPostFixedFiles()))
+                    string keyword = "GO";
+                    int startPos = content.LastIndexOf(keyword) + keyword.Length + 1;
+                    int len = content.Length - startPos;
+                    if (len != 1)
+                        AddBookmark(fileName, name, "", 0, lines.Length - 1, 0, 0, "Extra characters found after GO. There must be exactly one (1) carriage return after the last GO keyword.", BookmarkType.Error);
+                    string[] strLines = strContent.Split(new char[] { '\r' });
+                    int j = strLines.Length - 1;
+                    int found = 1;
+                    bool foundNonBreak = false;
+                    while (j > 0)
                     {
-                        using (StreamWriter sw = new StreamWriter(outputFilename, true))
-                        {
-                            foreach (string f in Directory.GetFiles(GetPostFixedFiles(), "*.sql"))
-                            {
-                                using (StreamReader reader = new StreamReader(f))
-                                {
-                                    sw.WriteLine(reader.ReadToEnd());
-                                    rtbLogs.AppendText("Postfixed file written to merged output file: " + f);
-                                    rtbLogs.AppendText(Environment.NewLine);
-                                }
-                            }
-                        }
+                        string line = strLines[--j];
+                        if (line == "\n")
+                            found++;
+                        else
+                            foundNonBreak = true;
+                        if (found > 3)
+                            break;
+                        if (foundNonBreak)
+                            break;
+                    }
+                    if (found != 3)
+                        AddBookmark(fileName, name, "", 0, lines.Length - 1, 0, 0, "There must be exactly three (3) carriage returns before the last GO keyword.", BookmarkType.Warning);
+                }
+                else
+                {
+                    AddBookmark(fileName, name, "", 0, lines.Length - 1, 0, 0, "Missing GO keyword at the end of the file.", BookmarkType.Warning);
+                }
+            }
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                string strLine = lines[i];
+                if (strLine != "")
+                {
+                    if (char.IsWhiteSpace(strLine[strLine.Length - 1]))
+                        AddBookmark(fileName, name, strLine, 0, i, strLine.Length - 1, i, "Trailing space(s) found.", BookmarkType.Warning);
+                    if (strLine.Contains(":"))
+                    {
+                        int pos = strLine.IndexOf(":");
+                        AddBookmark(fileName, name, strLine, pos, i, pos + 1, i, "Invalid character (:) found.", BookmarkType.Error);
                     }
                 }
             }
-            else
+        }
+
+        private void AddBookmark(string fileName, string name, string line, int startCol, int startLine, int endCol, int endLine, string message, BookmarkType type)
+        {
+            Bookmark bookmark = new Bookmark(fileName, name,  startCol, startLine, endCol, endLine, message, type);
+
+            string strFname = bookmark.Filename;
+            
+            ListViewItem item = new ListViewItem
+            (
+                new string[] 
+                {
+                    bookmark.Message, bookmark.Name, (bookmark.StartLine+1).ToString(), bookmark.Filename
+                }
+             );
+            if (bookmark.Type == BookmarkType.Warning)
+                item.ImageIndex = 0;
+            else if (bookmark.Type == BookmarkType.Error)
+                item.ImageIndex = 1;
+            item.Tag = bookmark;
+            lvErrors.Items.Add(item);
+            numOfErrors++;
+        }
+
+        void lvErrors_DoubleClick(object sender, EventArgs e)
+        {
+            ListViewItem item = lvErrors.SelectedItems[0];
+            if (item != null && item.Tag != null)
             {
-                rtbLogs.AppendText("Cannot find the file: '" + filename + "'");
-                rtbLogs.AppendText(Environment.NewLine);
+                Bookmark bm = item.Tag as Bookmark;
+                OpenFile(bm.Name, bm.Filename, "SQL", bm.StartColumn, bm.StartLine, bm.EndColumn, bm.EndLine);
+            }
+        }
+
+        private void OpenFile(string name, string filename, string syntax, int startCol, int startLine, int endCol, int endLine)
+        {
+            bool isOpened = false;
+            bool _highlightingProviderLoaded = false;
+            foreach (IDockContent c in dPanel.Documents)
+            {
+                if (c is DockContent)
+                {
+                    DockContent dc = (DockContent)c;
+                    isOpened = (dc.Name == filename);
+                    if (isOpened)
+                    {
+                        dc.Activate();
+                        TextEditorControl rtb = (TextEditorControl)dc.Controls[0];
+                        rtb.ActiveTextAreaControl.Caret.Position = new TextLocation(endCol, startLine);
+                        rtb.ActiveTextAreaControl.Caret.UpdateCaretPosition();
+                        CheckManifestChanges(rtb, filename, filename.Trim().ToLower() == GetStashFilePath().Trim().ToLower());
+                        break;
+                    }
+                }
+            }
+            if (!isOpened)
+            {
+                DockContent doc = new DockContent();
+                doc.Name = filename;
+                TextEditorControl rtb = new TextEditorControl();
+                rtb.ContextMenuStrip = cmnuTextEditor;
+                rtb.Enter += rtb_Enter;
+                if (!_highlightingProviderLoaded)
+                {
+                    // Attach to the text editor.
+                    HighlightingManager.Manager.AddSyntaxModeFileProvider(
+                        new AppSyntaxModeProvider());
+                    _highlightingProviderLoaded = true;
+                }
+                rtb.SetHighlighting(syntax);
+                rtb.Dock = DockStyle.Fill;
+                rtb.ShowSpaces = true;
+                rtb.ShowEOLMarkers = true;
+                rtb.ShowTabs = true;
+                rtb.TextEditorProperties.LineViewerStyle = LineViewerStyle.FullRow;
+                doc.Controls.Add(rtb);
+
+                using (StreamReader sr = new StreamReader(filename))
+                {
+                    rtb.Text = sr.ReadToEnd();
+                }
+
+                rtb.ActiveTextAreaControl.Caret.Position = new TextLocation(endCol, startLine);
+                rtb.ActiveTextAreaControl.Caret.UpdateCaretPosition();
+                doc.DockAreas = DockAreas.Document;
+                doc.Text = name;
+                doc.Show(dPanel);
             }
         }
 
@@ -1581,6 +2068,64 @@ namespace JeonsoftTeamScriptManager
         {
             ChangeLogsForm cf = new ChangeLogsForm();
             cf.ShowDialog();
+        }
+
+        private void toolStripButton5_Click(object sender, EventArgs e)
+        {
+            ValidateAllScripts();
+        }
+
+        private void toolStripButton6_Click(object sender, EventArgs e)
+        {
+            ValidateActiveScript();
+        }
+
+        private void toolStripButton7_Click(object sender, EventArgs e)
+        {
+            CleanUpAllScripts();
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            IDockContent ic = dPanel.ActiveDocument;
+            if (ic != null)
+            {
+                if (ic is DockContent)
+                {
+                    DockContent dc = (DockContent)ic;
+                    TextEditorControl rtb = (TextEditorControl)dc.Controls[0];
+                    string filename = dc.Name;
+                    File.WriteAllText(filename, rtb.Text);
+                }
+            }
+        }
+
+        private void validateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ValidateActiveScript();
+        }
+
+        private void cleanUpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            IDockContent ic = dPanel.ActiveDocument;
+            if (ic != null)
+            {
+                if (ic is DockContent)
+                {
+                    DockContent dc = (DockContent)ic;
+                    TextEditorControl rtb = (TextEditorControl)dc.Controls[0];
+                    string filename = dc.Name;
+                    string content = File.ReadAllText(filename);
+                    content = GetCleanString(content) + Environment.NewLine;
+                    using (StreamWriter sw = new StreamWriter(filename, false))
+                    {
+                        sw.Write(content);
+                    }
+                    rtb.BeginUpdate();
+                    rtb.Text = content;
+                    rtb.EndUpdate();
+                }
+            }
         }
     }
 }

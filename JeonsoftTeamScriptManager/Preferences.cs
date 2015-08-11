@@ -36,6 +36,8 @@ namespace JeonsoftTeamScriptManager
                 GlobalOptions.Instance.EnableAutoCheckUpdates = chbCheckUpdates.Checked;
                 GlobalOptions.Instance.ResolveHostNameAddresses = chkResolveHosts.Checked;
                 GlobalOptions.Instance.SaveStashFilesWithFullPath = chbUseFullPath.Checked;
+                GlobalOptions.Instance.ValidateOnMerge = chbValidateOnMerge.Checked;
+                GlobalOptions.Instance.DefaultWorkspace = txtDefaultWorkspace.Text.Trim();
                 GlobalOptions.Instance.SaveSettings();
             }
         }
@@ -54,6 +56,8 @@ namespace JeonsoftTeamScriptManager
             GlobalOptions.Instance.EnableAutoCheckUpdates = chbCheckUpdates.Checked;
             GlobalOptions.Instance.ResolveHostNameAddresses = chkResolveHosts.Checked;
             GlobalOptions.Instance.SaveStashFilesWithFullPath = chbUseFullPath.Checked;
+            GlobalOptions.Instance.ValidateOnMerge = chbValidateOnMerge.Checked;
+            GlobalOptions.Instance.DefaultWorkspace = txtDefaultWorkspace.Text.Trim();
             GlobalOptions.Instance.SaveSettings();
 
             SaveToRecent();
@@ -75,6 +79,8 @@ namespace JeonsoftTeamScriptManager
             chbCheckUpdates.Checked = GlobalOptions.Instance.EnableAutoCheckUpdates;
             chkResolveHosts.Checked = GlobalOptions.Instance.ResolveHostNameAddresses;
             chbUseFullPath.Checked = GlobalOptions.Instance.SaveStashFilesWithFullPath;
+            chbValidateOnMerge.Checked = GlobalOptions.Instance.ValidateOnMerge;
+            txtDefaultWorkspace.Text = GlobalOptions.Instance.DefaultWorkspace;
             if (txtMerge.Text.Trim() == "" || txtStash.Text.Trim() == "")
                 label3.Text = "Alright, first things first. Before we move on, please let me know where to put all these thingies: (1) Stash File, (2) Merged File.";
             else
@@ -200,12 +206,16 @@ namespace JeonsoftTeamScriptManager
                             cboRecent.Text = stash.Pairs["Configuration Name"].Value;
                         if (stash.Pairs.ContainsKey("Stash Directory"))
                             txtStash.Text = stash.Pairs["Stash Directory"].Value;
+                        if (stash.Pairs.ContainsKey("Default Workspace"))
+                            txtDefaultWorkspace.Text = stash.Pairs["Default Workspace"].Value;
                         if (stash.Pairs.ContainsKey("Merge Directory"))
                             txtMerge.Text = stash.Pairs["Merge Directory"].Value;
                         if (stash.Pairs.ContainsKey("Enable File Tracking"))
                             chbFileTracking.Checked = stash.Pairs["Enable File Tracking"].Value.Trim().ToLower() == "true";
                         if (stash.Pairs.ContainsKey("Use Absolute Path"))
                             chbUseFullPath.Checked = stash.Pairs["Use Absolute Path"].Value.Trim().ToLower() == "true";
+                        if (stash.Pairs.ContainsKey("Validate on Merge"))
+                            chbValidateOnMerge.Checked = stash.Pairs["Validate on Merge"].Value.Trim().ToLower() == "true";
                     }
 
                     DictionarySection templates = sections["Templates"];
@@ -253,22 +263,24 @@ namespace JeonsoftTeamScriptManager
             "Merge Directory = {2}" + Environment.NewLine + Environment.NewLine +
             "Enable File Tracking = {3}" + Environment.NewLine +
             "Use Absolute Path = {4}" + Environment.NewLine +
+            "Validate on Merge = {5}" + Environment.NewLine +
 
             "[Templates]" + Environment.NewLine +
-            "Include Prefix = {5}" + Environment.NewLine +
-            "Include Postfix = {6}" + Environment.NewLine +
-            "Prefix Directory = {7}" + Environment.NewLine +
-            "Postfix Directory = {8}" + Environment.NewLine + Environment.NewLine +
+            "Include Prefix = {6}" + Environment.NewLine +
+            "Include Postfix = {7}" + Environment.NewLine +
+            "Prefix Directory = {8}" + Environment.NewLine +
+            "Postfix Directory = {9}" + Environment.NewLine + Environment.NewLine +
 
             "[Default Directories]" + Environment.NewLine +
-            "Enable Default Directories = {9}" + Environment.NewLine +
-            "Directory List = {10}", cboRecent.Text, txtStash.Text, txtMerge.Text, chbFileTracking.Checked.ToString(), 
-                chbUseFullPath.Checked.ToString(),  
+            "Enable Default Directories = {10}" + Environment.NewLine +
+            "Directory List = {11}" + Environment.NewLine +
+            "Default Workspace = {12}", cboRecent.Text, txtStash.Text, txtMerge.Text, chbFileTracking.Checked.ToString(), 
+                chbUseFullPath.Checked.ToString(), chbValidateOnMerge.Checked.ToString(), 
                                 chbIncludePrefixed.Checked.ToString(),
                                  chbIncludePostfixed.Checked.ToString(),
                                  txtPrefixed.Text, txtPostFixed.Text,
                                  chbDefaultDirs.Checked.ToString(),
-                                 txtDefaultDirs.Text.Trim().Replace(Environment.NewLine, ","));
+                                 txtDefaultDirs.Text.Trim().Replace(Environment.NewLine, ","), txtDefaultWorkspace.Text);
             try
             {
                 System.IO.File.WriteAllText(filename, config);
@@ -326,6 +338,17 @@ namespace JeonsoftTeamScriptManager
             if (File.Exists(path))
             {
                 LoadConfigurationFromFile(path);
+            }
+        }
+
+        private void btnBrowseDefaultWorkspace_Click(object sender, EventArgs e)
+        {
+            using (VistaFolderBrowserDialog fbd = new VistaFolderBrowserDialog())
+            {
+                if (string.IsNullOrEmpty(txtDefaultWorkspace.Text) == false)
+                    fbd.SelectedPath = txtDefaultWorkspace.Text + "\\";
+                if (fbd.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+                    txtDefaultWorkspace.Text = fbd.SelectedPath;
             }
         }
     }

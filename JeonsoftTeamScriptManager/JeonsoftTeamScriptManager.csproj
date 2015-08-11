@@ -99,6 +99,7 @@
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
     <Compile Include="AppSyntaxModeProvider.cs" />
+    <Compile Include="Bookmark.cs" />
     <Compile Include="ChangeLogsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -231,6 +232,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Chrisbanks2-GCons-File-manager.ico" />
+    <None Include="Resources\warning.png" />
     <None Include="Resources\ChangeLog.html" />
     <None Include="Resources\undo.png" />
     <None Include="Resources\stash_modified_save.png" />

@@ -90,15 +90,12 @@ namespace JeonsoftTeamScriptManager.Properties {
         ///&lt;/style&gt;
         ///&lt;/head&gt;
         ///&lt;body&gt;
-        ///	&lt;h2&gt;Version 1.2.0.0&lt;/h2&gt;
-        ///	&lt;ul&gt;
-        ///		&lt;li&gt;Initial release.&lt;/li&gt;
-        ///	&lt;/ul&gt;
-        ///	&lt;h2&gt;Version 1.2.1.0 &lt;span&gt;June 16, 2015&lt;/span&gt;&lt;/h2&gt;
-        ///	&lt;ul&gt;
-        ///		&lt;li&gt;Fix ordering of loaded files and folders.&lt;/li&gt;
-        ///		&lt;li&gt;Add change logs.&lt;/li&gt;
-        ///	 [rest of string was truncated]&quot;;.
+        ///    &lt;h2&gt;Version 1.2.5.0 &lt;span&gt;August 8, 2015&lt;/span&gt;&lt;/h2&gt;
+        ///    &lt;ul&gt;
+        ///        &lt;li&gt;Add option to save stash on merging.&lt;/li&gt;
+        ///        &lt;li&gt;Fix default directories.&lt;/li&gt;
+        ///    &lt;/ul&gt;
+        ///    &lt;h2&gt;Version 1.2.4.0 &lt;span&gt;August 1, [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ChangeLog {
             get {
@@ -232,6 +229,16 @@ namespace JeonsoftTeamScriptManager.Properties {
         internal static System.Drawing.Bitmap undo {
             get {
                 object obj = ResourceManager.GetObject("undo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap warning {
+            get {
+                object obj = ResourceManager.GetObject("warning", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
