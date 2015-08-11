@@ -56,12 +56,16 @@
             this.chbCheckUpdates = new System.Windows.Forms.CheckBox();
             this.chkResolveHosts = new System.Windows.Forms.CheckBox();
             this.chbUseFullPath = new System.Windows.Forms.CheckBox();
+            this.chbValidateOnMerge = new System.Windows.Forms.CheckBox();
+            this.btnBrowseDefaultWorkspace = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
+            this.txtDefaultWorkspace = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(425, 391);
+            this.btnCancel.Location = new System.Drawing.Point(425, 458);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 15;
@@ -71,7 +75,7 @@
             // btnSave
             // 
             this.btnSave.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnSave.Location = new System.Drawing.Point(344, 391);
+            this.btnSave.Location = new System.Drawing.Point(344, 458);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 14;
@@ -82,7 +86,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 36);
+            this.label1.Location = new System.Drawing.Point(9, 62);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(101, 13);
             this.label1.TabIndex = 0;
@@ -90,7 +94,7 @@
             // 
             // txtStash
             // 
-            this.txtStash.Location = new System.Drawing.Point(132, 33);
+            this.txtStash.Location = new System.Drawing.Point(132, 59);
             this.txtStash.Name = "txtStash";
             this.txtStash.Size = new System.Drawing.Size(287, 20);
             this.txtStash.TabIndex = 1;
@@ -99,7 +103,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(9, 62);
+            this.label2.Location = new System.Drawing.Point(9, 88);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(110, 13);
             this.label2.TabIndex = 3;
@@ -107,7 +111,7 @@
             // 
             // txtMerge
             // 
-            this.txtMerge.Location = new System.Drawing.Point(132, 59);
+            this.txtMerge.Location = new System.Drawing.Point(132, 85);
             this.txtMerge.Name = "txtMerge";
             this.txtMerge.Size = new System.Drawing.Size(287, 20);
             this.txtMerge.TabIndex = 4;
@@ -115,7 +119,7 @@
             // 
             // btnStash
             // 
-            this.btnStash.Location = new System.Drawing.Point(425, 31);
+            this.btnStash.Location = new System.Drawing.Point(425, 57);
             this.btnStash.Name = "btnStash";
             this.btnStash.Size = new System.Drawing.Size(75, 23);
             this.btnStash.TabIndex = 2;
@@ -125,7 +129,7 @@
             // 
             // btnMerge
             // 
-            this.btnMerge.Location = new System.Drawing.Point(425, 57);
+            this.btnMerge.Location = new System.Drawing.Point(425, 83);
             this.btnMerge.Name = "btnMerge";
             this.btnMerge.Size = new System.Drawing.Size(75, 23);
             this.btnMerge.TabIndex = 5;
@@ -136,7 +140,7 @@
             // label3
             // 
             this.label3.ForeColor = System.Drawing.Color.Olive;
-            this.label3.Location = new System.Drawing.Point(9, 332);
+            this.label3.Location = new System.Drawing.Point(9, 358);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(326, 44);
             this.label3.TabIndex = 8;
@@ -146,7 +150,7 @@
             this.chbIncludePrefixed.AutoSize = true;
             this.chbIncludePrefixed.Checked = true;
             this.chbIncludePrefixed.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chbIncludePrefixed.Location = new System.Drawing.Point(132, 85);
+            this.chbIncludePrefixed.Location = new System.Drawing.Point(132, 111);
             this.chbIncludePrefixed.Name = "chbIncludePrefixed";
             this.chbIncludePrefixed.Size = new System.Drawing.Size(126, 17);
             this.chbIncludePrefixed.TabIndex = 6;
@@ -158,7 +162,7 @@
             this.chbIncludePostfixed.AutoSize = true;
             this.chbIncludePostfixed.Checked = true;
             this.chbIncludePostfixed.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chbIncludePostfixed.Location = new System.Drawing.Point(264, 85);
+            this.chbIncludePostfixed.Location = new System.Drawing.Point(264, 111);
             this.chbIncludePostfixed.Name = "chbIncludePostfixed";
             this.chbIncludePostfixed.Size = new System.Drawing.Size(131, 17);
             this.chbIncludePostfixed.TabIndex = 7;
@@ -167,7 +171,7 @@
             // 
             // btnPrefixed
             // 
-            this.btnPrefixed.Location = new System.Drawing.Point(425, 106);
+            this.btnPrefixed.Location = new System.Drawing.Point(425, 132);
             this.btnPrefixed.Name = "btnPrefixed";
             this.btnPrefixed.Size = new System.Drawing.Size(75, 23);
             this.btnPrefixed.TabIndex = 10;
@@ -177,7 +181,7 @@
             // 
             // btnPostFixed
             // 
-            this.btnPostFixed.Location = new System.Drawing.Point(425, 132);
+            this.btnPostFixed.Location = new System.Drawing.Point(425, 158);
             this.btnPostFixed.Name = "btnPostFixed";
             this.btnPostFixed.Size = new System.Drawing.Size(75, 23);
             this.btnPostFixed.TabIndex = 13;
@@ -188,7 +192,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(9, 111);
+            this.label4.Location = new System.Drawing.Point(9, 137);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(117, 13);
             this.label4.TabIndex = 8;
@@ -196,7 +200,7 @@
             // 
             // txtPrefixed
             // 
-            this.txtPrefixed.Location = new System.Drawing.Point(132, 108);
+            this.txtPrefixed.Location = new System.Drawing.Point(132, 134);
             this.txtPrefixed.Name = "txtPrefixed";
             this.txtPrefixed.Size = new System.Drawing.Size(287, 20);
             this.txtPrefixed.TabIndex = 9;
@@ -204,7 +208,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(9, 137);
+            this.label5.Location = new System.Drawing.Point(9, 163);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(122, 13);
             this.label5.TabIndex = 11;
@@ -212,7 +216,7 @@
             // 
             // txtPostFixed
             // 
-            this.txtPostFixed.Location = new System.Drawing.Point(132, 134);
+            this.txtPostFixed.Location = new System.Drawing.Point(132, 160);
             this.txtPostFixed.Name = "txtPostFixed";
             this.txtPostFixed.Size = new System.Drawing.Size(287, 20);
             this.txtPostFixed.TabIndex = 12;
@@ -220,7 +224,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(9, 186);
+            this.label6.Location = new System.Drawing.Point(9, 212);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(97, 13);
             this.label6.TabIndex = 16;
@@ -231,7 +235,7 @@
             this.chbDefaultDirs.AutoSize = true;
             this.chbDefaultDirs.Checked = true;
             this.chbDefaultDirs.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chbDefaultDirs.Location = new System.Drawing.Point(132, 160);
+            this.chbDefaultDirs.Location = new System.Drawing.Point(132, 186);
             this.chbDefaultDirs.Name = "chbDefaultDirs";
             this.chbDefaultDirs.Size = new System.Drawing.Size(149, 17);
             this.chbDefaultDirs.TabIndex = 17;
@@ -241,7 +245,7 @@
             // txtDefaultDirs
             // 
             this.txtDefaultDirs.AcceptsReturn = true;
-            this.txtDefaultDirs.Location = new System.Drawing.Point(132, 183);
+            this.txtDefaultDirs.Location = new System.Drawing.Point(132, 209);
             this.txtDefaultDirs.Multiline = true;
             this.txtDefaultDirs.Name = "txtDefaultDirs";
             this.txtDefaultDirs.Size = new System.Drawing.Size(368, 99);
@@ -249,7 +253,7 @@
             // 
             // btnImport
             // 
-            this.btnImport.Location = new System.Drawing.Point(132, 288);
+            this.btnImport.Location = new System.Drawing.Point(132, 314);
             this.btnImport.Name = "btnImport";
             this.btnImport.Size = new System.Drawing.Size(117, 23);
             this.btnImport.TabIndex = 19;
@@ -259,7 +263,7 @@
             // 
             // btnExport
             // 
-            this.btnExport.Location = new System.Drawing.Point(255, 288);
+            this.btnExport.Location = new System.Drawing.Point(255, 314);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(117, 23);
             this.btnExport.TabIndex = 20;
@@ -290,7 +294,7 @@
             this.chbFileTracking.AutoSize = true;
             this.chbFileTracking.Checked = true;
             this.chbFileTracking.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chbFileTracking.Location = new System.Drawing.Point(132, 317);
+            this.chbFileTracking.Location = new System.Drawing.Point(132, 343);
             this.chbFileTracking.Name = "chbFileTracking";
             this.chbFileTracking.Size = new System.Drawing.Size(78, 17);
             this.chbFileTracking.TabIndex = 22;
@@ -302,7 +306,7 @@
             this.chbCheckUpdates.AutoSize = true;
             this.chbCheckUpdates.Checked = true;
             this.chbCheckUpdates.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chbCheckUpdates.Location = new System.Drawing.Point(132, 340);
+            this.chbCheckUpdates.Location = new System.Drawing.Point(132, 366);
             this.chbCheckUpdates.Name = "chbCheckUpdates";
             this.chbCheckUpdates.Size = new System.Drawing.Size(200, 17);
             this.chbCheckUpdates.TabIndex = 22;
@@ -312,7 +316,7 @@
             // chkResolveHosts
             // 
             this.chkResolveHosts.AutoSize = true;
-            this.chkResolveHosts.Location = new System.Drawing.Point(219, 317);
+            this.chkResolveHosts.Location = new System.Drawing.Point(219, 343);
             this.chkResolveHosts.Name = "chkResolveHosts";
             this.chkResolveHosts.Size = new System.Drawing.Size(173, 17);
             this.chkResolveHosts.TabIndex = 22;
@@ -322,12 +326,51 @@
             // chbUseFullPath
             // 
             this.chbUseFullPath.AutoSize = true;
-            this.chbUseFullPath.Location = new System.Drawing.Point(132, 363);
+            this.chbUseFullPath.Location = new System.Drawing.Point(132, 389);
             this.chbUseFullPath.Name = "chbUseFullPath";
             this.chbUseFullPath.Size = new System.Drawing.Size(183, 17);
             this.chbUseFullPath.TabIndex = 22;
             this.chbUseFullPath.Text = "Save Stashed Files with Full Path";
             this.chbUseFullPath.UseVisualStyleBackColor = true;
+            // 
+            // chbValidateOnMerge
+            // 
+            this.chbValidateOnMerge.AutoSize = true;
+            this.chbValidateOnMerge.Checked = true;
+            this.chbValidateOnMerge.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chbValidateOnMerge.Location = new System.Drawing.Point(132, 412);
+            this.chbValidateOnMerge.Name = "chbValidateOnMerge";
+            this.chbValidateOnMerge.Size = new System.Drawing.Size(112, 17);
+            this.chbValidateOnMerge.TabIndex = 22;
+            this.chbValidateOnMerge.Text = "Validate on Merge";
+            this.chbValidateOnMerge.UseVisualStyleBackColor = true;
+            // 
+            // btnBrowseDefaultWorkspace
+            // 
+            this.btnBrowseDefaultWorkspace.Location = new System.Drawing.Point(425, 31);
+            this.btnBrowseDefaultWorkspace.Name = "btnBrowseDefaultWorkspace";
+            this.btnBrowseDefaultWorkspace.Size = new System.Drawing.Size(75, 23);
+            this.btnBrowseDefaultWorkspace.TabIndex = 2;
+            this.btnBrowseDefaultWorkspace.Text = "Browse";
+            this.btnBrowseDefaultWorkspace.UseVisualStyleBackColor = true;
+            this.btnBrowseDefaultWorkspace.Click += new System.EventHandler(this.btnBrowseDefaultWorkspace_Click);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(9, 36);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(102, 13);
+            this.label8.TabIndex = 0;
+            this.label8.Text = "Default Workspace:";
+            // 
+            // txtDefaultWorkspace
+            // 
+            this.txtDefaultWorkspace.Location = new System.Drawing.Point(132, 33);
+            this.txtDefaultWorkspace.Name = "txtDefaultWorkspace";
+            this.txtDefaultWorkspace.Size = new System.Drawing.Size(287, 20);
+            this.txtDefaultWorkspace.TabIndex = 1;
+            this.txtDefaultWorkspace.Leave += new System.EventHandler(this.txtStash_Leave);
             // 
             // Preferences
             // 
@@ -335,8 +378,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(520, 426);
+            this.ClientSize = new System.Drawing.Size(520, 494);
             this.ControlBox = false;
+            this.Controls.Add(this.chbValidateOnMerge);
             this.Controls.Add(this.chbUseFullPath);
             this.Controls.Add(this.chkResolveHosts);
             this.Controls.Add(this.chbCheckUpdates);
@@ -356,12 +400,15 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtPrefixed);
             this.Controls.Add(this.label4);
+            this.Controls.Add(this.txtDefaultWorkspace);
             this.Controls.Add(this.txtStash);
+            this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnPostFixed);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnPrefixed);
+            this.Controls.Add(this.btnBrowseDefaultWorkspace);
             this.Controls.Add(this.btnMerge);
             this.Controls.Add(this.btnStash);
             this.Controls.Add(this.btnCancel);
@@ -405,5 +452,9 @@
         private System.Windows.Forms.CheckBox chbCheckUpdates;
         private System.Windows.Forms.CheckBox chkResolveHosts;
         private System.Windows.Forms.CheckBox chbUseFullPath;
+        private System.Windows.Forms.CheckBox chbValidateOnMerge;
+        private System.Windows.Forms.Button btnBrowseDefaultWorkspace;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox txtDefaultWorkspace;
     }
 }

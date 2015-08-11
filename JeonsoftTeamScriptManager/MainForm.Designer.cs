@@ -67,14 +67,23 @@
             this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCheckForUpdates = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeLogsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addToStashToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.changeLogsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton6 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton7 = new System.Windows.Forms.ToolStripButton();
+            this.cmnuTextEditor = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.validateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cleanUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
+            this.cmnuTextEditor.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -82,17 +91,20 @@
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tbtLoadFiles,
             this.tbtAddStash,
-            this.toolStripButton2,
+            this.tbtRefresh,
             this.toolStripButton3,
+            this.toolStripButton2,
+            this.toolStripButton5,
+            this.toolStripButton6,
+            this.toolStripButton7,
             this.toolStripSeparator2,
             this.toolStripButton4,
-            this.tbtRefresh,
             this.toolStripSeparator3,
             this.tbtPreferences,
             this.toolStripButton1});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(735, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(843, 25);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -118,12 +130,11 @@
             // 
             // toolStripButton2
             // 
-            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton2.Image = global::JeonsoftTeamScriptManager.Properties.Resources.merge;
             this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton2.Text = "Generate Merge File from Stash";
+            this.toolStripButton2.Size = new System.Drawing.Size(99, 22);
+            this.toolStripButton2.Text = "Merge Scripts";
             this.toolStripButton2.Click += new System.EventHandler(this.mnuGenerateFromStash_Click);
             // 
             // toolStripButton3
@@ -143,11 +154,10 @@
             // 
             // toolStripButton4
             // 
-            this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton4.Image = global::JeonsoftTeamScriptManager.Properties.Resources.manifest;
             this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton4.Name = "toolStripButton4";
-            this.toolStripButton4.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton4.Size = new System.Drawing.Size(132, 22);
             this.toolStripButton4.Text = "View Stash Manifest";
             this.toolStripButton4.Click += new System.EventHandler(this.mnuViewStashManifest_Click);
             // 
@@ -173,7 +183,7 @@
             this.tbtPreferences.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbtPreferences.Name = "tbtPreferences";
             this.tbtPreferences.Size = new System.Drawing.Size(23, 22);
-            this.tbtPreferences.Text = "toolStripButton6";
+            this.tbtPreferences.Text = "Preferences";
             this.tbtPreferences.Click += new System.EventHandler(this.preferencesToolStripMenuItem_Click);
             // 
             // toolStripButton1
@@ -183,7 +193,7 @@
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
             this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton1.Text = "toolStripButton1";
+            this.toolStripButton1.Text = "About";
             this.toolStripButton1.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // statusStrip1
@@ -196,14 +206,14 @@
             this.lblMachineName});
             this.statusStrip1.Location = new System.Drawing.Point(0, 433);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(735, 24);
+            this.statusStrip1.Size = new System.Drawing.Size(843, 24);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // lblStatus
             // 
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(436, 19);
+            this.lblStatus.Size = new System.Drawing.Size(544, 19);
             this.lblStatus.Spring = true;
             this.lblStatus.Text = "Ready.";
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -243,7 +253,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(735, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(843, 24);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -411,6 +421,13 @@
             this.mnuCheckForUpdates.Text = "&Check for Updates...";
             this.mnuCheckForUpdates.Click += new System.EventHandler(this.mnuCheckForUpdates_Click);
             // 
+            // changeLogsToolStripMenuItem
+            // 
+            this.changeLogsToolStripMenuItem.Name = "changeLogsToolStripMenuItem";
+            this.changeLogsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.changeLogsToolStripMenuItem.Text = "Change &Logs...";
+            this.changeLogsToolStripMenuItem.Click += new System.EventHandler(this.changeLogsToolStripMenuItem_Click);
+            // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Image = global::JeonsoftTeamScriptManager.Properties.Resources.about;
@@ -434,18 +451,77 @@
             this.addToStashToolStripMenuItem.Text = "Add to Stash";
             this.addToStashToolStripMenuItem.Click += new System.EventHandler(this.mnuStash_Click);
             // 
-            // changeLogsToolStripMenuItem
+            // imageList1
             // 
-            this.changeLogsToolStripMenuItem.Name = "changeLogsToolStripMenuItem";
-            this.changeLogsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.changeLogsToolStripMenuItem.Text = "Change &Logs...";
-            this.changeLogsToolStripMenuItem.Click += new System.EventHandler(this.changeLogsToolStripMenuItem_Click);
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "warning.png");
+            this.imageList1.Images.SetKeyName(1, "error(1).png");
+            // 
+            // toolStripButton5
+            // 
+            this.toolStripButton5.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton5.Image")));
+            this.toolStripButton5.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton5.Name = "toolStripButton5";
+            this.toolStripButton5.Size = new System.Drawing.Size(124, 22);
+            this.toolStripButton5.Text = "Validate All Scripts";
+            this.toolStripButton5.ToolTipText = "Validate All Scripts";
+            this.toolStripButton5.Click += new System.EventHandler(this.toolStripButton5_Click);
+            // 
+            // toolStripButton6
+            // 
+            this.toolStripButton6.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton6.Image")));
+            this.toolStripButton6.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton6.Name = "toolStripButton6";
+            this.toolStripButton6.Size = new System.Drawing.Size(138, 22);
+            this.toolStripButton6.Text = "Validate Active Script";
+            this.toolStripButton6.Click += new System.EventHandler(this.toolStripButton6_Click);
+            // 
+            // toolStripButton7
+            // 
+            this.toolStripButton7.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton7.Image")));
+            this.toolStripButton7.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton7.Name = "toolStripButton7";
+            this.toolStripButton7.Size = new System.Drawing.Size(129, 22);
+            this.toolStripButton7.Text = "Clean up All Scripts";
+            this.toolStripButton7.Click += new System.EventHandler(this.toolStripButton7_Click);
+            // 
+            // cmnuTextEditor
+            // 
+            this.cmnuTextEditor.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveToolStripMenuItem,
+            this.validateToolStripMenuItem,
+            this.cleanUpToolStripMenuItem});
+            this.cmnuTextEditor.Name = "cmnuTextEditor";
+            this.cmnuTextEditor.Size = new System.Drawing.Size(153, 92);
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.S)));
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveToolStripMenuItem.Text = "&Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            // 
+            // validateToolStripMenuItem
+            // 
+            this.validateToolStripMenuItem.Name = "validateToolStripMenuItem";
+            this.validateToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.validateToolStripMenuItem.Text = "&Validate";
+            this.validateToolStripMenuItem.Click += new System.EventHandler(this.validateToolStripMenuItem_Click);
+            // 
+            // cleanUpToolStripMenuItem
+            // 
+            this.cleanUpToolStripMenuItem.Name = "cleanUpToolStripMenuItem";
+            this.cleanUpToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.cleanUpToolStripMenuItem.Text = "&Clean up";
+            this.cleanUpToolStripMenuItem.Click += new System.EventHandler(this.cleanUpToolStripMenuItem_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(735, 457);
+            this.ClientSize = new System.Drawing.Size(843, 457);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
@@ -460,6 +536,7 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
+            this.cmnuTextEditor.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -508,6 +585,14 @@
         private System.Windows.Forms.ToolStripStatusLabel lblOutput;
         private System.Windows.Forms.ToolStripMenuItem mnuCheckForUpdates;
         private System.Windows.Forms.ToolStripMenuItem changeLogsToolStripMenuItem;
+        private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.ToolStripButton toolStripButton5;
+        private System.Windows.Forms.ToolStripButton toolStripButton6;
+        private System.Windows.Forms.ToolStripButton toolStripButton7;
+        private System.Windows.Forms.ContextMenuStrip cmnuTextEditor;
+        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem validateToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cleanUpToolStripMenuItem;
 
 
     }
