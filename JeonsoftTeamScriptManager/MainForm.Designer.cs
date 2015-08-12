@@ -33,11 +33,13 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tbtLoadFiles = new System.Windows.Forms.ToolStripButton();
             this.tbtAddStash = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.tbtRefresh = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton7 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
-            this.tbtRefresh = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.tbtPreferences = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
@@ -72,18 +74,19 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addToStashToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton6 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton7 = new System.Windows.Forms.ToolStripButton();
             this.cmnuTextEditor = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.validateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cleanUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmnuWarnings = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.cmnuTextEditor.SuspendLayout();
+            this.cmnuWarnings.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -95,7 +98,6 @@
             this.toolStripButton3,
             this.toolStripButton2,
             this.toolStripButton5,
-            this.toolStripButton6,
             this.toolStripButton7,
             this.toolStripSeparator2,
             this.toolStripButton4,
@@ -125,8 +127,28 @@
             this.tbtAddStash.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbtAddStash.Name = "tbtAddStash";
             this.tbtAddStash.Size = new System.Drawing.Size(23, 22);
-            this.tbtAddStash.Text = "Add to Stash";
+            this.tbtAddStash.Text = "Add to Catalog";
             this.tbtAddStash.Click += new System.EventHandler(this.mnuStash_Click);
+            // 
+            // tbtRefresh
+            // 
+            this.tbtRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tbtRefresh.Image = global::JeonsoftTeamScriptManager.Properties.Resources.refresh;
+            this.tbtRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tbtRefresh.Name = "tbtRefresh";
+            this.tbtRefresh.Size = new System.Drawing.Size(23, 22);
+            this.tbtRefresh.Text = "Refresh";
+            this.tbtRefresh.Click += new System.EventHandler(this.mnuRefresh_Click);
+            // 
+            // toolStripButton3
+            // 
+            this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton3.Image = global::JeonsoftTeamScriptManager.Properties.Resources.stash_save;
+            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton3.Name = "toolStripButton3";
+            this.toolStripButton3.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton3.Text = "Save Catalog";
+            this.toolStripButton3.Click += new System.EventHandler(this.mnuSaveStash_Click);
             // 
             // toolStripButton2
             // 
@@ -137,15 +159,24 @@
             this.toolStripButton2.Text = "Merge Scripts";
             this.toolStripButton2.Click += new System.EventHandler(this.mnuGenerateFromStash_Click);
             // 
-            // toolStripButton3
+            // toolStripButton5
             // 
-            this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton3.Image = global::JeonsoftTeamScriptManager.Properties.Resources.stash_save;
-            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton3.Name = "toolStripButton3";
-            this.toolStripButton3.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton3.Text = "Save Stash";
-            this.toolStripButton3.Click += new System.EventHandler(this.mnuSaveStash_Click);
+            this.toolStripButton5.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton5.Image")));
+            this.toolStripButton5.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton5.Name = "toolStripButton5";
+            this.toolStripButton5.Size = new System.Drawing.Size(124, 22);
+            this.toolStripButton5.Text = "Validate All Scripts";
+            this.toolStripButton5.ToolTipText = "Validate All Scripts";
+            this.toolStripButton5.Click += new System.EventHandler(this.toolStripButton5_Click);
+            // 
+            // toolStripButton7
+            // 
+            this.toolStripButton7.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton7.Image")));
+            this.toolStripButton7.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton7.Name = "toolStripButton7";
+            this.toolStripButton7.Size = new System.Drawing.Size(129, 22);
+            this.toolStripButton7.Text = "Clean up All Scripts";
+            this.toolStripButton7.Click += new System.EventHandler(this.toolStripButton7_Click);
             // 
             // toolStripSeparator2
             // 
@@ -157,19 +188,9 @@
             this.toolStripButton4.Image = global::JeonsoftTeamScriptManager.Properties.Resources.manifest;
             this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton4.Name = "toolStripButton4";
-            this.toolStripButton4.Size = new System.Drawing.Size(132, 22);
-            this.toolStripButton4.Text = "View Stash Manifest";
+            this.toolStripButton4.Size = new System.Drawing.Size(145, 22);
+            this.toolStripButton4.Text = "View Catalog Manifest";
             this.toolStripButton4.Click += new System.EventHandler(this.mnuViewStashManifest_Click);
-            // 
-            // tbtRefresh
-            // 
-            this.tbtRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tbtRefresh.Image = global::JeonsoftTeamScriptManager.Properties.Resources.refresh;
-            this.tbtRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tbtRefresh.Name = "tbtRefresh";
-            this.tbtRefresh.Size = new System.Drawing.Size(23, 22);
-            this.tbtRefresh.Text = "Refresh";
-            this.tbtRefresh.Click += new System.EventHandler(this.mnuRefresh_Click);
             // 
             // toolStripSeparator3
             // 
@@ -280,7 +301,7 @@
             this.mnuLoadFiles.Image = global::JeonsoftTeamScriptManager.Properties.Resources.directory;
             this.mnuLoadFiles.Name = "mnuLoadFiles";
             this.mnuLoadFiles.ShortcutKeys = System.Windows.Forms.Keys.F7;
-            this.mnuLoadFiles.Size = new System.Drawing.Size(258, 22);
+            this.mnuLoadFiles.Size = new System.Drawing.Size(271, 22);
             this.mnuLoadFiles.Text = "Load Files from this Location...";
             this.mnuLoadFiles.Click += new System.EventHandler(this.mnuLoadFiles_Click);
             // 
@@ -288,7 +309,7 @@
             // 
             this.mnuLoadDefaultDir.Name = "mnuLoadDefaultDir";
             this.mnuLoadDefaultDir.ShortcutKeys = System.Windows.Forms.Keys.F9;
-            this.mnuLoadDefaultDir.Size = new System.Drawing.Size(258, 22);
+            this.mnuLoadDefaultDir.Size = new System.Drawing.Size(271, 22);
             this.mnuLoadDefaultDir.Text = "Load Default File Directory";
             this.mnuLoadDefaultDir.Click += new System.EventHandler(this.loaddefaultdirectory_Click);
             // 
@@ -296,8 +317,8 @@
             // 
             this.mnuLoadDefaultStash.Name = "mnuLoadDefaultStash";
             this.mnuLoadDefaultStash.ShortcutKeys = System.Windows.Forms.Keys.F10;
-            this.mnuLoadDefaultStash.Size = new System.Drawing.Size(258, 22);
-            this.mnuLoadDefaultStash.Text = "Load Default Stash";
+            this.mnuLoadDefaultStash.Size = new System.Drawing.Size(271, 22);
+            this.mnuLoadDefaultStash.Text = "Load Default Catalog";
             this.mnuLoadDefaultStash.Click += new System.EventHandler(this.mnuLoadDefaultStash_Click);
             // 
             // mnuStash
@@ -305,58 +326,59 @@
             this.mnuStash.Image = global::JeonsoftTeamScriptManager.Properties.Resources.stash_add;
             this.mnuStash.Name = "mnuStash";
             this.mnuStash.ShortcutKeys = System.Windows.Forms.Keys.F2;
-            this.mnuStash.Size = new System.Drawing.Size(258, 22);
-            this.mnuStash.Text = "Add to &Stash";
+            this.mnuStash.Size = new System.Drawing.Size(271, 22);
+            this.mnuStash.Text = "Add to Catalog";
             this.mnuStash.Click += new System.EventHandler(this.mnuStash_Click);
             // 
             // mnuKnockOff
             // 
             this.mnuKnockOff.Name = "mnuKnockOff";
-            this.mnuKnockOff.Size = new System.Drawing.Size(258, 22);
-            this.mnuKnockOff.Text = "&Copy Files and Add to Stash...";
+            this.mnuKnockOff.Size = new System.Drawing.Size(271, 22);
+            this.mnuKnockOff.Text = "&Copy Files and Add to Catalog...";
             this.mnuKnockOff.Click += new System.EventHandler(this.mnuKnockOff_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(255, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(268, 6);
             // 
             // mnuGenerateFromStash
             // 
             this.mnuGenerateFromStash.Image = global::JeonsoftTeamScriptManager.Properties.Resources.merge;
             this.mnuGenerateFromStash.Name = "mnuGenerateFromStash";
             this.mnuGenerateFromStash.ShortcutKeys = System.Windows.Forms.Keys.F6;
-            this.mnuGenerateFromStash.Size = new System.Drawing.Size(258, 22);
-            this.mnuGenerateFromStash.Text = "&Generate Merge File from Stash";
+            this.mnuGenerateFromStash.Size = new System.Drawing.Size(271, 22);
+            this.mnuGenerateFromStash.Text = "&Generate Merge File from Catalog";
             this.mnuGenerateFromStash.Click += new System.EventHandler(this.mnuGenerateFromStash_Click);
             // 
             // mnuSaveStash
             // 
             this.mnuSaveStash.Image = global::JeonsoftTeamScriptManager.Properties.Resources.stash_save;
             this.mnuSaveStash.Name = "mnuSaveStash";
-            this.mnuSaveStash.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.mnuSaveStash.Size = new System.Drawing.Size(258, 22);
-            this.mnuSaveStash.Text = "Sa&ve Stash";
+            this.mnuSaveStash.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.S)));
+            this.mnuSaveStash.Size = new System.Drawing.Size(271, 22);
+            this.mnuSaveStash.Text = "Sa&ve Catalog";
             this.mnuSaveStash.Click += new System.EventHandler(this.mnuSaveStash_Click);
             // 
             // mnuSaveStashAs
             // 
             this.mnuSaveStashAs.Name = "mnuSaveStashAs";
-            this.mnuSaveStashAs.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            this.mnuSaveStashAs.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.S)));
-            this.mnuSaveStashAs.Size = new System.Drawing.Size(258, 22);
-            this.mnuSaveStashAs.Text = "Save Stash &as...";
+            this.mnuSaveStashAs.Size = new System.Drawing.Size(271, 22);
+            this.mnuSaveStashAs.Text = "Save Catalog &as...";
             this.mnuSaveStashAs.Click += new System.EventHandler(this.mnuSaveStashAs_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(255, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(268, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(271, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             // 
             // viewToolStripMenuItem
@@ -375,14 +397,14 @@
             this.mnuViewStashManifest.Image = global::JeonsoftTeamScriptManager.Properties.Resources.manifest;
             this.mnuViewStashManifest.Name = "mnuViewStashManifest";
             this.mnuViewStashManifest.ShortcutKeys = System.Windows.Forms.Keys.F3;
-            this.mnuViewStashManifest.Size = new System.Drawing.Size(198, 22);
-            this.mnuViewStashManifest.Text = "View Stash Manifest";
+            this.mnuViewStashManifest.Size = new System.Drawing.Size(211, 22);
+            this.mnuViewStashManifest.Text = "View Catalog Manifest";
             this.mnuViewStashManifest.Click += new System.EventHandler(this.mnuViewStashManifest_Click);
             // 
             // mnuOpenExplorer
             // 
             this.mnuOpenExplorer.Name = "mnuOpenExplorer";
-            this.mnuOpenExplorer.Size = new System.Drawing.Size(198, 22);
+            this.mnuOpenExplorer.Size = new System.Drawing.Size(211, 22);
             this.mnuOpenExplorer.Text = "Open in &Explorer";
             this.mnuOpenExplorer.Click += new System.EventHandler(this.mnuOpenExplorer_Click);
             // 
@@ -391,7 +413,7 @@
             this.mnuRefresh.Image = global::JeonsoftTeamScriptManager.Properties.Resources.refresh;
             this.mnuRefresh.Name = "mnuRefresh";
             this.mnuRefresh.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.mnuRefresh.Size = new System.Drawing.Size(198, 22);
+            this.mnuRefresh.Size = new System.Drawing.Size(211, 22);
             this.mnuRefresh.Text = "&Refresh";
             this.mnuRefresh.Click += new System.EventHandler(this.mnuRefresh_Click);
             // 
@@ -400,7 +422,7 @@
             this.preferencesToolStripMenuItem.Image = global::JeonsoftTeamScriptManager.Properties.Resources.preferences;
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
             this.preferencesToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F8;
-            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
             this.preferencesToolStripMenuItem.Text = "&Preferences";
             this.preferencesToolStripMenuItem.Click += new System.EventHandler(this.preferencesToolStripMenuItem_Click);
             // 
@@ -441,14 +463,14 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addToStashToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(142, 26);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(155, 26);
             // 
             // addToStashToolStripMenuItem
             // 
             this.addToStashToolStripMenuItem.Image = global::JeonsoftTeamScriptManager.Properties.Resources.stash_add;
             this.addToStashToolStripMenuItem.Name = "addToStashToolStripMenuItem";
-            this.addToStashToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
-            this.addToStashToolStripMenuItem.Text = "Add to Stash";
+            this.addToStashToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.addToStashToolStripMenuItem.Text = "Add to Catalog";
             this.addToStashToolStripMenuItem.Click += new System.EventHandler(this.mnuStash_Click);
             // 
             // imageList1
@@ -458,34 +480,6 @@
             this.imageList1.Images.SetKeyName(0, "warning.png");
             this.imageList1.Images.SetKeyName(1, "error(1).png");
             // 
-            // toolStripButton5
-            // 
-            this.toolStripButton5.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton5.Image")));
-            this.toolStripButton5.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton5.Name = "toolStripButton5";
-            this.toolStripButton5.Size = new System.Drawing.Size(124, 22);
-            this.toolStripButton5.Text = "Validate All Scripts";
-            this.toolStripButton5.ToolTipText = "Validate All Scripts";
-            this.toolStripButton5.Click += new System.EventHandler(this.toolStripButton5_Click);
-            // 
-            // toolStripButton6
-            // 
-            this.toolStripButton6.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton6.Image")));
-            this.toolStripButton6.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton6.Name = "toolStripButton6";
-            this.toolStripButton6.Size = new System.Drawing.Size(138, 22);
-            this.toolStripButton6.Text = "Validate Active Script";
-            this.toolStripButton6.Click += new System.EventHandler(this.toolStripButton6_Click);
-            // 
-            // toolStripButton7
-            // 
-            this.toolStripButton7.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton7.Image")));
-            this.toolStripButton7.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton7.Name = "toolStripButton7";
-            this.toolStripButton7.Size = new System.Drawing.Size(129, 22);
-            this.toolStripButton7.Text = "Clean up All Scripts";
-            this.toolStripButton7.Click += new System.EventHandler(this.toolStripButton7_Click);
-            // 
             // cmnuTextEditor
             // 
             this.cmnuTextEditor.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -493,29 +487,54 @@
             this.validateToolStripMenuItem,
             this.cleanUpToolStripMenuItem});
             this.cmnuTextEditor.Name = "cmnuTextEditor";
-            this.cmnuTextEditor.Size = new System.Drawing.Size(153, 92);
+            this.cmnuTextEditor.Size = new System.Drawing.Size(139, 70);
             // 
             // saveToolStripMenuItem
             // 
+            this.saveToolStripMenuItem.Image = global::JeonsoftTeamScriptManager.Properties.Resources.stash_save;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.saveToolStripMenuItem.Text = "&Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // validateToolStripMenuItem
             // 
+            this.validateToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("validateToolStripMenuItem.Image")));
             this.validateToolStripMenuItem.Name = "validateToolStripMenuItem";
-            this.validateToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.validateToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.validateToolStripMenuItem.Text = "&Validate";
             this.validateToolStripMenuItem.Click += new System.EventHandler(this.validateToolStripMenuItem_Click);
             // 
             // cleanUpToolStripMenuItem
             // 
+            this.cleanUpToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("cleanUpToolStripMenuItem.Image")));
             this.cleanUpToolStripMenuItem.Name = "cleanUpToolStripMenuItem";
-            this.cleanUpToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.cleanUpToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.cleanUpToolStripMenuItem.Text = "&Clean up";
             this.cleanUpToolStripMenuItem.Click += new System.EventHandler(this.cleanUpToolStripMenuItem_Click);
+            // 
+            // cmnuWarnings
+            // 
+            this.cmnuWarnings.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copyToolStripMenuItem,
+            this.saveToFileToolStripMenuItem});
+            this.cmnuWarnings.Name = "cmnuWarnings";
+            this.cmnuWarnings.Size = new System.Drawing.Size(141, 48);
+            // 
+            // copyToolStripMenuItem
+            // 
+            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.copyToolStripMenuItem.Text = "&Copy";
+            this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
+            // 
+            // saveToFileToolStripMenuItem
+            // 
+            this.saveToFileToolStripMenuItem.Name = "saveToFileToolStripMenuItem";
+            this.saveToFileToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.saveToFileToolStripMenuItem.Text = "&Save to file...";
+            this.saveToFileToolStripMenuItem.Click += new System.EventHandler(this.saveToFileToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -528,7 +547,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
-            this.Text = "Jeonsoft Team Script Manager";
+            this.Text = "JeonSoft Team Script Manager";
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
@@ -537,6 +556,7 @@
             this.menuStrip1.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
             this.cmnuTextEditor.ResumeLayout(false);
+            this.cmnuWarnings.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -587,12 +607,14 @@
         private System.Windows.Forms.ToolStripMenuItem changeLogsToolStripMenuItem;
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.ToolStripButton toolStripButton5;
-        private System.Windows.Forms.ToolStripButton toolStripButton6;
         private System.Windows.Forms.ToolStripButton toolStripButton7;
         private System.Windows.Forms.ContextMenuStrip cmnuTextEditor;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem validateToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cleanUpToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip cmnuWarnings;
+        private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveToFileToolStripMenuItem;
 
 
     }

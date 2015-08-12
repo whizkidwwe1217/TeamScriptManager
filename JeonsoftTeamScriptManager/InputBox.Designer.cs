@@ -78,9 +78,9 @@
             this.chbSaveStash.AutoSize = true;
             this.chbSaveStash.Location = new System.Drawing.Point(15, 55);
             this.chbSaveStash.Name = "chbSaveStash";
-            this.chbSaveStash.Size = new System.Drawing.Size(81, 17);
+            this.chbSaveStash.Size = new System.Drawing.Size(90, 17);
             this.chbSaveStash.TabIndex = 3;
-            this.chbSaveStash.Text = "&Save Stash";
+            this.chbSaveStash.Text = "&Save Catalog";
             this.chbSaveStash.UseVisualStyleBackColor = true;
             // 
             // InputBox

@@ -68,7 +68,7 @@ namespace JeonsoftTeamScriptManager
             stash.RequestResetStash += stash_RequestResetStash;
 
             DockContent paneStash = new DockContent();
-            paneStash.Text = "Stash";
+            paneStash.Text = "Script Catalog";
             paneStash.Controls.Add(stash);
             paneStash.Show(dPanel);
             DockPane pane2 = dPanel.DockPaneFactory.CreateDockPane(paneStash, DockState.DockRight, true);
@@ -93,6 +93,7 @@ namespace JeonsoftTeamScriptManager
             lvErrors.Columns.Add("File", 200, HorizontalAlignment.Left);
             lvErrors.Columns.Add("Line", 60, HorizontalAlignment.Left);
             lvErrors.Columns.Add("Path", 150, HorizontalAlignment.Left);
+            lvErrors.ContextMenuStrip = cmnuWarnings;
             lvErrors.DoubleClick += lvErrors_DoubleClick;
             lvErrors.Dock = DockStyle.Fill;
             paneErrors = new DockContent();
@@ -199,7 +200,7 @@ namespace JeonsoftTeamScriptManager
             FileInfo fi = new FileInfo(filename);
             if (rtb.Text.Length != fi.Length)
             {
-                if (MessageBox.Show("The stash manifest has been modified. Do you want to reload the file?", "Reload Stash Manifest", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
+                if (MessageBox.Show("The script catalog manifest has been modified. Do you want to reload the file?", "Reload Catalog Manifest", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
                 {
                     using (StreamReader sr = new StreamReader(filename))
                     {
@@ -979,6 +980,7 @@ namespace JeonsoftTeamScriptManager
                         DockContent dc = (DockContent)ic;
                         TextEditorControl rtb = (TextEditorControl)dc.Controls[0];
                         string filename = dc.Name;
+                        //string content = File.ReadAllText(filename);
                         ValidateScript(filename, new FileInfo(filename).Name, rtb.Text);
                         if (numOfErrors == 0)
                             MessageBox.Show("Script is valid.");
@@ -1004,14 +1006,12 @@ namespace JeonsoftTeamScriptManager
             cleanupWorker = new BackgroundWorker();
             cleanupWorker.DoWork += cleanupWorker_DoWork;
             cleanupWorker.RunWorkerCompleted += cleanupWorker_RunWorkerCompleted;
-            tbtProgress.Minimum = 0;
-            tbtProgress.Maximum = StashManager.Instance.Count;
             cleanupWorker.RunWorkerAsync();
         }
 
         void cleanupWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            tbtProgress.Value = 0;
+            lblStatus.Text = "Ready.";
             MessageBox.Show("Cleanup complete.", "Clean Up Scripts", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -1024,13 +1024,10 @@ namespace JeonsoftTeamScriptManager
             {
                 string[] delimiter = new string[] { Environment.NewLine };
                 string[] lines = GlobalOptions.Instance.DefaultDirectories.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
-                tbtProgress.Maximum = lines.Length;
                 int ddCnt = 0;
 
                 foreach (string s in lines)
                 {
-                    tbtProgress.Maximum = lines.Length;
-                    tbtProgress.Value = ddCnt;
                     lblStatus.Text = string.Format("Scanning default directory {0}...", s);
                     ddCnt++;
                     string[] dirs = Directory.GetDirectories(Path.GetDirectoryName(filename));
@@ -1042,12 +1039,9 @@ namespace JeonsoftTeamScriptManager
                         if (di.Name.ToLower() == indexedFile.ToLower().Trim())
                         {
                             FileInfo[] fileInfos = di.GetFiles("*.sql");
-                            tbtProgress.Value = 0;
-                            tbtProgress.Maximum = fileInfos.Length + 1;
 
                             foreach (FileInfo fi in fileInfos)
                             {
-                                tbtProgress.Value++;
                                 lblStatus.Text = string.Format("Cleaning up {0}...", fi.Name);
 
                                 string dirname = fi.Directory.Name;
@@ -1141,7 +1135,19 @@ namespace JeonsoftTeamScriptManager
 
         private string GetCleanString(string source)
         {
-            string content = Regex.Replace(source, @"^\s*$\n", string.Empty, RegexOptions.Multiline).TrimEnd();
+            //string content = Regex.Replace(source, @"([\s]+$)([^\S\r\n])", string.Empty, RegexOptions.Multiline).TrimEnd();
+            string[] lines = source.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            StringBuilder sb = new StringBuilder();
+            foreach (string s in lines)
+            {
+                if (s == Environment.NewLine)
+                    sb.AppendLine(s);
+                else
+                    sb.AppendLine(s.TrimEnd());
+            }
+            string content = sb.ToString().TrimEnd();
+            if (source.Trim().Length == 0)
+                return source.Trim();
             content = content.Replace(":", "CHAR(58)");
             int lastNewLineIndex = Math.Max(0, content.LastIndexOf(Environment.NewLine));
 
@@ -1163,17 +1169,15 @@ namespace JeonsoftTeamScriptManager
             validateWorker = new BackgroundWorker();
             validateWorker.DoWork += validateWorker_DoWork;
             validateWorker.RunWorkerCompleted += validateWorker_RunWorkerCompleted;
-            tbtProgress.Minimum = 0;
-            tbtProgress.Maximum = StashManager.Instance.Count;
             validateWorker.RunWorkerAsync(new string[] { GetStashFilePath() });
         }
 
         void validateWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            tbtProgress.Value = 0;
             MessageBox.Show("Validation complete.", "Validate Scripts", MessageBoxButtons.OK, MessageBoxIcon.Information);
             LockControls(false);
             paneErrors.Text = "Warnings/Errors (" + numOfErrors.ToString() + ")";
+            lblStatus.Text = "Ready.";
         }
 
         void validateWorker_DoWork(object sender, DoWorkEventArgs e)
@@ -1192,23 +1196,14 @@ namespace JeonsoftTeamScriptManager
                     {
                         string[] delimiter = new string[] { Environment.NewLine };
                         string[] lines = GlobalOptions.Instance.DefaultDirectories.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
-                        tbtProgress.Maximum = lines.Length;
                         int ddCnt = 0;
 
                         foreach (string s in lines)
                         {
-                            tbtProgress.Maximum = lines.Length;
-                            tbtProgress.Value = ddCnt;
                             lblStatus.Text = string.Format("Scanning default directory {0}...", s);
                             ddCnt++;
                             string[] dirs = Directory.GetDirectories(Path.GetDirectoryName(filename));
                             string indexedFile = s;
-
-                            //if (!Path.IsPathRooted(s))
-                            //{
-                            //    FileInfo fi = Utils.FileUtils.GetAbsolutePath(Path.GetDirectoryName(filename), s);
-                            //    indexedFile = fi.FullName;
-                            //}
 
                             foreach (string d in dirs)
                             {
@@ -1216,12 +1211,9 @@ namespace JeonsoftTeamScriptManager
                                 if (di.Name.ToLower() == indexedFile.ToLower().Trim())
                                 {
                                     FileInfo[] fileInfos = di.GetFiles("*.sql");
-                                    tbtProgress.Value = 0;
-                                    tbtProgress.Maximum = fileInfos.Length + 1;
 
                                     foreach (FileInfo fi in fileInfos)
                                     {
-                                        tbtProgress.Value++;
                                         lblStatus.Text = string.Format("Indexing {0}...", fi.Name);
 
                                         string dirname = fi.Directory.Name;
@@ -1249,8 +1241,15 @@ namespace JeonsoftTeamScriptManager
                                             }
                                         }
 
-                                        string content = File.ReadAllText(fullName);
-                                        ValidateScript(fullName, name, content);
+                                        try
+                                        {
+                                            string content = File.ReadAllText(fullName);
+                                            ValidateScript(fullName, name, content);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            rtbLogs.AppendText("Error validating file: " + ex.Message + Environment.NewLine);
+                                        }
                                     }
                                 }
                             }
@@ -1260,35 +1259,53 @@ namespace JeonsoftTeamScriptManager
                     using (StreamReader sr = new StreamReader(filename))
                     {
                         string file = "";
-
-                        while ((file = sr.ReadLine()) != null)
+                        try
                         {
-                            if (!Path.IsPathRooted(file))
+                            string[] files = sr.ReadToEnd().Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                            for (int i = 0; i < files.Length; i++)
                             {
-                                FileInfo fi = Utils.FileUtils.GetAbsolutePath(Path.GetDirectoryName(filename), file);
-                                file = fi.FullName;
-                            }
-
-                            if (!string.IsNullOrEmpty(file) && File.Exists(file))
-                            {
-                                string strDirName = new DirectoryInfo(new FileInfo(file).DirectoryName).Name;
-                                string[] delimiter = new string[] { Environment.NewLine };
-                                string[] lines = GlobalOptions.Instance.DefaultDirectories.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
-                                if (!lines.Contains(strDirName))
+                                file = files[i];
+                                if (!Path.IsPathRooted(file))
                                 {
-                                    FileInfo fi = new FileInfo(file);
-
-                                    string content = File.ReadAllText(file);
-                                    ValidateScript(file, fi.Name, content);
+                                    FileInfo fi = Utils.FileUtils.GetAbsolutePath(Path.GetDirectoryName(filename), file);
+                                    file = fi.FullName;
                                 }
-                                tbtProgress.Value++;
-                            }
-                            else
-                            {
-                                rtbLogs.AppendText("Validation error: Cannot find the file: '" + file + "'");
-                                rtbLogs.AppendText(Environment.NewLine);
+
+                                if (!string.IsNullOrEmpty(file) && File.Exists(file))
+                                {
+                                    string strDirName = new DirectoryInfo(new FileInfo(file).DirectoryName).Name;
+                                    string[] delimiter = new string[] { Environment.NewLine };
+                                    string[] lines = GlobalOptions.Instance.DefaultDirectories.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
+
+                                    if (!lines.Contains(strDirName))
+                                    {
+                                        FileInfo fi = new FileInfo(file);
+                                        try
+                                        {
+                                            string content = File.ReadAllText(file);
+                                            ValidateScript(file, fi.Name, content);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            rtbLogs.AppendText("Error validating file: " + ex.Message + Environment.NewLine);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    rtbLogs.AppendText("Validation error: Cannot find the file: '" + file + "'");
+                                    rtbLogs.AppendText(Environment.NewLine);
+                                }
                             }
                         }
+                        catch (Exception ex)
+                        {
+                            rtbLogs.AppendText("Error validating file: " + ex.Message + Environment.NewLine);
+                        }
+                        //while ((file = sr.ReadLine()) != null)
+                        //{
+                            
+                        //}
                     }
                 }
                 else
@@ -1517,6 +1534,11 @@ namespace JeonsoftTeamScriptManager
 
         private void ValidateScript(string fileName, string name, string content)
         {
+            if (content.Trim().Length == 0)
+            {
+                AddBookmark(fileName, name, "", 0, 0, 0, 0, "File is blank.", BookmarkType.Warning);
+                return;
+            }
             string[] delimiter = new string[] { Environment.NewLine };
             string[] lines = content.Split(delimiter, StringSplitOptions.None);
 
@@ -1525,17 +1547,17 @@ namespace JeonsoftTeamScriptManager
             else
             {
                 string strContent = content.TrimEnd();
-                int lastNewLineIndex = strContent.LastIndexOf(Environment.NewLine);
+                int lastNewLineIndex = Math.Max(0, strContent.LastIndexOf(Environment.NewLine));
                 string strGo = strContent.Substring(lastNewLineIndex, strContent.Length - lastNewLineIndex);
                 if (strGo.Contains("GO"))
                 {
                     string keyword = "GO";
                     int startPos = content.LastIndexOf(keyword) + keyword.Length + 1;
-                    int len = content.Length - startPos;
+                    int len = Math.Max(0, content.Length - startPos);
                     if (len != 1)
                         AddBookmark(fileName, name, "", 0, lines.Length - 1, 0, 0, "Extra characters found after GO. There must be exactly one (1) carriage return after the last GO keyword.", BookmarkType.Error);
                     string[] strLines = strContent.Split(new char[] { '\r' });
-                    int j = strLines.Length - 1;
+                    int j = Math.Max(0, strLines.Length - 1);
                     int found = 1;
                     bool foundNonBreak = false;
                     while (j > 0)
@@ -1551,11 +1573,11 @@ namespace JeonsoftTeamScriptManager
                             break;
                     }
                     if (found != 3)
-                        AddBookmark(fileName, name, "", 0, lines.Length - 1, 0, 0, "There must be exactly three (3) carriage returns before the last GO keyword.", BookmarkType.Warning);
+                        AddBookmark(fileName, name, "", 0, Math.Max(lines.Length - 1, 0), 0, 0, "There must be exactly three (3) carriage returns before the last GO keyword.", BookmarkType.Warning);
                 }
                 else
                 {
-                    AddBookmark(fileName, name, "", 0, lines.Length - 1, 0, 0, "Missing GO keyword at the end of the file.", BookmarkType.Warning);
+                    AddBookmark(fileName, name, "", 0, Math.Max(0, lines.Length - 1), 0, 0, "Missing GO keyword at the end of the file.", BookmarkType.Warning);
                 }
             }
 
@@ -1700,20 +1722,20 @@ namespace JeonsoftTeamScriptManager
             }
             using (SaveFileDialog sfd = new SaveFileDialog())
             {
-                sfd.DefaultExt = ".stash";
+                sfd.DefaultExt = ".wcat";
                 sfd.FileName = GetStashFileName();
-                sfd.Filter = "Stash File|*.stash";
+                sfd.Filter = "Team Script Manager Catalog File|*.wcat";
                 if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     stash.SaveStash(sfd.FileName);
-                    MessageBox.Show("Stash saved successfully.", "Save Stash", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Catalog saved successfully.", "Save Catalog", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
         }
 
         private string GetStashFileName()
         {
-            return "_stash";
+            return "_catalog";
         }
 
         private void mnuRefresh_Click(object sender, EventArgs e)
@@ -1745,7 +1767,7 @@ namespace JeonsoftTeamScriptManager
             }
             stash.SaveStash(GetStashFilePath());
             stash.SetModified(false);
-            MessageBox.Show("Stash saved successfully.", "Save Stash", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Catalog saved successfully.", "Save Catalog", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1769,11 +1791,11 @@ namespace JeonsoftTeamScriptManager
             string dir = "";
 
             if (GlobalOptions.Instance.StashManifestDirectory == null || GlobalOptions.Instance.StashManifestDirectory.Trim() == "")
-                dir = Directory.GetCurrentDirectory() + "\\" + GetStashFileName() + ".stash";
+                dir = Directory.GetCurrentDirectory() + "\\" + GetStashFileName() + ".wcat";
             if (GlobalOptions.Instance.StashManifestDirectory.EndsWith("\\"))
-                dir = GlobalOptions.Instance.StashManifestDirectory + GetStashFileName() + ".stash";
+                dir = GlobalOptions.Instance.StashManifestDirectory + GetStashFileName() + ".wcat";
             else
-                dir = GlobalOptions.Instance.StashManifestDirectory + "\\" + GetStashFileName() + ".stash";
+                dir = GlobalOptions.Instance.StashManifestDirectory + "\\" + GetStashFileName() + ".wcat";
 
             //string host = string.Empty;
             //UriHostNameType hostType = Utils.GetHostType(dir, ref host);
@@ -1895,7 +1917,7 @@ namespace JeonsoftTeamScriptManager
                     hasAdded = true;
                     StashManager.Instance.Add(idx);
                 }
-                rtbLogs.AppendText("Copied '" + fi.Name + "' to directory and added to stash." + Environment.NewLine);
+                rtbLogs.AppendText("Copied '" + fi.Name + "' to directory and added to catalog." + Environment.NewLine);
                 tbtProgress.Value++;
             }
         }
@@ -2124,6 +2146,47 @@ namespace JeonsoftTeamScriptManager
                     rtb.BeginUpdate();
                     rtb.Text = content;
                     rtb.EndUpdate();
+                }
+            }
+        }
+
+        private void CopyWarningsToClipBoard()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (ListViewItem item in lvErrors.Items)
+            {
+                sb.AppendLine(string.Format("Message\t\t: {0}\nFilename\t: {1}\nLine\t\t: {2}\nPath\t\t: {3}", item.Text, item.SubItems[1].Text, item.SubItems[2].Text, 
+                    FileUtils.GetRelativePathFromFile(GlobalOptions.Instance.DefaultWorkspace, item.SubItems[3].Text)));
+                sb.AppendLine("---------------------------------------------------------------------------------------");
+            }
+            Clipboard.SetText(sb.ToString(), TextDataFormat.UnicodeText);
+        }
+
+        private void copyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CopyWarningsToClipBoard();
+        }
+
+        private void saveToFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (SaveFileDialog sfd = new SaveFileDialog())
+            {
+                sfd.DefaultExt = ".txt";
+                sfd.FileName = "Team Script Manager Error Logs";
+                sfd.Filter = "Text Files (*.txt)|*.txt";
+                if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    foreach (ListViewItem item in lvErrors.Items)
+                    {
+                        sb.AppendLine(string.Format("Message\t\t: {0}\r\nFilename\t: {1}\r\nLine\t\t: {2}\r\nPath\t\t: {3}", item.Text, item.SubItems[1].Text, item.SubItems[2].Text,
+                            FileUtils.GetRelativePathFromFile(GlobalOptions.Instance.DefaultWorkspace, item.SubItems[3].Text)));
+                        sb.AppendLine("---------------------------------------------------------------------------------------");
+                    }
+                    using (StreamWriter sw = new StreamWriter(sfd.FileName))
+                    {
+                        sw.WriteLine(sb.ToString());
+                    }
                 }
             }
         }
