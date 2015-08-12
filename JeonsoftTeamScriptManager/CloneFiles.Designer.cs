@@ -221,7 +221,7 @@
             this.Controls.Add(this.btnOK);
             this.Name = "CloneFiles";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Copy Files and Add to Stash";
+            this.Text = "Copy Files and Add to Catalog";
             this.ResumeLayout(false);
             this.PerformLayout();
 

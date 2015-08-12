@@ -88,9 +88,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(9, 62);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(101, 13);
+            this.label1.Size = new System.Drawing.Size(110, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Stash File Directory:";
+            this.label1.Text = "Catalog File Directory:";
             // 
             // txtStash
             // 
@@ -328,9 +328,9 @@
             this.chbUseFullPath.AutoSize = true;
             this.chbUseFullPath.Location = new System.Drawing.Point(132, 389);
             this.chbUseFullPath.Name = "chbUseFullPath";
-            this.chbUseFullPath.Size = new System.Drawing.Size(183, 17);
+            this.chbUseFullPath.Size = new System.Drawing.Size(191, 17);
             this.chbUseFullPath.TabIndex = 22;
-            this.chbUseFullPath.Text = "Save Stashed Files with Full Path";
+            this.chbUseFullPath.Text = "Save Files in Catalog with Full Path";
             this.chbUseFullPath.UseVisualStyleBackColor = true;
             // 
             // chbValidateOnMerge

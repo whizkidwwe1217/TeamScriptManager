@@ -196,39 +196,39 @@
             this.mnuSaveStash,
             this.mnuResetStash});
             this.contextMenu.Name = "contextMenu";
-            this.contextMenu.Size = new System.Drawing.Size(178, 98);
+            this.contextMenu.Size = new System.Drawing.Size(191, 120);
             // 
             // mnuRemoveFromStash
             // 
             this.mnuRemoveFromStash.Name = "mnuRemoveFromStash";
-            this.mnuRemoveFromStash.Size = new System.Drawing.Size(177, 22);
-            this.mnuRemoveFromStash.Text = "Remove from Stash";
+            this.mnuRemoveFromStash.Size = new System.Drawing.Size(190, 22);
+            this.mnuRemoveFromStash.Text = "Remove from Catalog";
             this.mnuRemoveFromStash.Click += new System.EventHandler(this.removeFromStash_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(174, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(187, 6);
             // 
             // mnuClearStash
             // 
             this.mnuClearStash.Name = "mnuClearStash";
-            this.mnuClearStash.Size = new System.Drawing.Size(177, 22);
-            this.mnuClearStash.Text = "Clear Stash";
+            this.mnuClearStash.Size = new System.Drawing.Size(190, 22);
+            this.mnuClearStash.Text = "Clear Catalog";
             this.mnuClearStash.Click += new System.EventHandler(this.tbtClearStash_Click);
             // 
             // mnuSaveStash
             // 
             this.mnuSaveStash.Name = "mnuSaveStash";
-            this.mnuSaveStash.Size = new System.Drawing.Size(177, 22);
-            this.mnuSaveStash.Text = "Save Stash";
+            this.mnuSaveStash.Size = new System.Drawing.Size(190, 22);
+            this.mnuSaveStash.Text = "Save Catalog";
             this.mnuSaveStash.Click += new System.EventHandler(this.tbtSaveStash_Click);
             // 
             // mnuResetStash
             // 
             this.mnuResetStash.Name = "mnuResetStash";
-            this.mnuResetStash.Size = new System.Drawing.Size(177, 22);
-            this.mnuResetStash.Text = "Reset Stash";
+            this.mnuResetStash.Size = new System.Drawing.Size(190, 22);
+            this.mnuResetStash.Text = "Reset Catalog";
             this.mnuResetStash.Click += new System.EventHandler(this.tbtResetStash_Click);
             // 
             // StashPanel
