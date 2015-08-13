@@ -159,10 +159,58 @@ namespace JeonsoftTeamScriptManager
             WriteUserSettings(root, "Save Stash on Merge", SaveStashOnMerge);
             WriteUserSettings(root, "Validate on Merge", ValidateOnMerge);
             WriteUserSettings(root, "Default Workspace", DefaultWorkspace);
+            WriteUserSettings(root, "Sql Server Name", SqlServerName);
+            WriteUserSettings(root, "Sql Is Authentication", SqlIsWindowsAuthentication);
+            WriteUserSettings(root, "Sql Username", SqlUsername);
+            WriteUserSettings(root, "Sql Password", SqlPassword);
+            WriteUserSettings(root, "Sql Database Name", SqlDatabaseName);
+            WriteUserSettings(root, "Sql Remember Password", SqlRememberPassword);
             if (root != null)
                 root.Close();
         }
 
+        private bool sqlIsWindowsAuthentication;
+
+        public bool SqlIsWindowsAuthentication
+        {
+            get { return sqlIsWindowsAuthentication; }
+            set { sqlIsWindowsAuthentication = value; }
+        }
+        private string sqlUsername;
+
+        public string SqlUsername
+        {
+            get { return sqlUsername; }
+            set { sqlUsername = value; }
+        }
+        private string sqlDatabaseName;
+
+        public string SqlDatabaseName
+        {
+            get { return sqlDatabaseName; }
+            set { sqlDatabaseName = value; }
+        }
+        private string sqlServerName;
+
+        public string SqlServerName
+        {
+            get { return sqlServerName; }
+            set { sqlServerName = value; }
+        }
+        private string sqlPassword;
+
+        public string SqlPassword
+        {
+            get { return sqlPassword; }
+            set { sqlPassword = value; }
+        }
+        private bool sqlRememberPassword;
+
+        public bool SqlRememberPassword
+        {
+            get { return sqlRememberPassword; }
+            set { sqlRememberPassword = value; }
+        }
         public void LoadSettings()
         {
             RegistryKey root = GetRootKey();
@@ -182,6 +230,12 @@ namespace JeonsoftTeamScriptManager
             SaveStashOnMerge = ReadBooleanUserSettings(root, "Save Stash on Merge");
             ValidateOnMerge = ReadBooleanUserSettings(root, "Validate on Merge");
             DefaultWorkspace = ReadStringUserSettings(root, "Default Workspace");
+            SqlServerName = ReadStringUserSettings(root, "Sql Server Name");
+            SqlIsWindowsAuthentication = ReadBooleanUserSettings(root, "Sql Is Authentication");
+            SqlUsername = ReadStringUserSettings(root, "Sql Username");
+            SqlPassword = ReadStringUserSettings(root, "Sql Password");
+            SqlDatabaseName = ReadStringUserSettings(root, "Sql DatabaseName");
+            SqlRememberPassword = ReadBooleanUserSettings(root, "Sql Remember Password");
             if (root != null)
                 root.Close();
         }

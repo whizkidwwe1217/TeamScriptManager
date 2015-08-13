@@ -36,7 +36,7 @@ namespace JeonsoftTeamScriptManager
         public MainForm(string stashArg)
         {
             InitializeComponent();
-
+            
             StartPosition = FormStartPosition.CenterScreen;
             WindowState = FormWindowState.Maximized;
             Font = new System.Drawing.Font("Segoe UI", 8F);
@@ -270,6 +270,7 @@ namespace JeonsoftTeamScriptManager
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+
             lblMachineName.Text = MainForm.GetMachineInfo();
 
             if ((GlobalOptions.Instance.DefaultWorkspace == null || GlobalOptions.Instance.DefaultWorkspace.Trim() == "") || (GlobalOptions.Instance.MergeFileOutputDirectory == null || GlobalOptions.Instance.MergeFileOutputDirectory.Trim() == "") ||
@@ -428,7 +429,9 @@ namespace JeonsoftTeamScriptManager
                     baseDir = Path.GetDirectoryName(GlobalOptions.Instance.DefaultWorkspace);
 
                 var directories = Directory.EnumerateDirectories(baseDir).OrderBy(filename => filename);
-                
+                string[] delimiter = new string[] { Environment.NewLine };
+                string[] lines = GlobalOptions.Instance.DefaultDirectories.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
+
                 foreach (string d in directories)
                 {
                     DirectoryInfo di = new DirectoryInfo(d);
@@ -437,7 +440,7 @@ namespace JeonsoftTeamScriptManager
                     Font font = new System.Drawing.Font(trvFileExplorer.Font, FontStyle.Bold);
                     node.NodeFont = font;
                     node.ImageKey = "folder";
-                    node.ForeColor = Color.Red;
+                    node.ForeColor = Color.Black;
                     node.Tag = false;
                     trvFileExplorer.Nodes.Add(node);
                     int indexedFileCount = 0;
@@ -448,11 +451,16 @@ namespace JeonsoftTeamScriptManager
                         TreeNode child = new TreeNode(fi.Name);
                         child.Name = fi.FullName;
                         child.ForeColor = Color.Red;
+                        string strDirName = new DirectoryInfo(fi.DirectoryName).Name;
+                        
                         if (AlreadyIndexed(fi.FullName))
                         {
                             child.ForeColor = Color.Green;
                             indexedFileCount++;
                         }
+                        if (lines.Contains(strDirName))
+                            child.ForeColor = Color.DarkViolet;
+
                         child.ImageKey = "sql";
                         child.SelectedImageKey = "sql";
                         child.Tag = true;
@@ -469,6 +477,7 @@ namespace JeonsoftTeamScriptManager
                 {
                     FileInfo fi = new FileInfo(f);
                     TreeNode node = new TreeNode(fi.Name);
+                    string strDirName = new DirectoryInfo(fi.DirectoryName).Name;
                     node.Name = fi.FullName;
                     node.ImageKey = "sql";
                     node.ForeColor = Color.Red;
@@ -476,6 +485,9 @@ namespace JeonsoftTeamScriptManager
                     node.Tag = true;
                     if (AlreadyIndexed(fi.FullName))
                         node.ForeColor = Color.Green;
+
+                    if (lines.Contains(strDirName))
+                        node.ForeColor = Color.DarkViolet;
                     trvFileExplorer.Nodes.Add(node);
                 }
             }
@@ -493,6 +505,8 @@ namespace JeonsoftTeamScriptManager
         private void PopulateTreeNode(string dir, TreeNode parentNode)
         {
             var directories = Directory.EnumerateDirectories(dir).OrderBy(filename => filename);
+            string[] delimiter = new string[] { Environment.NewLine };
+            string[] lines = GlobalOptions.Instance.DefaultDirectories.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
             foreach (string d in directories)
             {
                 DirectoryInfo di = new DirectoryInfo(d);
@@ -501,7 +515,7 @@ namespace JeonsoftTeamScriptManager
                 Font font = new System.Drawing.Font(trvFileExplorer.Font, FontStyle.Bold);
                 node.NodeFont = font;
                 node.ImageKey = "folder";
-                node.ForeColor = Color.Red;
+                node.ForeColor = Color.Black;
 
                 int indexedFileCount = 0;
 
@@ -510,6 +524,7 @@ namespace JeonsoftTeamScriptManager
                 {
                     FileInfo fi = new FileInfo(f);
                     TreeNode child = new TreeNode(fi.Name);
+                    string strDirName = new DirectoryInfo(fi.DirectoryName).Name;
                     child.Name = fi.FullName;
                     child.ForeColor = Color.Red;
                     if (AlreadyIndexed(fi.FullName))
@@ -517,6 +532,8 @@ namespace JeonsoftTeamScriptManager
                         child.ForeColor = Color.Green;
                         indexedFileCount++;
                     }
+                    if (lines.Contains(strDirName))
+                        child.ForeColor = Color.DarkViolet;
                     child.ImageKey = "sql";
                     child.SelectedImageKey = "sql";
                     child.Tag = true;
@@ -612,73 +629,69 @@ namespace JeonsoftTeamScriptManager
                 string filename = GetStashFilePath();
                 Dictionary<string, string> files = new Dictionary<string, string>();
 
-                if (GlobalOptions.Instance.EnableDefaultDirectories)
-                {
-                    string[] delimiter = new string[] { Environment.NewLine };
-                    string[] lines = GlobalOptions.Instance.DefaultDirectories.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
-                    tbtProgress.Maximum = lines.Length;
-                    int ddCnt = 0;
+                #region Default Directories
+                //if (GlobalOptions.Instance.EnableDefaultDirectories)
+                //{
+                //    string[] delimiter = new string[] { Environment.NewLine };
+                //    string[] lines = GlobalOptions.Instance.DefaultDirectories.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
+                //    tbtProgress.Maximum = lines.Length;
+                //    int ddCnt = 0;
 
-                    foreach (string s in lines)
-                    {
-                        tbtProgress.Maximum = lines.Length;
-                        tbtProgress.Value = ddCnt;
-                        lblStatus.Text = string.Format("Scanning default directory {0}...", s);
-                        ddCnt++;
-                        string[] dirs = Directory.GetDirectories(Path.GetDirectoryName(filename));
-                        string indexedFile = s;
+                //    foreach (string s in lines)
+                //    {
+                //        tbtProgress.Maximum = lines.Length;
+                //        tbtProgress.Value = ddCnt;
+                //        lblStatus.Text = string.Format("Scanning default directory {0}...", s);
+                //        ddCnt++;
+                //        string[] dirs = Directory.GetDirectories(Path.GetDirectoryName(filename));
+                //        string indexedFile = s;
 
-                        //if (!Path.IsPathRooted(s))
-                        //{
-                        //    FileInfo fi = Utils.FileUtils.GetAbsolutePath(Path.GetDirectoryName(filename), s);
-                        //    indexedFile = fi.FullName;
-                        //}
+                //        foreach (string d in dirs)
+                //        {
+                //            DirectoryInfo di = new DirectoryInfo(d);
+                //            if (di.Name.ToLower() == indexedFile.ToLower().Trim())
+                //            {
+                //                FileInfo[] fileInfos = di.GetFiles("*.sql");
+                //                tbtProgress.Value = 0;
+                //                tbtProgress.Maximum = fileInfos.Length + 1;
 
-                        foreach (string d in dirs)
-                        {
-                            DirectoryInfo di = new DirectoryInfo(d);
-                            if (di.Name.ToLower() == indexedFile.ToLower().Trim())
-                            {
-                                FileInfo[] fileInfos = di.GetFiles("*.sql");
-                                tbtProgress.Value = 0;
-                                tbtProgress.Maximum = fileInfos.Length + 1;
+                //                foreach (FileInfo fi in fileInfos)
+                //                {
+                //                    tbtProgress.Value++;
+                //                    lblStatus.Text = string.Format("Indexing {0}...", fi.Name);
 
-                                foreach (FileInfo fi in fileInfos)
-                                {
-                                    tbtProgress.Value++;
-                                    lblStatus.Text = string.Format("Indexing {0}...", fi.Name);
+                //                    string dirname = fi.Directory.Name;
+                //                    string dirpath = fi.DirectoryName;
+                //                    string host = string.Empty;
+                //                    string name = fi.Name;
+                //                    string fullName = fi.FullName;
 
-                                    string dirname = fi.Directory.Name;
-                                    string dirpath = fi.DirectoryName;
-                                    string host = string.Empty;
-                                    string name = fi.Name;
-                                    string fullName = fi.FullName;
+                //                    if (GlobalOptions.Instance.ResolveHostNameAddresses)
+                //                    {
+                //                        UriHostNameType hostType = NetworkUtils.GetHostType(fi.FullName, ref host);
 
-                                    if (GlobalOptions.Instance.ResolveHostNameAddresses)
-                                    {
-                                        UriHostNameType hostType = NetworkUtils.GetHostType(fi.FullName, ref host);
-
-                                        if (hostType != UriHostNameType.Basic || hostType != UriHostNameType.Unknown)
-                                        {
-                                            if (!mappedHosts.ContainsKey(host) && !string.IsNullOrEmpty(host))
-                                            {
-                                                MappedHost mh = new MappedHost()
-                                                {
-                                                    Name = host.ToLower(),
-                                                    HostName = string.Empty
-                                                };
-                                                if (!mappedHosts.ContainsKey(mh.Name))
-                                                    mappedHosts.Add(mh.Name, mh);
-                                            }
-                                        }
-                                    }
-                                    if (!files.ContainsKey(fullName))
-                                        files.Add(fullName, fullName);
-                                }
-                            }
-                        }
-                    }
-                }
+                //                        if (hostType != UriHostNameType.Basic || hostType != UriHostNameType.Unknown)
+                //                        {
+                //                            if (!mappedHosts.ContainsKey(host) && !string.IsNullOrEmpty(host))
+                //                            {
+                //                                MappedHost mh = new MappedHost()
+                //                                {
+                //                                    Name = host.ToLower(),
+                //                                    HostName = string.Empty
+                //                                };
+                //                                if (!mappedHosts.ContainsKey(mh.Name))
+                //                                    mappedHosts.Add(mh.Name, mh);
+                //                            }
+                //                        }
+                //                    }
+                //                    if (!files.ContainsKey(fullName))
+                //                        files.Add(fullName, fullName);
+                //                }
+                //            }
+                //        }
+                //    }
+                //}
+                #endregion
 
                 if (File.Exists(filename))
                 {
@@ -1808,7 +1821,7 @@ namespace JeonsoftTeamScriptManager
             return dir;
         }
 
-        private string GetMergedFilePath()
+        public static string GetMergedFilePath()
         {
             if (GlobalOptions.Instance.MergeFileOutputDirectory == null || GlobalOptions.Instance.MergeFileOutputDirectory.Trim() == "")
                 return Directory.GetCurrentDirectory() + "\\" + GetOutputName();
@@ -1818,8 +1831,19 @@ namespace JeonsoftTeamScriptManager
                 return GlobalOptions.Instance.MergeFileOutputDirectory + "\\" + GetOutputName();
         }
 
-        private string output = "merged.sql";
-        private string GetOutputName()
+        public static string GetLogPath()
+        {
+            if (GlobalOptions.Instance.MergeFileOutputDirectory == null || GlobalOptions.Instance.MergeFileOutputDirectory.Trim() == "")
+                return Directory.GetCurrentDirectory() + "\\" + logfile;
+            if (GlobalOptions.Instance.MergeFileOutputDirectory.EndsWith("\\"))
+                return GlobalOptions.Instance.MergeFileOutputDirectory + logfile;
+            else
+                return GlobalOptions.Instance.MergeFileOutputDirectory + "\\" + logfile;
+        }
+
+        public static string output = "merged.sql";
+        public static string logfile = "_catalog.log";
+        public static string GetOutputName()
         {
             return output;
         }
@@ -1839,14 +1863,14 @@ namespace JeonsoftTeamScriptManager
             UpdateTreeView();
         }
 
-        private string GetPreFixedFiles()
+        public static string GetPreFixedFiles()
         {
             if (GlobalOptions.Instance.PrefixedFilesDirectory.Trim() != "")
                 return GlobalOptions.Instance.PrefixedFilesDirectory;
             return Directory.GetCurrentDirectory() + "\\Prefixed Files";
         }
 
-        private string GetPostFixedFiles()
+        public static string GetPostFixedFiles()
         {
             if (GlobalOptions.Instance.PostfixedFilesDirectory.Trim() != "")
                 return GlobalOptions.Instance.PostfixedFilesDirectory;
@@ -2138,7 +2162,7 @@ namespace JeonsoftTeamScriptManager
                     TextEditorControl rtb = (TextEditorControl)dc.Controls[0];
                     string filename = dc.Name;
                     string content = File.ReadAllText(filename);
-                    content = GetCleanString(content) + Environment.NewLine;
+                    content = GetCleanString(content);
                     using (StreamWriter sw = new StreamWriter(filename, false))
                     {
                         sw.Write(content);
@@ -2155,7 +2179,7 @@ namespace JeonsoftTeamScriptManager
             StringBuilder sb = new StringBuilder();
             foreach (ListViewItem item in lvErrors.Items)
             {
-                sb.AppendLine(string.Format("Message\t\t: {0}\nFilename\t: {1}\nLine\t\t: {2}\nPath\t\t: {3}", item.Text, item.SubItems[1].Text, item.SubItems[2].Text, 
+                sb.AppendLine(string.Format("Message\t\t: {0}\r\nFilename\t: {1}\r\nLine\t\t: {2}\r\nPath\t\t: {3}", item.Text, item.SubItems[1].Text, item.SubItems[2].Text, 
                     FileUtils.GetRelativePathFromFile(GlobalOptions.Instance.DefaultWorkspace, item.SubItems[3].Text)));
                 sb.AppendLine("---------------------------------------------------------------------------------------");
             }
@@ -2186,6 +2210,285 @@ namespace JeonsoftTeamScriptManager
                     using (StreamWriter sw = new StreamWriter(sfd.FileName))
                     {
                         sw.WriteLine(sb.ToString());
+                    }
+                }
+            }
+        }
+
+        private void CheckSqlSyntax()
+        {
+            if (GlobalOptions.Instance.SqlServerName == null || GlobalOptions.Instance.SqlServerName == "")
+            {
+                ConnectionSettingsForm f = new ConnectionSettingsForm(true);
+                f.ShowDialog();
+                CheckSqlSyntax();
+            }
+            else
+            {
+                IDockContent ic = dPanel.ActiveDocument;
+                if (ic != null)
+                {
+                    if (ic is DockContent)
+                    {
+                        DockContent dc = (DockContent)ic;
+                        TextEditorControl rtb = (TextEditorControl)dc.Controls[0];
+                        if (rtb.Text.Trim() == "")
+                        {
+                            MessageBox.Show(this, "Blank script.", "SQL Parse", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return;
+                        }
+                        try
+                        {
+                            DataSource ds = new DataSource("Parse", GlobalOptions.Instance.SqlServerName, GlobalOptions.Instance.SqlDatabaseName,
+                                GlobalOptions.Instance.SqlUsername, GlobalOptions.Instance.SqlPassword, GlobalOptions.Instance.SqlIsWindowsAuthentication);
+                            ds.Parse(rtb.Text);
+                            MessageBox.Show(this, "Script is valid.", "SQL Parse", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(this, ex.Message, "SQL Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+            }
+        }
+        private void checkSyntaxToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CheckSqlSyntax();
+        }
+
+        public static void MergeCatalogScripts(string filename)
+        {
+            using (SaveFileDialog sfd = new SaveFileDialog())
+            {
+                sfd.Title = "Merged File Output";
+                sfd.FileName = "Merge";
+                sfd.DefaultExt = ".sql";
+                sfd.Filter = "SQL Files|*.sql";
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    string outputFilename = sfd.FileName;
+                    try
+                    {
+                        if (File.Exists(outputFilename))
+                            File.Delete(outputFilename);
+                        if (File.Exists(filename))
+                        {
+                            if (GlobalOptions.Instance.IncludePrefixedFiles)
+                            {
+                                if (Directory.Exists(GetPreFixedFiles()))
+                                {
+                                    using (StreamWriter sw = new StreamWriter(outputFilename, true))
+                                    {
+                                        foreach (string f in Directory.GetFiles(GetPreFixedFiles(), "*.sql"))
+                                        {
+                                            using (StreamReader reader = new StreamReader(f))
+                                            {
+                                                sw.WriteLine(reader.ReadToEnd());
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (GlobalOptions.Instance.EnableDefaultDirectories && GlobalOptions.Instance.SaveStashOnMerge == false)
+                            {
+                                string[] delimiter = new string[] { Environment.NewLine };
+                                string[] lines = GlobalOptions.Instance.DefaultDirectories.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
+
+                                foreach (string s in lines)
+                                {
+                                    string[] dirs = Directory.GetDirectories(Path.GetDirectoryName(filename));
+                                    string indexedFile = s;
+                                    foreach (string d in dirs)
+                                    {
+                                        DirectoryInfo di = new DirectoryInfo(d);
+                                        if (di.Name.ToLower() == indexedFile.ToLower().Trim())
+                                        {
+                                            FileInfo[] fileInfos = di.GetFiles("*.sql");
+
+                                            foreach (FileInfo fi in fileInfos)
+                                            {
+                                                string dirname = fi.Directory.Name;
+                                                string dirpath = fi.DirectoryName;
+                                                string host = string.Empty;
+                                                string name = fi.Name;
+                                                string fullName = fi.FullName;
+
+
+                                                using (StreamWriter sw = new StreamWriter(outputFilename, true))
+                                                {
+                                                    string content = File.ReadAllText(fullName);
+                                                    sw.WriteLine(content);
+                                                    if (GlobalOptions.Instance.ValidateOnMerge)
+                                                        ValidateScriptSilent(fullName, name, content);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            using (StreamReader sr = new StreamReader(filename))
+                            {
+                                string file = "";
+
+                                using (StreamWriter sw = new StreamWriter(outputFilename, true))
+                                {
+                                    while ((file = sr.ReadLine()) != null)
+                                    {
+                                        if (!Path.IsPathRooted(file))
+                                        {
+                                            FileInfo fi = Utils.FileUtils.GetAbsolutePath(Path.GetDirectoryName(filename), file);
+                                            file = fi.FullName;
+                                        }
+
+                                        if (!string.IsNullOrEmpty(file) && File.Exists(file))
+                                        {
+                                            FileInfo fi = new FileInfo(file);
+
+                                            string content = File.ReadAllText(file);
+                                            sw.WriteLine(content);
+                                            if (GlobalOptions.Instance.ValidateOnMerge)
+                                                ValidateScriptSilent(file, fi.Name, content);
+                                        }
+                                        else
+                                        {
+                                            //rtbLogs.AppendText("Merge error: Cannot find the file: '" + file + "'");
+                                            //rtbLogs.AppendText(Environment.NewLine);
+                                            AppendToLogFile("Cannot find the file: '" + filename + "'");
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (GlobalOptions.Instance.IncludePostFixedFiles)
+                            {
+                                if (Directory.Exists(GetPostFixedFiles()))
+                                {
+                                    using (StreamWriter sw = new StreamWriter(outputFilename, true))
+                                    {
+                                        foreach (string f in Directory.GetFiles(GetPostFixedFiles(), "*.sql"))
+                                        {
+                                            using (StreamReader reader = new StreamReader(f))
+                                            {
+                                                sw.WriteLine(reader.ReadToEnd());
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            //rtbLogs.AppendText("Cannot find the file: '" + filename + "'");
+                            //rtbLogs.AppendText(Environment.NewLine);
+                            AppendToLogFile("Cannot find the file: '" + filename + "'");
+                        }
+                    }
+                    finally
+                    {
+
+                    }
+                }
+            }
+        }
+
+        public static void ClearLogFile(string filename)
+        {
+            if (File.Exists(filename))
+                File.Delete(filename);
+            File.Create(filename);
+        }
+
+        public static void AppendToLogFile(string message)
+        {
+            if (!File.Exists(GetLogPath()))
+                File.Create(GetLogPath());
+            using (StreamWriter sw = new StreamWriter(GetLogPath(), true))
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine(message);
+                sw.WriteLine(sb.ToString());
+            }
+        }
+
+        public static void AppendToLogFile(string filename, string message, string sqlFile, int line, string path)
+        {
+            if (!File.Exists(filename))
+                File.Create(filename);
+            using (StreamWriter sw = new StreamWriter(filename, true))
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine(string.Format("Message\t\t: {0}\r\nFilename\t: {1}\r\nLine\t\t: {2}\r\nPath\t\t: {3}",
+                        message, sqlFile,
+                        line.ToString(),
+                        FileUtils.GetRelativePathFromFile(GlobalOptions.Instance.DefaultWorkspace,
+                        path)));
+                sb.AppendLine("---------------------------------------------------------------------------------------");
+                sw.WriteLine(sb.ToString());
+            }
+        }
+        public static void ValidateScriptSilent(string fileName, string name, string content)
+        {
+            if (content.Trim().Length == 0)
+            {
+                AppendToLogFile(GetLogPath(), "File is blank.", name, 0, fileName);
+                return;
+            }
+            string[] delimiter = new string[] { Environment.NewLine };
+            string[] lines = content.Split(delimiter, StringSplitOptions.None);
+
+            if (!content.EndsWith(Environment.NewLine))
+                AppendToLogFile(GetLogPath(), "Missing line feed found at the end of file.", name, lines.Length - 1, fileName);
+            else
+            {
+                string strContent = content.TrimEnd();
+                int lastNewLineIndex = Math.Max(0, strContent.LastIndexOf(Environment.NewLine));
+                string strGo = strContent.Substring(lastNewLineIndex, strContent.Length - lastNewLineIndex);
+                if (strGo.Contains("GO"))
+                {
+                    string keyword = "GO";
+                    int startPos = content.LastIndexOf(keyword) + keyword.Length + 1;
+                    int len = Math.Max(0, content.Length - startPos);
+                    if (len != 1)
+                        AppendToLogFile(GetLogPath(), "Extra characters found after GO. There must be exactly one (1) carriage return after the last GO keyword.", name, lines.Length - 1, fileName);
+                    string[] strLines = strContent.Split(new char[] { '\r' });
+                    int j = Math.Max(0, strLines.Length - 1);
+                    int found = 1;
+                    bool foundNonBreak = false;
+                    while (j > 0)
+                    {
+                        string line = strLines[--j];
+                        if (line == "\n")
+                            found++;
+                        else
+                            foundNonBreak = true;
+                        if (found > 3)
+                            break;
+                        if (foundNonBreak)
+                            break;
+                    }
+                    if (found != 3)
+                        AppendToLogFile(GetLogPath(), "There must be exactly three (3) carriage returns before the last GO keyword.", name, Math.Max(lines.Length - 1, 0), fileName);
+                }
+                else
+                {
+                    AppendToLogFile(GetLogPath(), "Missing GO keyword at the end of the file.", name, Math.Max(lines.Length - 1, 0), fileName);
+                }
+            }
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                string strLine = lines[i];
+                if (strLine != "")
+                {
+                    if (char.IsWhiteSpace(strLine[strLine.Length - 1]))
+                        AppendToLogFile(GetLogPath(), "Trailing space(s) found.", name, strLine.Length - 1, fileName);
+                    if (strLine.Contains(":"))
+                    {
+                        int pos = strLine.IndexOf(":");
+                        AppendToLogFile(GetLogPath(), "Invalid character (:) found.", name, i, fileName);
                     }
                 }
             }
