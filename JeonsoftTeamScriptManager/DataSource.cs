@@ -53,6 +53,67 @@ namespace JeonsoftTeamScriptManager
             this.username = username;
             this.password = password;
             this.isIntegratedSecurity = isIntegratedSecurity;
+            SqlConnectionStringBuilder sb = new SqlConnectionStringBuilder();
+            sb.UserID = username;
+            sb.Password = password;
+            sb.DataSource = serverName;
+            sb.InitialCatalog = databaseName;
+            sb.IntegratedSecurity = isIntegratedSecurity;
+            connectionString = sb.ConnectionString;
+        }
+
+        private string connectionString;
+        public string ConnectionString
+        {
+            get { return connectionString; }
+        }
+
+        public void Connect()
+        {
+            SqlConnection con = new SqlConnection(connectionString);
+            try
+            {
+                con.Open();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Connection error: " + ex.Message);
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+        public void Parse(string query)
+        {
+            SqlConnection con = new SqlConnection(connectionString);
+            try
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("SET PARSEONLY ON", con);
+                cmd.ExecuteNonQuery();
+
+                string[] splitter = new string[] { "\r\nGO\r\n" };
+                string[] commandTexts = query.Split(splitter,
+                  StringSplitOptions.RemoveEmptyEntries);
+                foreach (string commandText in commandTexts)
+                {
+                    cmd.CommandText = commandText;
+                    cmd.ExecuteNonQuery();
+                }
+
+                cmd.CommandText = "SET PARSEONLY OFF";
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("SQL error: " + ex.Message);
+            }
+            finally
+            {
+                con.Close();
+            }
         }
     }
 }

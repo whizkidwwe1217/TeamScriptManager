@@ -78,9 +78,11 @@
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.validateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cleanUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkSyntaxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cmnuWarnings = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -485,16 +487,18 @@
             this.cmnuTextEditor.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.saveToolStripMenuItem,
             this.validateToolStripMenuItem,
-            this.cleanUpToolStripMenuItem});
+            this.cleanUpToolStripMenuItem,
+            this.toolStripSeparator5,
+            this.checkSyntaxToolStripMenuItem});
             this.cmnuTextEditor.Name = "cmnuTextEditor";
-            this.cmnuTextEditor.Size = new System.Drawing.Size(139, 70);
+            this.cmnuTextEditor.Size = new System.Drawing.Size(145, 98);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Image = global::JeonsoftTeamScriptManager.Properties.Resources.stash_save;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.saveToolStripMenuItem.Text = "&Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
@@ -502,7 +506,7 @@
             // 
             this.validateToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("validateToolStripMenuItem.Image")));
             this.validateToolStripMenuItem.Name = "validateToolStripMenuItem";
-            this.validateToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.validateToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.validateToolStripMenuItem.Text = "&Validate";
             this.validateToolStripMenuItem.Click += new System.EventHandler(this.validateToolStripMenuItem_Click);
             // 
@@ -510,9 +514,17 @@
             // 
             this.cleanUpToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("cleanUpToolStripMenuItem.Image")));
             this.cleanUpToolStripMenuItem.Name = "cleanUpToolStripMenuItem";
-            this.cleanUpToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.cleanUpToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.cleanUpToolStripMenuItem.Text = "&Clean up";
             this.cleanUpToolStripMenuItem.Click += new System.EventHandler(this.cleanUpToolStripMenuItem_Click);
+            // 
+            // checkSyntaxToolStripMenuItem
+            // 
+            this.checkSyntaxToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("checkSyntaxToolStripMenuItem.Image")));
+            this.checkSyntaxToolStripMenuItem.Name = "checkSyntaxToolStripMenuItem";
+            this.checkSyntaxToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.checkSyntaxToolStripMenuItem.Text = "Check Synta&x";
+            this.checkSyntaxToolStripMenuItem.Click += new System.EventHandler(this.checkSyntaxToolStripMenuItem_Click);
             // 
             // cmnuWarnings
             // 
@@ -535,6 +547,11 @@
             this.saveToFileToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.saveToFileToolStripMenuItem.Text = "&Save to file...";
             this.saveToFileToolStripMenuItem.Click += new System.EventHandler(this.saveToFileToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(141, 6);
             // 
             // MainForm
             // 
@@ -615,6 +632,8 @@
         private System.Windows.Forms.ContextMenuStrip cmnuWarnings;
         private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToFileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem checkSyntaxToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
 
 
     }

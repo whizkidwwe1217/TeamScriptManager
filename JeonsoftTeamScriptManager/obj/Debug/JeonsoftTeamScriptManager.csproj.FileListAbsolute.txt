@@ -49,3 +49,4 @@ D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\Je
 D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\JeonsoftTeamScriptManager\bin\Debug\Menees.Common.dll
 D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\JeonsoftTeamScriptManager\bin\Debug\JeonsoftTeamScriptManager.Utils.pdb
 D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\JeonsoftTeamScriptManager\obj\Debug\JeonsoftTeamScriptManager.ChangeLogsForm.resources
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\JeonsoftTeamScriptManager\obj\Debug\JeonsoftTeamScriptManager.ConnectionSettingsForm.resources

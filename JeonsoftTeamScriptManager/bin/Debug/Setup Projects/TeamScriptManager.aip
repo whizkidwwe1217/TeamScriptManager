@@ -13,10 +13,10 @@
     <ROW Property="ARPSYSTEMCOMPONENT" Value="1"/>
     <ROW Property="CTRLS" Value="2"/>
     <ROW Property="Manufacturer" Value="JeonSoft Corporation"/>
-    <ROW Property="ProductCode" Value="1033:{D910B8FB-B825-46F1-BDCA-50C7B9FCE432} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{0F55A828-2B48-4950-A8D6-2319D3DBDD34} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="Team Script Manager"/>
-    <ROW Property="ProductVersion" Value="1.2.7" Type="32"/>
+    <ROW Property="ProductVersion" Value="1.2.8" Type="32"/>
     <ROW Property="RUNAPPLICATION" Value="1" Type="4"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND;AI_SETUPEXEPATH;SETUPEXEDIR"/>
     <ROW Property="UpgradeCode" Value="{2E7B6D73-096B-4AE0-93C4-A05E589F5389}"/>
@@ -281,6 +281,8 @@
   <COMPONENT cid="caphyon.advinst.msicomp.MsiVerbComponent">
     <ROW Extension_="stash" Component_="JeonsoftTeamScriptManager.exe" Verb="open" Sequence="0" Command="&amp;Open" Argument="&quot;%1&quot;"/>
     <ROW Extension_="wcat" Component_="JeonsoftTeamScriptManager.exe" Verb="open" Sequence="0" Command="&amp;Open" Argument="&quot;%1&quot;"/>
+    <ROW Extension_="wcat" Component_="JeonsoftTeamScriptManager.exe" Verb="merge" Sequence="1" Command="&amp;Merge" Argument="&quot;%1&quot; -merge"/>
+    <ROW Extension_="stash" Component_="JeonsoftTeamScriptManager.exe" Verb="merge" Sequence="1" Command="&amp;Merge" Argument="&quot;%1&quot; -merge"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.PreReqComponent">
     <ROW PrereqKey="E9BFB0D602DD498F96473C9BBCDDEC89" DisplayName=".NET Framework 4.5" VersionMin="4.5" SetupFileUrl="http://download.microsoft.com/download/B/A/4/BA4A7E71-2906-4B2D-A0E1-80CF16844F5F/dotNetFx45_Full_setup.exe" Location="1" ExactSize="0" Win9xVersions="Windows 9x/ME" WinNTVersions="Windows NT 4.0, Windows NT 4.0 Service Pack 1, Windows NT 4.0 Service Pack 2, Windows NT 4.0 Service Pack 3, Windows NT 4.0 Service Pack 4, Windows NT 4.0 Service Pack 5, Windows NT 4.0 Service Pack 6, Windows 2000, Windows 2000 Service Pack 1, Windows 2000 Service Pack 2, Windows 2000 Service Pack 3, Windows 2000 Service Pack 4, Windows XP x86, Windows XP x86 Service Pack 1, Windows XP x86 Service Pack 2, Windows XP x86 Service Pack 3, Windows Server 2003 x86, Windows Server 2003 x86 Service Pack 1, Windows Server 2003 x86 Service Pack 2, Windows Vista x86, Windows Vista x86 Service Pack 1, Windows Server 2008 x86" WinNT64Versions="Windows XP x64, Windows XP x64 Service Pack 1, Windows XP x64 Service Pack 2, Windows Server 2003 x64, Windows Server 2003 x64 Service Pack 1, Windows Server 2003 x64 Service Pack 2, Windows Vista x64, Windows Vista x64 Service Pack 1, Windows Server 2008 x64" Operator="1"/>
@@ -305,7 +307,7 @@
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.XmlElementComponent">
     <ROW XmlElement="swidbuild" ParentElement="swidnumeric" Name="swid:build" Order="2" Flags="14" Text="0"/>
-    <ROW XmlElement="swidbuild_1" ParentElement="swidnumeric_1" Name="swid:build" Order="2" Flags="14" Text="7"/>
+    <ROW XmlElement="swidbuild_1" ParentElement="swidnumeric_1" Name="swid:build" Order="2" Flags="14" Text="8"/>
     <ROW XmlElement="swidchannel_name" ParentElement="swidlicense_linkage" Name="swid:channel_name" Order="1" Flags="14"/>
     <ROW XmlElement="swidchannel_name_1" ParentElement="swidlicense_linkage_1" Name="swid:channel_name" Order="1" Flags="14"/>
     <ROW XmlElement="swidchannel_type" ParentElement="swidlicense_linkage" Name="swid:channel_type" Order="0" Flags="14" Text="Retail"/>

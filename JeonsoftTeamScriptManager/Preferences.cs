@@ -351,5 +351,11 @@ namespace JeonsoftTeamScriptManager
                     txtDefaultWorkspace.Text = fbd.SelectedPath;
             }
         }
+
+        private void btnConnectionSettings_Click(object sender, EventArgs e)
+        {
+            ConnectionSettingsForm csf = new ConnectionSettingsForm();
+            csf.ShowDialog();
+        }
     }
 }

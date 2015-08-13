@@ -60,6 +60,8 @@
             this.btnBrowseDefaultWorkspace = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.txtDefaultWorkspace = new System.Windows.Forms.TextBox();
+            this.btnConnectionSettings = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnCancel
@@ -338,7 +340,7 @@
             this.chbValidateOnMerge.AutoSize = true;
             this.chbValidateOnMerge.Checked = true;
             this.chbValidateOnMerge.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chbValidateOnMerge.Location = new System.Drawing.Point(132, 412);
+            this.chbValidateOnMerge.Location = new System.Drawing.Point(341, 389);
             this.chbValidateOnMerge.Name = "chbValidateOnMerge";
             this.chbValidateOnMerge.Size = new System.Drawing.Size(112, 17);
             this.chbValidateOnMerge.TabIndex = 22;
@@ -372,6 +374,24 @@
             this.txtDefaultWorkspace.TabIndex = 1;
             this.txtDefaultWorkspace.Leave += new System.EventHandler(this.txtStash_Leave);
             // 
+            // btnConnectionSettings
+            // 
+            this.btnConnectionSettings.Location = new System.Drawing.Point(132, 422);
+            this.btnConnectionSettings.Name = "btnConnectionSettings";
+            this.btnConnectionSettings.Size = new System.Drawing.Size(117, 23);
+            this.btnConnectionSettings.TabIndex = 23;
+            this.btnConnectionSettings.Text = "Connection Settings";
+            this.btnConnectionSettings.UseVisualStyleBackColor = true;
+            this.btnConnectionSettings.Click += new System.EventHandler(this.btnConnectionSettings_Click);
+            // 
+            // label9
+            // 
+            this.label9.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label9.Location = new System.Drawing.Point(132, 417);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(367, 2);
+            this.label9.TabIndex = 24;
+            // 
             // Preferences
             // 
             this.AcceptButton = this.btnSave;
@@ -380,6 +400,8 @@
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(520, 494);
             this.ControlBox = false;
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.btnConnectionSettings);
             this.Controls.Add(this.chbValidateOnMerge);
             this.Controls.Add(this.chbUseFullPath);
             this.Controls.Add(this.chkResolveHosts);
@@ -414,6 +436,7 @@
             this.Controls.Add(this.btnCancel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "Preferences";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Preferences";
             this.Load += new System.EventHandler(this.Preferences_Load);
@@ -456,5 +479,7 @@
         private System.Windows.Forms.Button btnBrowseDefaultWorkspace;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox txtDefaultWorkspace;
+        private System.Windows.Forms.Button btnConnectionSettings;
+        private System.Windows.Forms.Label label9;
     }
 }
