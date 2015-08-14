@@ -168,13 +168,17 @@ namespace JeonsoftTeamScriptManager
             if (parent != null)
             {
                 TreeNode child = parent.Nodes[e.Index.path];
-                child.ForeColor = Color.Red;
-                parent.ForeColor = Color.Red;
+                if (child != null)
+                {
+                    child.ForeColor = Color.Red;
+                    parent.ForeColor = Color.Red;
+                }
             }
             else
             {
                 TreeNode node = trvFileExplorer.Nodes[e.Index.path];
-                node.ForeColor = Color.Red;
+                if (node != null)
+                    node.ForeColor = Color.Red;
             }
             StashManager.Instance.Remove(e.Index);
         }
