@@ -2219,6 +2219,12 @@ namespace JeonsoftTeamScriptManager
             try
             {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                WebProxy proxy = (WebProxy)WebProxy.GetDefaultProxy();
+                if (proxy.Address != null)
+                {
+                    proxy.Credentials = CredentialCache.DefaultNetworkCredentials;
+                    WebRequest.DefaultWebProxy = new WebProxy(proxy.Address, proxy.BypassProxyOnLocal, proxy.BypassList, proxy.Credentials);
+                }
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream stream = response.GetResponseStream();
                 StreamReader reader = new StreamReader(stream);
@@ -2293,6 +2299,12 @@ namespace JeonsoftTeamScriptManager
             {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = WebRequestMethods.File.DownloadFile;
+                WebProxy proxy = (WebProxy)WebProxy.GetDefaultProxy();
+                if (proxy.Address != null)
+                {
+                    proxy.Credentials = CredentialCache.DefaultNetworkCredentials;
+                    WebRequest.DefaultWebProxy = new WebProxy(proxy.Address, proxy.BypassProxyOnLocal, proxy.BypassList, proxy.Credentials);
+                }
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
                 Stream stream = response.GetResponseStream();
