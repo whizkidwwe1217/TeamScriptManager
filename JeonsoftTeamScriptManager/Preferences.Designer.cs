@@ -62,6 +62,7 @@
             this.txtDefaultWorkspace = new System.Windows.Forms.TextBox();
             this.btnConnectionSettings = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
+            this.cboExt = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // btnCancel
@@ -98,7 +99,7 @@
             // 
             this.txtStash.Location = new System.Drawing.Point(132, 59);
             this.txtStash.Name = "txtStash";
-            this.txtStash.Size = new System.Drawing.Size(287, 20);
+            this.txtStash.Size = new System.Drawing.Size(206, 20);
             this.txtStash.TabIndex = 1;
             this.txtStash.Leave += new System.EventHandler(this.txtStash_Leave);
             // 
@@ -121,7 +122,7 @@
             // 
             // btnStash
             // 
-            this.btnStash.Location = new System.Drawing.Point(425, 57);
+            this.btnStash.Location = new System.Drawing.Point(344, 57);
             this.btnStash.Name = "btnStash";
             this.btnStash.Size = new System.Drawing.Size(75, 23);
             this.btnStash.TabIndex = 2;
@@ -392,6 +393,18 @@
             this.label9.Size = new System.Drawing.Size(367, 2);
             this.label9.TabIndex = 24;
             // 
+            // cboExt
+            // 
+            this.cboExt.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboExt.FormattingEnabled = true;
+            this.cboExt.Items.AddRange(new object[] {
+            ".wcat",
+            ".stash"});
+            this.cboExt.Location = new System.Drawing.Point(425, 57);
+            this.cboExt.Name = "cboExt";
+            this.cboExt.Size = new System.Drawing.Size(74, 21);
+            this.cboExt.TabIndex = 25;
+            // 
             // Preferences
             // 
             this.AcceptButton = this.btnSave;
@@ -400,6 +413,7 @@
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(520, 494);
             this.ControlBox = false;
+            this.Controls.Add(this.cboExt);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.btnConnectionSettings);
             this.Controls.Add(this.chbValidateOnMerge);
@@ -481,5 +495,6 @@
         private System.Windows.Forms.TextBox txtDefaultWorkspace;
         private System.Windows.Forms.Button btnConnectionSettings;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ComboBox cboExt;
     }
 }

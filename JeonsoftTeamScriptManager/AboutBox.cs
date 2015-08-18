@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Reflection;
+using System.Security.Principal;
 using System.Windows.Forms;
 
 namespace JeonsoftTeamScriptManager
@@ -18,6 +19,7 @@ namespace JeonsoftTeamScriptManager
             this.labelCopyright.Text = AssemblyCopyright;
             this.labelCompanyName.Text = AssemblyCompany;
             this.textBoxDescription.Text = AssemblyDescription;
+            logoPictureBox.Image = SystemUtils.GetUserTile(WindowsIdentity.GetCurrent().Name);
         }
 
         #region Assembly Attribute Accessors
