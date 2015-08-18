@@ -17,6 +17,7 @@ using JeonsoftTeamScriptManager.Utils;
 using System.Threading;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Configuration;
 
 //using System.Runtime.Caching;
 
@@ -2076,8 +2077,9 @@ namespace JeonsoftTeamScriptManager
 
         void bgw_DoWork(object sender, DoWorkEventArgs e)
         {
-            string url = "http://10.0.0.19:4000/packages/team_script_manager_version.ini";
-
+            string url = ConfigurationManager.AppSettings["update-url"];
+            if (url == null || url == string.Empty || url == "")
+                url = "http://10.0.0.19:4000/packages/team_script_manager_version.ini";
             try
             {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
@@ -2148,8 +2150,9 @@ namespace JeonsoftTeamScriptManager
         void bgw2_DoWork(object sender, DoWorkEventArgs e)
         {
             string outputDir = Directory.GetCurrentDirectory() + "\\Cache\\";
-            string url = "http://10.0.0.19:4000/packages/TeamScriptManager.exe";
-
+            string url = ConfigurationManager.AppSettings["update-installer-url"];
+            if (url == null || url == string.Empty || url == "")
+                url = "http://10.0.0.19:4000/packages/TeamScriptManager.exe";
             try
             {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
