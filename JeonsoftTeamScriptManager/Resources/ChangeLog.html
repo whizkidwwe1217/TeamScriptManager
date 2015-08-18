@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <style type="text/css">
-	html *
+	html, body, h2, h1, td, ul, li *
 	{
 		font-size: 1em;
 		font-family: Segoe UI;
@@ -14,9 +14,44 @@
 		font-size: 9pt;
 		text-decoration: underline;
 	}
+    td, th, tr
+    {
+        padding: 0;
+        margin: 0;
+    }
+    th
+    {
+        border-bottom: solid 1px gray;
+    }
+    .table {
+        border: solid 1px gray;
+    }
 </style>
 </head>
 <body>
+    <h2>Version 1.2.12.0 <span>August 18, 2015</span></h2>
+    <ul>
+        <li>Enhancements on node colors.</li>
+        <li>Open file when double clicking and item in the catalog.</li>
+    </ul>
+    <table class="table" border="0">
+        <tr>
+            <th>File Status</th>
+            <th>Color</th>
+        </tr>
+        <tr>
+            <td>File included in the default directories.</td>
+            <td style="background-color: #9637B0"></td>
+        </tr>
+        <tr>
+            <td>File is in catalog.</td>
+            <td style="background-color: green"></td>
+        </tr>
+        <tr>
+            <td>File is neither in default directories nor in catalog.</td>
+            <td style="background-color: gray"></td>
+        </tr>
+    </table>
     <h2>Version 1.2.11.0 <span>August 18, 2015</span></h2>
     <ul>
         <li>Major fixes and enhancements on Automatic Updates.</li>

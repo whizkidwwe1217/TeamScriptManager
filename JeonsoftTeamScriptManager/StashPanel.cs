@@ -12,12 +12,26 @@ namespace JeonsoftTeamScriptManager
 {
     public partial class StashPanel : UserControl
     {
+        public delegate void ItemDoubleClickHandler(object sender, string path);
+        public event ItemDoubleClickHandler OnItemDoubleClick;
+
         public StashPanel()
         {
             InitializeComponent();
             lvStash.KeyDown += lvStash_KeyDown;
             lvStash.ItemDrag += lvStash_ItemDrag;
             lvStash.ItemsChanged += lvStash_ItemsChanged;
+            lvStash.DoubleClick += lvStash_DoubleClick;
+        }
+
+        void lvStash_DoubleClick(object sender, EventArgs e)
+        {
+            ListViewItem item = lvStash.FocusedItem;
+            if (item != null)
+            {
+                if (OnItemDoubleClick != null)
+                    OnItemDoubleClick(sender, item.SubItems[2].Text);
+            }
         }
 
         private bool dragged = false;
@@ -66,7 +80,7 @@ namespace JeonsoftTeamScriptManager
                     }
                     sb.AppendLine(file);
                 }
-                sw.WriteLine(sb.ToString());
+                sw.WriteLine(sb.ToString().Trim());
             }
         }
 
