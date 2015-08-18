@@ -67,6 +67,7 @@ namespace JeonsoftTeamScriptManager
             stash.StashRemoved += stash_StashRemoved;
             stash.RequestSave += stash_RequestSave;
             stash.RequestResetStash += stash_RequestResetStash;
+            stash.OnItemDoubleClick += stash_OnItemDoubleClick;
 
             DockContent paneStash = new DockContent();
             paneStash.Text = "Script Catalog";
@@ -105,6 +106,7 @@ namespace JeonsoftTeamScriptManager
             
             trvFileExplorer.NodeMouseDoubleClick += trvFileExplorer_NodeMouseDoubleClick;
             trvFileExplorer.AfterCheck += trvFileExplorer_AfterCheck;
+            
             imgTree = new ImageList();
             imgTree.ColorDepth = ColorDepth.Depth32Bit;
             imgTree.ImageSize = new Size(16, 16);
@@ -115,6 +117,19 @@ namespace JeonsoftTeamScriptManager
             trvFileExplorer.NodeMouseClick += trvFileExplorer_NodeMouseClick;
             contextMenuStrip1.Opening += contextMenuStrip1_Opening;
             this.stashArg = stashArg;
+        }
+
+        void stash_OnItemDoubleClick(object sender, string path)
+        {
+            if (File.Exists(path))
+            {
+                FileInfo fi = new FileInfo(path);
+                OpenFile(fi.Name, fi.FullName, "SQL");
+            }
+            else
+            {
+                MessageBox.Show(this, "File does not exists.", "Catalog File", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private DockContent paneErrors;
@@ -140,6 +155,8 @@ namespace JeonsoftTeamScriptManager
                     node.Checked = e.Node.Checked;
                 }
             }
+            if (e.Node.Checked && e.Node.Tag != null && (bool) e.Node.Tag == true)
+                MessageBox.Show("Checked" + e.Node.Tag.ToString());
         }
 
         void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
@@ -718,6 +735,8 @@ namespace JeonsoftTeamScriptManager
             try
             {
                 StashManager.Instance.Clear();
+                defaultDirList.Clear();
+                defaultFileList.Clear();
                 string filename = GetStashFilePath();
                 Dictionary<string, string> files = new Dictionary<string, string>();
 
@@ -1690,7 +1709,7 @@ namespace JeonsoftTeamScriptManager
                                 {
                                     rtbLogs.AppendText("Merge error: Cannot find the file: '" + file + "'");
                                     rtbLogs.AppendText(Environment.NewLine);
-                                    AddBookmark("Merge error: Cannot find the file: '" + file + "'", BookmarkType.Error);
+                                    //AddBookmark("Merge error: Cannot find the file: '" + file + "'", BookmarkType.Error);
                                 }
                             }
                         }
@@ -2154,7 +2173,7 @@ namespace JeonsoftTeamScriptManager
 
         public void CheckForUpdates()
         {
-            rtbLogs.AppendText("Checking for new updates...");
+            rtbLogs.AppendText("Checking for new updates..." + Environment.NewLine);
             bgw = new BackgroundWorker();
             bgw.DoWork += bgw_DoWork;
             bgw.RunWorkerCompleted += bgw_RunWorkerCompleted;
@@ -2170,9 +2189,10 @@ namespace JeonsoftTeamScriptManager
                     vi = (VersionInfo)e.Result;
                     int updateVersion = int.Parse(vi.Version.Replace(".", ""));
                     int currentVersion = int.Parse(Application.ProductVersion.Replace(".", ""));
+                    
                     if (currentVersion < updateVersion)
                     {
-                        rtbLogs.AppendText(Environment.NewLine + "New updates available.");
+                        rtbLogs.AppendText("New updates available." + Environment.NewLine);
                         if (MessageBox.Show(this, "New updates available. Do you want to download and install updates?", "Download and install updates", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                         {
                             DownloadAndInstallUpdates();
@@ -2180,12 +2200,12 @@ namespace JeonsoftTeamScriptManager
                     }
                     else
                     {
-                        rtbLogs.AppendText(Environment.NewLine + "No new updates available.");
+                        rtbLogs.AppendText("No new updates available." + Environment.NewLine);
                     }
                 }
                 else
                 {
-                    rtbLogs.AppendText(Environment.NewLine + "Error checking updates: " + e.Result.ToString());
+                    rtbLogs.AppendText("Error checking updates: " + e.Result.ToString() + Environment.NewLine);
                 }
             }
             mnuCheckForUpdates.Enabled = true;
@@ -2249,7 +2269,7 @@ namespace JeonsoftTeamScriptManager
             if (e.Cancelled)
             {
                 mnuCheckForUpdates.Enabled = true;
-                rtbLogs.AppendText("Error downloading updates..." + e.Result.ToString());
+                rtbLogs.AppendText("Error downloading updates..." + e.Result.ToString() + Environment.NewLine);
             }
             else
             {
@@ -2259,7 +2279,7 @@ namespace JeonsoftTeamScriptManager
                     Process.Start(e.Result.ToString());
                     Application.Exit();
                 }
-                rtbLogs.AppendText("Downloading complete...");
+                rtbLogs.AppendText("Downloading complete..." + Environment.NewLine);
             }
         }
 
