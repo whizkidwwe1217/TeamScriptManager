@@ -14,10 +14,10 @@
     <ROW Property="ARPSYSTEMCOMPONENT" Value="1"/>
     <ROW Property="CTRLS" Value="2"/>
     <ROW Property="Manufacturer" Value="JeonSoft Corporation"/>
-    <ROW Property="ProductCode" Value="1033:{1BF9A20D-BE46-4A32-A001-6A412F64A04E} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{28D26D1B-D1D8-4B7A-A21D-94DAC59990E5} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="Team Script Manager"/>
-    <ROW Property="ProductVersion" Value="1.2.12" Type="32"/>
+    <ROW Property="ProductVersion" Value="1.2.13" Type="32"/>
     <ROW Property="RUNAPPLICATION" Value="1" Type="4"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND;AI_SETUPEXEPATH;SETUPEXEDIR"/>
     <ROW Property="UpgradeCode" Value="{2E7B6D73-096B-4AE0-93C4-A05E589F5389}"/>
@@ -122,6 +122,12 @@
     <ROW Name="xmlCfg.dll" SourcePath="&lt;AI_CUSTACTS&gt;xmlCfg.dll"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiControlComponent">
+    <ROW Dialog_="ExitDialog" Control="Title" Type="Text" X="135" Y="20" Width="220" Height="60" Attributes="196611" Text="Completing the [ProductName] [ProductVersion] [Wizard]" TextStyle="VerdanaBold13" Order="700" TextLocId="Control.Text.ExitDialog#Title" MsiKey="ExitDialog#Title"/>
+    <ROW Dialog_="ExitDialog" Control="LaunchProdText" Type="Text" X="148" Y="170" Width="220" Height="20" Attributes="196611" Text="Launch [ProductName] [ProductVersion]" Order="800" TextLocId="Control.Text.ExitDialog#LaunchProdText" MsiKey="ExitDialog#LaunchProdText"/>
+    <ROW Dialog_="PrepareDlg" Control="Title" Type="Text" X="135" Y="20" Width="220" Height="60" Attributes="196611" Text="Welcome to the [ProductName] [ProductVersion] [Wizard]" TextStyle="VerdanaBold13" Order="300" TextLocId="Control.Text.PrepareDlg#Title" MsiKey="PrepareDlg#Title"/>
+    <ROW Dialog_="ProgressDlg" Control="Title" Type="Text" X="20" Y="15" Width="200" Height="15" Attributes="196611" Text="[Progress1] [ProductName] [ProductVersion]" TextStyle="[DlgTitleFont]" Order="900" TextLocId="Control.Text.ProgressDlg#Title" MsiKey="ProgressDlg#Title"/>
+    <ROW Dialog_="ProgressDlg" Control="Text" Type="Text" X="35" Y="65" Width="300" Height="30" Attributes="3" Text="Please wait while the [Wizard] [Progress2] [ProductName] [ProductVersion].  This may take several minutes." Order="1000" TextLocId="Control.Text.ProgressDlg#Text" MsiKey="ProgressDlg#Text"/>
+    <ROW Dialog_="WelcomeDlg" Control="Title" Type="Text" X="135" Y="20" Width="220" Height="60" Attributes="196611" Text="Welcome to the [ProductName] [ProductVersion] [Wizard]" TextStyle="VerdanaBold13" Order="500" TextLocId="Control.Text.WelcomeDlg#Title" MsiKey="WelcomeDlg#Title"/>
     <ATTRIBUTE name="FixedSizeBitmaps" value="2"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiControlEventComponent">
@@ -189,6 +195,12 @@
     <ROW Action="SET_APPDIR" Type="307" Source="APPDIR" Target="[ProgramFilesFolder][Manufacturer]\[ProductName]"/>
     <ROW Action="SET_SHORTCUTDIR" Type="307" Source="SHORTCUTDIR" Target="[ProgramMenuFolder][ProductName]"/>
     <ROW Action="SET_TARGETDIR_TO_APPDIR" Type="51" Source="TARGETDIR" Target="[APPDIR]"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiDialogComponent">
+    <ROW Dialog="ExitDialog" HCentering="50" VCentering="50" Width="370" Height="270" Attributes="3" Title="[ProductName] [ProductVersion] [Setup]" Control_Default="Finish" Control_Cancel="Finish" TitleLocId="Dialog.ExitDialog" MsiKey="ExitDialog"/>
+    <ROW Dialog="PrepareDlg" HCentering="50" VCentering="50" Width="370" Height="270" Attributes="1" Title="[ProductName] [ProductVersion] [Setup]" Control_Default="Cancel" Control_Cancel="Cancel" TitleLocId="Dialog.PrepareDlg" MsiKey="PrepareDlg"/>
+    <ROW Dialog="ProgressDlg" HCentering="50" VCentering="50" Width="370" Height="270" Attributes="1" Title="[ProductName] [ProductVersion] [Setup]" Control_Default="Cancel" Control_Cancel="Cancel" TitleLocId="Dialog.ProgressDlg" MsiKey="ProgressDlg"/>
+    <ROW Dialog="WelcomeDlg" HCentering="50" VCentering="50" Width="370" Height="270" Attributes="3" Title="[ProductName] [ProductVersion] [Setup]" Control_Default="Next" Control_Cancel="Cancel" TitleLocId="Dialog.WelcomeDlg" MsiKey="WelcomeDlg"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiExtComponent">
     <ROW Extension="stash" Component_="JeonsoftTeamScriptManager.exe" ProgId_="[|Manufacturer].[|ProductName]" Feature_="JeonsoftTeamScriptManager" Options="32"/>
@@ -311,7 +323,7 @@
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.XmlElementComponent">
     <ROW XmlElement="swidbuild" ParentElement="swidnumeric" Name="swid:build" Order="2" Flags="14" Text="0"/>
-    <ROW XmlElement="swidbuild_1" ParentElement="swidnumeric_1" Name="swid:build" Order="2" Flags="14" Text="12"/>
+    <ROW XmlElement="swidbuild_1" ParentElement="swidnumeric_1" Name="swid:build" Order="2" Flags="14" Text="13"/>
     <ROW XmlElement="swidchannel_name" ParentElement="swidlicense_linkage" Name="swid:channel_name" Order="1" Flags="14"/>
     <ROW XmlElement="swidchannel_name_1" ParentElement="swidlicense_linkage_1" Name="swid:channel_name" Order="1" Flags="14"/>
     <ROW XmlElement="swidchannel_type" ParentElement="swidlicense_linkage" Name="swid:channel_type" Order="0" Flags="14" Text="Retail"/>
