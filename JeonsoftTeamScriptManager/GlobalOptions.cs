@@ -165,6 +165,7 @@ namespace JeonsoftTeamScriptManager
             WriteUserSettings(root, "Sql Password", SqlPassword);
             WriteUserSettings(root, "Sql Database Name", SqlDatabaseName);
             WriteUserSettings(root, "Sql Remember Password", SqlRememberPassword);
+            WriteUserSettings(root, "Catalog Default Extension", CatalogDefaultExtension);
             if (root != null)
                 root.Close();
         }
@@ -211,6 +212,14 @@ namespace JeonsoftTeamScriptManager
             get { return sqlRememberPassword; }
             set { sqlRememberPassword = value; }
         }
+        private string catalogDefaultExtension = ".wcat";
+
+        public string CatalogDefaultExtension
+        {
+            get { return catalogDefaultExtension; }
+            set { catalogDefaultExtension = value; }
+        }
+
         public void LoadSettings()
         {
             RegistryKey root = GetRootKey();
@@ -236,6 +245,8 @@ namespace JeonsoftTeamScriptManager
             SqlPassword = ReadStringUserSettings(root, "Sql Password");
             SqlDatabaseName = ReadStringUserSettings(root, "Sql DatabaseName");
             SqlRememberPassword = ReadBooleanUserSettings(root, "Sql Remember Password");
+            CatalogDefaultExtension = ReadStringUserSettings(root, "Catalog Default Extension");
+            
             if (root != null)
                 root.Close();
         }

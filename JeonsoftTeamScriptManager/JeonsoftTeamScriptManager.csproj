@@ -151,6 +151,7 @@
     </Compile>
     <Compile Include="Encryption.cs" />
     <Compile Include="NetworkUtils.cs" />
+    <Compile Include="SystemUtils.cs" />
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
