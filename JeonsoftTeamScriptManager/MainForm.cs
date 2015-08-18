@@ -2076,26 +2076,20 @@ namespace JeonsoftTeamScriptManager
 
         void bgw_DoWork(object sender, DoWorkEventArgs e)
         {
-            string ftpUrl = "ftp://ftp.jeonsoft.com";
-            string username = "u71059845";
-            string password = "uptown_629#";
-            string ftpDir = "installers/jeonsoftautomationtools";
-            string filename = "team_script_manager_version.ini";
+            string url = "http://10.0.0.19:4000/packages/team_script_manager_version.ini";
 
             try
             {
-                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftpUrl + "/" + ftpDir + "/" + filename);
-                request.Credentials = new NetworkCredential(username, password);
-                request.Method = WebRequestMethods.Ftp.DownloadFile;
-                FtpWebResponse response = (FtpWebResponse)request.GetResponse();
-
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream stream = response.GetResponseStream();
                 StreamReader reader = new StreamReader(stream);
                 try
                 {
+                    string content = reader.ReadToEnd();
                     VersionInfo vi = new VersionInfo();
                     IniDictionaryParser parser = new IniDictionaryParser();
-                    Dictionary<string, DictionarySection> sections = parser.Parse(reader.ReadToEnd());
+                    Dictionary<string, DictionarySection> sections = parser.Parse(content);
                     if (sections != null)
                     {
                         DictionarySection versionInfo = sections["Version Info"];
@@ -2154,22 +2148,17 @@ namespace JeonsoftTeamScriptManager
         void bgw2_DoWork(object sender, DoWorkEventArgs e)
         {
             string outputDir = Directory.GetCurrentDirectory() + "\\Cache\\";
-            string ftpUrl = "ftp://ftp.jeonsoft.com";
-            string username = "u71059845";
-            string password = "uptown_629#";
-            string ftpDir = "installers/jeonsoftautomationtools";
-            string filename = "TeamScriptManager.exe";
+            string url = "http://10.0.0.19:4000/packages/TeamScriptManager.exe";
 
             try
             {
-                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftpUrl + "/" + ftpDir + "/" + filename);
-                request.Credentials = new NetworkCredential(username, password);
-                request.Method = WebRequestMethods.Ftp.DownloadFile;
-                FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = WebRequestMethods.File.DownloadFile;
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
                 Stream stream = response.GetResponseStream();
 
-                FileStream writeStream = new FileStream(outputDir + "/" + filename, FileMode.Create);
+                FileStream writeStream = new FileStream(outputDir + @"/TeamScriptManager.exe", FileMode.Create);
                 int length = 2048;
 
                 byte[] buffer = new byte[length];
@@ -2182,7 +2171,7 @@ namespace JeonsoftTeamScriptManager
                 stream.Close();
                 writeStream.Close();
                 request = null;
-                e.Result = outputDir + "\\" + filename;
+                e.Result = outputDir + "\\TeamScriptManager.exe";
             }
             catch (Exception ex)
             {
@@ -2558,6 +2547,35 @@ namespace JeonsoftTeamScriptManager
                     }
                 }
             }
+        }
+
+        private readonly FindAndReplaceForm fr = new FindAndReplaceForm();
+
+        private void findToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowFindAndReplaceForm(false);
+        }
+
+        private void ShowFindAndReplaceForm(bool replace)
+        {
+            IDockContent ic = dPanel.ActiveDocument;
+            if (ic != null)
+            {
+                if (ic is DockContent)
+                {
+                    DockContent dc = (DockContent)ic;
+                    TextEditorControl rtb = (TextEditorControl)dc.Controls[0];
+                    if (rtb != null)
+                    {
+                        fr.ShowFor(rtb, replace);
+                    }
+                }
+            }
+        }
+
+        private void replaceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowFindAndReplaceForm(true);
         }
     }
 }
