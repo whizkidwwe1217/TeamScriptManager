@@ -38,6 +38,7 @@ namespace JeonsoftTeamScriptManager
                 GlobalOptions.Instance.SaveStashFilesWithFullPath = chbUseFullPath.Checked;
                 GlobalOptions.Instance.ValidateOnMerge = chbValidateOnMerge.Checked;
                 GlobalOptions.Instance.DefaultWorkspace = txtDefaultWorkspace.Text.Trim();
+                GlobalOptions.Instance.CatalogDefaultExtension = cboExt.Text;
                 GlobalOptions.Instance.SaveSettings();
             }
         }
@@ -58,6 +59,7 @@ namespace JeonsoftTeamScriptManager
             GlobalOptions.Instance.SaveStashFilesWithFullPath = chbUseFullPath.Checked;
             GlobalOptions.Instance.ValidateOnMerge = chbValidateOnMerge.Checked;
             GlobalOptions.Instance.DefaultWorkspace = txtDefaultWorkspace.Text.Trim();
+            GlobalOptions.Instance.CatalogDefaultExtension = cboExt.Text;
             GlobalOptions.Instance.SaveSettings();
 
             SaveToRecent();
@@ -80,6 +82,7 @@ namespace JeonsoftTeamScriptManager
             chkResolveHosts.Checked = GlobalOptions.Instance.ResolveHostNameAddresses;
             chbUseFullPath.Checked = GlobalOptions.Instance.SaveStashFilesWithFullPath;
             chbValidateOnMerge.Checked = GlobalOptions.Instance.ValidateOnMerge;
+            cboExt.SelectedIndex = GlobalOptions.Instance.CatalogDefaultExtension == ".stash" ? 1 : 0;
             txtDefaultWorkspace.Text = GlobalOptions.Instance.DefaultWorkspace;
             if (txtMerge.Text.Trim() == "" || txtStash.Text.Trim() == "")
                 label3.Text = "Alright, first things first. Before we move on, please let me know where to put all these thingies: (1) Stash File, (2) Merged File.";

@@ -1197,6 +1197,60 @@ namespace JeonsoftTeamScriptManager
             lblStatus.Text = "Ready.";
         }
 
+        private void ValidateScripts(string d, bool root)
+        {
+            DirectoryInfo di = new DirectoryInfo(d);
+            FileInfo[] fileInfos = di.GetFiles("*.sql");
+
+            foreach (FileInfo fi in fileInfos)
+            {
+                lblStatus.Text = string.Format("Indexing {0}...", fi.Name);
+
+                string dirname = fi.Directory.Name;
+                string dirpath = fi.DirectoryName;
+                string host = string.Empty;
+                string name = fi.Name;
+                string fullName = fi.FullName;
+
+                if (GlobalOptions.Instance.ResolveHostNameAddresses)
+                {
+                    UriHostNameType hostType = NetworkUtils.GetHostType(fi.FullName, ref host);
+
+                    if (hostType != UriHostNameType.Basic || hostType != UriHostNameType.Unknown)
+                    {
+                        if (!mappedHosts.ContainsKey(host) && !string.IsNullOrEmpty(host))
+                        {
+                            MappedHost mh = new MappedHost()
+                            {
+                                Name = host.ToLower(),
+                                HostName = string.Empty
+                            };
+                            if (!mappedHosts.ContainsKey(mh.Name))
+                                mappedHosts.Add(mh.Name, mh);
+                        }
+                    }
+                }
+
+                try
+                {
+                    string content = File.ReadAllText(fullName);
+                    ValidateScript(fullName, name, content);
+                }
+                catch (Exception ex)
+                {
+                    rtbLogs.AppendText("Error validating file: " + ex.Message + Environment.NewLine);
+                }
+            }
+
+            if (!root)
+            {
+                string[] ddds = Directory.GetDirectories(d);
+                foreach (string sd in ddds)
+                {
+                    ValidateScripts(sd, false);
+                }
+            }
+        }
         void validateWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             rtbLogs.Clear();
@@ -1213,61 +1267,27 @@ namespace JeonsoftTeamScriptManager
                     {
                         string[] delimiter = new string[] { Environment.NewLine };
                         string[] lines = GlobalOptions.Instance.DefaultDirectories.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
-                        int ddCnt = 0;
 
                         foreach (string s in lines)
                         {
                             lblStatus.Text = string.Format("Scanning default directory {0}...", s);
-                            ddCnt++;
-                            string[] dirs = Directory.GetDirectories(Path.GetDirectoryName(filename));
+
                             string indexedFile = s;
-
-                            foreach (string d in dirs)
+                            if (!Path.IsPathRooted(s))
                             {
-                                DirectoryInfo di = new DirectoryInfo(d);
-                                if (di.Name.ToLower() == indexedFile.ToLower().Trim())
+                                FileInfo fi = Utils.FileUtils.GetAbsolutePath(Path.GetDirectoryName(filename), s);
+                                indexedFile = fi.FullName;
+                            }
+
+                            string[] dirs = Directory.GetDirectories(Path.GetDirectoryName(indexedFile));
+                            
+                            if (Directory.Exists(indexedFile))
+                            {
+                                dirs = Directory.GetDirectories(indexedFile);
+                                ValidateScripts(indexedFile, true);
+                                foreach (string d in dirs)
                                 {
-                                    FileInfo[] fileInfos = di.GetFiles("*.sql");
-
-                                    foreach (FileInfo fi in fileInfos)
-                                    {
-                                        lblStatus.Text = string.Format("Indexing {0}...", fi.Name);
-
-                                        string dirname = fi.Directory.Name;
-                                        string dirpath = fi.DirectoryName;
-                                        string host = string.Empty;
-                                        string name = fi.Name;
-                                        string fullName = fi.FullName;
-
-                                        if (GlobalOptions.Instance.ResolveHostNameAddresses)
-                                        {
-                                            UriHostNameType hostType = NetworkUtils.GetHostType(fi.FullName, ref host);
-
-                                            if (hostType != UriHostNameType.Basic || hostType != UriHostNameType.Unknown)
-                                            {
-                                                if (!mappedHosts.ContainsKey(host) && !string.IsNullOrEmpty(host))
-                                                {
-                                                    MappedHost mh = new MappedHost()
-                                                    {
-                                                        Name = host.ToLower(),
-                                                        HostName = string.Empty
-                                                    };
-                                                    if (!mappedHosts.ContainsKey(mh.Name))
-                                                        mappedHosts.Add(mh.Name, mh);
-                                                }
-                                            }
-                                        }
-
-                                        try
-                                        {
-                                            string content = File.ReadAllText(fullName);
-                                            ValidateScript(fullName, name, content);
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            rtbLogs.AppendText("Error validating file: " + ex.Message + Environment.NewLine);
-                                        }
-                                    }
+                                    ValidateScripts(d, false);
                                 }
                             }
                         }
@@ -1305,6 +1325,7 @@ namespace JeonsoftTeamScriptManager
                                         catch (Exception ex)
                                         {
                                             rtbLogs.AppendText("Error validating file: " + ex.Message + Environment.NewLine);
+                                            AddBookmark("Error validating file: " + ex.Message, BookmarkType.Error);
                                         }
                                     }
                                 }
@@ -1312,12 +1333,14 @@ namespace JeonsoftTeamScriptManager
                                 {
                                     rtbLogs.AppendText("Validation error: Cannot find the file: '" + file + "'");
                                     rtbLogs.AppendText(Environment.NewLine);
+                                    AddBookmark("Validation error: Cannot find the file: '" + file + "'", BookmarkType.Error);
                                 }
                             }
                         }
                         catch (Exception ex)
                         {
                             rtbLogs.AppendText("Error validating file: " + ex.Message + Environment.NewLine);
+                            AddBookmark("Cannot find the file: " + ex.Message, BookmarkType.Error);
                         }
                         //while ((file = sr.ReadLine()) != null)
                         //{
@@ -1329,6 +1352,7 @@ namespace JeonsoftTeamScriptManager
                 {
                     rtbLogs.AppendText("Cannot find the file: '" + filename + "'");
                     rtbLogs.AppendText(Environment.NewLine);
+                    AddBookmark("Cannot find the file: '" + filename + "'", BookmarkType.Warning);
                 }
             }
             finally
@@ -1343,15 +1367,12 @@ namespace JeonsoftTeamScriptManager
             worker = new BackgroundWorker();
             worker.DoWork += worker_DoWork;
             worker.RunWorkerCompleted += worker_RunWorkerCompleted;
-            tbtProgress.Minimum = 0;
-            tbtProgress.Maximum = StashManager.Instance.Count;
             isGenerating = true;
             worker.RunWorkerAsync(new string[] { filename, outputFilename });
         }
 
         void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            tbtProgress.Value = 0;
             if (File.Exists(GetMergedFilePath()))
             {
                 rtbLogs.AppendText("Output saved to: " + GetMergedFilePath());
@@ -1367,6 +1388,94 @@ namespace JeonsoftTeamScriptManager
             LockControls(false);
             paneErrors.Text = "Warnings/Errors (" + numOfErrors.ToString() + ")";
             //MessageBox.Show("Merged file generated to: " + GetMergedFilePath(), "Merge Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void MergeDefaultDirectories(String outputFilename, String d, bool root)
+        {
+            DirectoryInfo di = new DirectoryInfo(d);
+            FileInfo[] fileInfos = di.GetFiles("*.sql");
+
+            foreach (FileInfo fi in fileInfos)
+            {
+                lblStatus.Text = string.Format("Indexing {0}...", fi.Name);
+
+                string dirname = fi.Directory.Name;
+                string dirpath = fi.DirectoryName;
+                string host = string.Empty;
+                string name = fi.Name;
+                string fullName = fi.FullName;
+
+                if (GlobalOptions.Instance.ResolveHostNameAddresses)
+                {
+                    UriHostNameType hostType = NetworkUtils.GetHostType(fi.FullName, ref host);
+
+                    if (hostType != UriHostNameType.Basic || hostType != UriHostNameType.Unknown)
+                    {
+                        if (!mappedHosts.ContainsKey(host) && !string.IsNullOrEmpty(host))
+                        {
+                            MappedHost mh = new MappedHost()
+                            {
+                                Name = host.ToLower(),
+                                HostName = string.Empty
+                            };
+                            if (!mappedHosts.ContainsKey(mh.Name))
+                                mappedHosts.Add(mh.Name, mh);
+                        }
+                    }
+                }
+
+                using (StreamWriter sw = new StreamWriter(outputFilename, true))
+                {
+                    string content = File.ReadAllText(fullName);
+                    sw.WriteLine(content);
+                    if (GlobalOptions.Instance.ValidateOnMerge)
+                        ValidateScript(fullName, name, content);
+                    rtbLogs.AppendText("File written to merged output file: " + fullName);
+                    rtbLogs.AppendText(Environment.NewLine);
+                }
+            }
+
+            if (!root)
+            {
+                string[] ddds = Directory.GetDirectories(d);
+                foreach (string sd in ddds)
+                {
+                    MergeDefaultDirectories(outputFilename, sd, false);
+                }
+            }
+        }
+
+        private static void MergeCatalogDefaultDirectories(String outputFilename, String d, bool root)
+        {
+            DirectoryInfo di = new DirectoryInfo(d);
+            FileInfo[] fileInfos = di.GetFiles("*.sql");
+
+            foreach (FileInfo fi in fileInfos)
+            {
+                string dirname = fi.Directory.Name;
+                string dirpath = fi.DirectoryName;
+                string host = string.Empty;
+                string name = fi.Name;
+                string fullName = fi.FullName;
+
+                using (StreamWriter sw = new StreamWriter(outputFilename, true))
+                {
+                    string content = File.ReadAllText(fullName);
+                    sw.WriteLine(content);
+                    if (GlobalOptions.Instance.ValidateOnMerge)
+                        ValidateScriptSilent(fullName, name, content);
+                    AppendToLogFile("File written to merged output file: " + fullName);
+                }
+            }
+
+            if (!root)
+            {
+                string[] ddds = Directory.GetDirectories(d);
+                foreach (string sd in ddds)
+                {
+                    MergeCatalogDefaultDirectories(outputFilename, sd, false);
+                }
+            }
         }
 
         void worker_DoWork(object sender, DoWorkEventArgs e)
@@ -1409,78 +1518,31 @@ namespace JeonsoftTeamScriptManager
                     {
                         string[] delimiter = new string[] { Environment.NewLine };
                         string[] lines = GlobalOptions.Instance.DefaultDirectories.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
-                        tbtProgress.Maximum = lines.Length;
-                        int ddCnt = 0;
 
                         foreach (string s in lines)
                         {
-                            tbtProgress.Maximum = lines.Length;
-                            tbtProgress.Value = ddCnt;
                             lblStatus.Text = string.Format("Scanning default directory {0}...", s);
-                            ddCnt++;
-                            string[] dirs = Directory.GetDirectories(Path.GetDirectoryName(filename));
                             string indexedFile = s;
-
-                            //if (!Path.IsPathRooted(s))
-                            //{
-                            //    FileInfo fi = Utils.FileUtils.GetAbsolutePath(Path.GetDirectoryName(filename), s);
-                            //    indexedFile = fi.FullName;
-                            //}
-
-                            foreach (string d in dirs)
+                            if (!Path.IsPathRooted(s))
                             {
-                                DirectoryInfo di = new DirectoryInfo(d);
-                                if (di.Name.ToLower() == indexedFile.ToLower().Trim())
+                                FileInfo fi = Utils.FileUtils.GetAbsolutePath(Path.GetDirectoryName(filename), s);
+                                indexedFile = fi.FullName;
+                            }
+
+                            string[] dirs = Directory.GetDirectories(Path.GetDirectoryName(indexedFile));
+
+                            if (Directory.Exists(indexedFile))
+                            {
+                                dirs = Directory.GetDirectories(indexedFile);
+                                MergeDefaultDirectories(outputFilename, indexedFile, true);
+                                foreach (string d in dirs)
                                 {
-                                    FileInfo[] fileInfos = di.GetFiles("*.sql");
-                                    tbtProgress.Value = 0;
-                                    tbtProgress.Maximum = fileInfos.Length + 1;
-
-                                    foreach (FileInfo fi in fileInfos)
-                                    {
-                                        tbtProgress.Value++;
-                                        lblStatus.Text = string.Format("Indexing {0}...", fi.Name);
-
-                                        string dirname = fi.Directory.Name;
-                                        string dirpath = fi.DirectoryName;
-                                        string host = string.Empty;
-                                        string name = fi.Name;
-                                        string fullName = fi.FullName;
-
-                                        if (GlobalOptions.Instance.ResolveHostNameAddresses)
-                                        {
-                                            UriHostNameType hostType = NetworkUtils.GetHostType(fi.FullName, ref host);
-
-                                            if (hostType != UriHostNameType.Basic || hostType != UriHostNameType.Unknown)
-                                            {
-                                                if (!mappedHosts.ContainsKey(host) && !string.IsNullOrEmpty(host))
-                                                {
-                                                    MappedHost mh = new MappedHost()
-                                                    {
-                                                        Name = host.ToLower(),
-                                                        HostName = string.Empty
-                                                    };
-                                                    if (!mappedHosts.ContainsKey(mh.Name))
-                                                        mappedHosts.Add(mh.Name, mh);
-                                                }
-                                            }
-                                        }
-
-                                        using (StreamWriter sw = new StreamWriter(outputFilename, true))
-                                        {
-                                            string content = File.ReadAllText(fullName);
-                                            sw.WriteLine(content);
-                                            if (GlobalOptions.Instance.ValidateOnMerge)
-                                                ValidateScript(fullName, name, content);
-                                            rtbLogs.AppendText("File written to merged output file: " + fullName);
-                                            rtbLogs.AppendText(Environment.NewLine);
-                                        }
-                                    }
+                                    MergeDefaultDirectories(outputFilename, d, false);
                                 }
                             }
                         }
                     }
-
+                    
                     using (StreamReader sr = new StreamReader(filename))
                     {
                         string file = "";
@@ -1503,14 +1565,15 @@ namespace JeonsoftTeamScriptManager
                                     sw.WriteLine(content);
                                     if (GlobalOptions.Instance.ValidateOnMerge)
                                         ValidateScript(file, fi.Name, content);
-                                    tbtProgress.Value++;
                                     rtbLogs.AppendText("File written to merged output file: " + file);
                                     rtbLogs.AppendText(Environment.NewLine);
+                                    //AddBookmark("File written to merged output file: " + file, BookmarkType.Info);
                                 }
                                 else
                                 {
                                     rtbLogs.AppendText("Merge error: Cannot find the file: '" + file + "'");
                                     rtbLogs.AppendText(Environment.NewLine);
+                                    AddBookmark("Merge error: Cannot find the file: '" + file + "'", BookmarkType.Error);
                                 }
                             }
                         }
@@ -1614,6 +1677,11 @@ namespace JeonsoftTeamScriptManager
             }
         }
 
+        private void AddBookmark(string message, BookmarkType type)
+        {
+            AddBookmark("", "", "", 0, 0, 0, 0, message, type);
+        }
+
         private void AddBookmark(string fileName, string name, string line, int startCol, int startLine, int endCol, int endLine, string message, BookmarkType type)
         {
             Bookmark bookmark = new Bookmark(fileName, name,  startCol, startLine, endCol, endLine, message, type);
@@ -1642,7 +1710,8 @@ namespace JeonsoftTeamScriptManager
             if (item != null && item.Tag != null)
             {
                 Bookmark bm = item.Tag as Bookmark;
-                OpenFile(bm.Name, bm.Filename, "SQL", bm.StartColumn, bm.StartLine, bm.EndColumn, bm.EndLine);
+                if (File.Exists(bm.Filename))
+                    OpenFile(bm.Name, bm.Filename, "SQL", bm.StartColumn, bm.StartLine, bm.EndColumn, bm.EndLine);
             }
         }
 
@@ -1739,9 +1808,9 @@ namespace JeonsoftTeamScriptManager
             }
             using (SaveFileDialog sfd = new SaveFileDialog())
             {
-                sfd.DefaultExt = ".wcat";
+                sfd.DefaultExt = GetExtensionName();
                 sfd.FileName = GetStashFileName();
-                sfd.Filter = "Team Script Manager Catalog File|*.wcat";
+                sfd.Filter = "Team Script Manager Catalog File|*" + GetExtensionName();
                 if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     stash.SaveStash(sfd.FileName);
@@ -1752,7 +1821,11 @@ namespace JeonsoftTeamScriptManager
 
         private string GetStashFileName()
         {
-            return "_catalog";
+            if (GlobalOptions.Instance.CatalogDefaultExtension == null || GlobalOptions.Instance.CatalogDefaultExtension.Trim() == "")
+                return "_catalog";
+            if (GlobalOptions.Instance.CatalogDefaultExtension == ".wcat")
+                return "_catalog";
+            return "_stash";
         }
 
         private void mnuRefresh_Click(object sender, EventArgs e)
@@ -1808,11 +1881,11 @@ namespace JeonsoftTeamScriptManager
             string dir = "";
 
             if (GlobalOptions.Instance.StashManifestDirectory == null || GlobalOptions.Instance.StashManifestDirectory.Trim() == "")
-                dir = Directory.GetCurrentDirectory() + "\\" + GetStashFileName() + ".wcat";
+                dir = Directory.GetCurrentDirectory() + "\\" + GetStashFileName() + GetExtensionName();
             if (GlobalOptions.Instance.StashManifestDirectory.EndsWith("\\"))
-                dir = GlobalOptions.Instance.StashManifestDirectory + GetStashFileName() + ".wcat";
+                dir = GlobalOptions.Instance.StashManifestDirectory + GetStashFileName() + GetExtensionName();
             else
-                dir = GlobalOptions.Instance.StashManifestDirectory + "\\" + GetStashFileName() + ".wcat";
+                dir = GlobalOptions.Instance.StashManifestDirectory + "\\" + GetStashFileName() + GetExtensionName();
 
             //string host = string.Empty;
             //UriHostNameType hostType = Utils.GetHostType(dir, ref host);
@@ -1823,6 +1896,15 @@ namespace JeonsoftTeamScriptManager
             //}
 
             return dir;
+        }
+
+        private string GetExtensionName()
+        {
+            if (stashArg != string.Empty)
+                return Path.GetExtension(stashArg);
+            if (GlobalOptions.Instance.CatalogDefaultExtension == null || GlobalOptions.Instance.CatalogDefaultExtension.Trim() == "")
+                return ".wcat";
+            return GlobalOptions.Instance.CatalogDefaultExtension.Trim();
         }
 
         public static string GetMergedFilePath()
@@ -1913,9 +1995,6 @@ namespace JeonsoftTeamScriptManager
         void cf_OnOkClicked(object sender, System.Collections.Hashtable files, string destination)
         {
             LockControls(true);
-            tbtProgress.Minimum = 0;
-            tbtProgress.Maximum = files.Count;
-            tbtProgress.Value = 0;
             addFileWorker = new BackgroundWorker();
             addFileWorker.DoWork += addFileWorker_DoWork;
             addFileWorker.RunWorkerCompleted += addFileWorker_RunWorkerCompleted;
@@ -1928,7 +2007,6 @@ namespace JeonsoftTeamScriptManager
         {
             stash.SetStash(StashManager.Instance.Stash);
             stash.SetModified(hasAdded);
-            tbtProgress.Value = 0;
             hasAdded = false;
             LockControls(false);
         }
@@ -1946,7 +2024,6 @@ namespace JeonsoftTeamScriptManager
                     StashManager.Instance.Add(idx);
                 }
                 rtbLogs.AppendText("Copied '" + fi.Name + "' to directory and added to catalog." + Environment.NewLine);
-                tbtProgress.Value++;
             }
         }
 
@@ -1999,26 +2076,20 @@ namespace JeonsoftTeamScriptManager
 
         void bgw_DoWork(object sender, DoWorkEventArgs e)
         {
-            string ftpUrl = "ftp://ftp.jeonsoft.com";
-            string username = "u71059845";
-            string password = "uptown_629#";
-            string ftpDir = "installers/jeonsoftautomationtools";
-            string filename = "team_script_manager_version.ini";
+            string url = "http://10.0.0.19:4000/packages/team_script_manager_version.ini";
 
             try
             {
-                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftpUrl + "/" + ftpDir + "/" + filename);
-                request.Credentials = new NetworkCredential(username, password);
-                request.Method = WebRequestMethods.Ftp.DownloadFile;
-                FtpWebResponse response = (FtpWebResponse)request.GetResponse();
-
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream stream = response.GetResponseStream();
                 StreamReader reader = new StreamReader(stream);
                 try
                 {
+                    string content = reader.ReadToEnd();
                     VersionInfo vi = new VersionInfo();
                     IniDictionaryParser parser = new IniDictionaryParser();
-                    Dictionary<string, DictionarySection> sections = parser.Parse(reader.ReadToEnd());
+                    Dictionary<string, DictionarySection> sections = parser.Parse(content);
                     if (sections != null)
                     {
                         DictionarySection versionInfo = sections["Version Info"];
@@ -2077,22 +2148,17 @@ namespace JeonsoftTeamScriptManager
         void bgw2_DoWork(object sender, DoWorkEventArgs e)
         {
             string outputDir = Directory.GetCurrentDirectory() + "\\Cache\\";
-            string ftpUrl = "ftp://ftp.jeonsoft.com";
-            string username = "u71059845";
-            string password = "uptown_629#";
-            string ftpDir = "installers/jeonsoftautomationtools";
-            string filename = "TeamScriptManager.exe";
+            string url = "http://10.0.0.19:4000/packages/TeamScriptManager.exe";
 
             try
             {
-                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftpUrl + "/" + ftpDir + "/" + filename);
-                request.Credentials = new NetworkCredential(username, password);
-                request.Method = WebRequestMethods.Ftp.DownloadFile;
-                FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = WebRequestMethods.File.DownloadFile;
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
                 Stream stream = response.GetResponseStream();
 
-                FileStream writeStream = new FileStream(outputDir + "/" + filename, FileMode.Create);
+                FileStream writeStream = new FileStream(outputDir + @"/TeamScriptManager.exe", FileMode.Create);
                 int length = 2048;
 
                 byte[] buffer = new byte[length];
@@ -2105,7 +2171,7 @@ namespace JeonsoftTeamScriptManager
                 stream.Close();
                 writeStream.Close();
                 request = null;
-                e.Result = outputDir + "\\" + filename;
+                e.Result = outputDir + "\\TeamScriptManager.exe";
             }
             catch (Exception ex)
             {
@@ -2302,32 +2368,17 @@ namespace JeonsoftTeamScriptManager
 
                                 foreach (string s in lines)
                                 {
-                                    string[] dirs = Directory.GetDirectories(Path.GetDirectoryName(filename));
                                     string indexedFile = s;
-                                    foreach (string d in dirs)
+
+                                    string[] dirs = Directory.GetDirectories(Path.GetDirectoryName(indexedFile));
+
+                                    if (Directory.Exists(indexedFile))
                                     {
-                                        DirectoryInfo di = new DirectoryInfo(d);
-                                        if (di.Name.ToLower() == indexedFile.ToLower().Trim())
+                                        dirs = Directory.GetDirectories(indexedFile);
+                                        MergeCatalogDefaultDirectories(outputFilename, indexedFile, true);
+                                        foreach (string d in dirs)
                                         {
-                                            FileInfo[] fileInfos = di.GetFiles("*.sql");
-
-                                            foreach (FileInfo fi in fileInfos)
-                                            {
-                                                string dirname = fi.Directory.Name;
-                                                string dirpath = fi.DirectoryName;
-                                                string host = string.Empty;
-                                                string name = fi.Name;
-                                                string fullName = fi.FullName;
-
-
-                                                using (StreamWriter sw = new StreamWriter(outputFilename, true))
-                                                {
-                                                    string content = File.ReadAllText(fullName);
-                                                    sw.WriteLine(content);
-                                                    if (GlobalOptions.Instance.ValidateOnMerge)
-                                                        ValidateScriptSilent(fullName, name, content);
-                                                }
-                                            }
+                                            MergeCatalogDefaultDirectories(outputFilename, d, false);
                                         }
                                     }
                                 }
@@ -2496,6 +2547,35 @@ namespace JeonsoftTeamScriptManager
                     }
                 }
             }
+        }
+
+        private readonly FindAndReplaceForm fr = new FindAndReplaceForm();
+
+        private void findToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowFindAndReplaceForm(false);
+        }
+
+        private void ShowFindAndReplaceForm(bool replace)
+        {
+            IDockContent ic = dPanel.ActiveDocument;
+            if (ic != null)
+            {
+                if (ic is DockContent)
+                {
+                    DockContent dc = (DockContent)ic;
+                    TextEditorControl rtb = (TextEditorControl)dc.Controls[0];
+                    if (rtb != null)
+                    {
+                        fr.ShowFor(rtb, replace);
+                    }
+                }
+            }
+        }
+
+        private void replaceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowFindAndReplaceForm(true);
         }
     }
 }
