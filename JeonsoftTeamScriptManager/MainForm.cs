@@ -2219,10 +2219,12 @@ namespace JeonsoftTeamScriptManager
             try
             {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                WebProxy proxy = (WebProxy)WebProxy.GetDefaultProxy();
+                var iproxy = WebRequest.GetSystemWebProxy();
+                var proxy = new WebProxy();
+                proxy.Address = iproxy.GetProxy(new Uri(url));
+                proxy.Credentials = iproxy.Credentials;
                 if (proxy.Address != null)
                 {
-                    proxy.Credentials = CredentialCache.DefaultNetworkCredentials;
                     WebRequest.DefaultWebProxy = new WebProxy(proxy.Address, proxy.BypassProxyOnLocal, proxy.BypassList, proxy.Credentials);
                 }
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
@@ -2280,18 +2282,29 @@ namespace JeonsoftTeamScriptManager
             else
             {
                 mnuCheckForUpdates.Enabled = true;
-                if (File.Exists(e.Result.ToString()))
+                if (e != null && e.Result != null)
                 {
-                    Process.Start(e.Result.ToString());
-                    Application.Exit();
+                    rtbLogs.AppendText("Downloading complete..." + e.Result.ToString() + Environment.NewLine);
+                    MessageBox.Show("Download completed.");
+                    if (File.Exists(e.Result.ToString()))
+                    {
+                        Process.Start(e.Result.ToString());
+                        Application.Exit();
+                    }
                 }
-                rtbLogs.AppendText("Downloading complete..." + Environment.NewLine);
+                else
+                {
+                    rtbLogs.AppendText("Download error." + Environment.NewLine);
+                    MessageBox.Show("Download failed.");
+                }
             }
         }
 
         void bgw2_DoWork(object sender, DoWorkEventArgs e)
         {
             string outputDir = Directory.GetCurrentDirectory() + "\\Cache\\";
+            if (Directory.Exists(outputDir) == false)
+                Directory.CreateDirectory(outputDir);
             string url = ConfigurationManager.AppSettings["update-installer-url"];
             if (url == null || url == string.Empty || url == "")
                 url = "http://10.0.0.19:4000/packages/TeamScriptManager.exe";
@@ -2299,12 +2312,15 @@ namespace JeonsoftTeamScriptManager
             {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = WebRequestMethods.File.DownloadFile;
-                WebProxy proxy = (WebProxy)WebProxy.GetDefaultProxy();
+                var iproxy = WebRequest.GetSystemWebProxy();
+                var proxy = new WebProxy();
+                proxy.Address = iproxy.GetProxy(new Uri(url));
+                proxy.Credentials = iproxy.Credentials;
                 if (proxy.Address != null)
                 {
-                    proxy.Credentials = CredentialCache.DefaultNetworkCredentials;
                     WebRequest.DefaultWebProxy = new WebProxy(proxy.Address, proxy.BypassProxyOnLocal, proxy.BypassList, proxy.Credentials);
                 }
+                request.Proxy = proxy;
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
                 Stream stream = response.GetResponseStream();
@@ -2327,6 +2343,7 @@ namespace JeonsoftTeamScriptManager
             catch (Exception ex)
             {
                 e.Result = ex.Message;
+                rtbLogs.AppendText(ex.Message + Environment.NewLine);
                 e.Cancel = true;
             }
         }
