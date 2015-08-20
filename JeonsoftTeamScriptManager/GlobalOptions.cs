@@ -254,7 +254,12 @@ namespace JeonsoftTeamScriptManager
 
         public string DefaultWorkspace
         {
-            get { return defaultWorkspace; }
+            get 
+            {
+                if (defaultWorkspace.Trim().EndsWith("\\"))
+                    return defaultWorkspace;
+                return defaultWorkspace.Trim() + "\\";
+            }
             set { defaultWorkspace = value; }
         }
         private bool validateOnMerge = true;
@@ -344,14 +349,24 @@ namespace JeonsoftTeamScriptManager
 
         public string MergeFileOutputDirectory
         {
-            get { return mergeFileOutputDirectory; }
+            get 
+            { 
+                if (mergeFileOutputDirectory.Trim().EndsWith("\\"))
+                    return mergeFileOutputDirectory;
+                return mergeFileOutputDirectory.Trim() + "\\";
+            }
             set { mergeFileOutputDirectory = value; }
         }
         private string stashManifestDirectory;
 
         public string StashManifestDirectory
         {
-            get { return stashManifestDirectory; }
+            get
+            {
+                if (stashManifestDirectory.Trim().EndsWith("\\"))
+                    return stashManifestDirectory;
+                return stashManifestDirectory.Trim() + "\\";
+            }
             set { stashManifestDirectory = value; }
         }
 
@@ -359,14 +374,24 @@ namespace JeonsoftTeamScriptManager
 
         public string PrefixedFilesDirectory
         {
-            get { return prefixedFilesDirectory; }
+            get 
+            {
+                if (prefixedFilesDirectory.Trim().EndsWith("\\"))
+                    return prefixedFilesDirectory;
+                return prefixedFilesDirectory.Trim() + "\\";
+            }
             set { prefixedFilesDirectory = value; }
         }
         private string postfixedFilesDirectory;
 
         public string PostfixedFilesDirectory
         {
-            get { return postfixedFilesDirectory; }
+            get
+            {
+                if (postfixedFilesDirectory.Trim().EndsWith("\\"))
+                    return postfixedFilesDirectory;
+                return postfixedFilesDirectory.Trim() + "\\";
+            }
             set { postfixedFilesDirectory = value; }
         }
         
