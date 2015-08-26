@@ -155,8 +155,6 @@ namespace JeonsoftTeamScriptManager
                     node.Checked = e.Node.Checked;
                 }
             }
-            if (e.Node.Checked && e.Node.Tag != null && (bool) e.Node.Tag == true)
-                MessageBox.Show("Checked" + e.Node.Tag.ToString());
         }
 
         void contextMenuStrip1_Opening(object sender, CancelEventArgs e)

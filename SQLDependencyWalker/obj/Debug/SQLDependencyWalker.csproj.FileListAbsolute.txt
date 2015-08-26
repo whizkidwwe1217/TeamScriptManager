@@ -22,3 +22,6 @@ D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQ
 D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQLDependencyWalker\obj\Debug\SQLDependencyWalker.csproj.GenerateResource.Cache
 D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQLDependencyWalker\obj\Debug\SQLDependencyWalker.exe
 D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQLDependencyWalker\obj\Debug\SQLDependencyWalker.pdb
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQLDependencyWalker\bin\Debug\Microsoft.SqlServer.SqlEnum.dll
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQLDependencyWalker\bin\Debug\Microsoft.SqlServer.Dmf.dll
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQLDependencyWalker\bin\Debug\Microsoft.SqlServer.ServiceBrokerEnum.dll
