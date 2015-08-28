@@ -1,0 +1,10 @@
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\GitTest\bin\Debug\GitTest.exe.config
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\GitTest\bin\Debug\GitTest.exe
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\GitTest\bin\Debug\GitTest.pdb
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\GitTest\bin\Debug\LibGit2Sharp.dll
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\GitTest\obj\Debug\GitTest.csprojResolveAssemblyReference.cache
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\GitTest\obj\Debug\GitTest.Form1.resources
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\GitTest\obj\Debug\GitTest.Properties.Resources.resources
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\GitTest\obj\Debug\GitTest.csproj.GenerateResource.Cache
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\GitTest\obj\Debug\GitTest.exe
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\GitTest\obj\Debug\GitTest.pdb

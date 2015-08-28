@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JeonsoftTeamScriptManager", "JeonsoftTeamScriptManager\JeonsoftTeamScriptManager.csproj", "{5C22523D-D709-478F-9480-B50959F95974}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLDependencyWalker", "SQLDependencyWalker\SQLDependencyWalker.csproj", "{4A4152B3-4A11-4178-AA46-FDF6592514B2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JeonsoftTeamScriptManager.Utils", "JeonsoftTeamScriptManager.Utils\JeonsoftTeamScriptManager.Utils.csproj", "{875AC5B0-4F7E-4A98-BB93-7B462CE20CAA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitTest", "GitTest\GitTest.csproj", "{04C3297B-7B84-4F46-9DA1-390D01EDAFDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{875AC5B0-4F7E-4A98-BB93-7B462CE20CAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{875AC5B0-4F7E-4A98-BB93-7B462CE20CAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{875AC5B0-4F7E-4A98-BB93-7B462CE20CAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04C3297B-7B84-4F46-9DA1-390D01EDAFDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04C3297B-7B84-4F46-9DA1-390D01EDAFDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04C3297B-7B84-4F46-9DA1-390D01EDAFDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04C3297B-7B84-4F46-9DA1-390D01EDAFDE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
