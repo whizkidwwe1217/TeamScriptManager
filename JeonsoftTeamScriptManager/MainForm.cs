@@ -1325,10 +1325,12 @@ namespace JeonsoftTeamScriptManager
 
         void validateWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            MessageBox.Show("Validation complete.", "Validate Scripts", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (validatePrompt)
+                MessageBox.Show("Validation complete.", "Validate Scripts", MessageBoxButtons.OK, MessageBoxIcon.Information);
             LockControls(false);
             paneErrors.Text = "Warnings/Errors (" + numOfErrors.ToString() + ")";
             lblStatus.Text = "Ready.";
+            validatePrompt = true;
         }
 
         private void ValidateScripts(string d, bool root)
@@ -1989,6 +1991,8 @@ namespace JeonsoftTeamScriptManager
                 MessageBox.Show("File merging is in process. Please wait.");
                 return;
             }
+            validatePrompt = false;
+            ValidateAllScripts();
             stash.SaveStash(GetStashFilePath());
             stash.SetModified(false);
             MessageBox.Show("Catalog saved successfully.", "Save Catalog", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -2398,7 +2402,7 @@ namespace JeonsoftTeamScriptManager
                     TextEditorControl rtb = (TextEditorControl)dc.Controls[0];
                     string filename = dc.Name;
                     string content = File.ReadAllText(filename);
-                    content = GetCleanString(content);
+                    content = GetCleanString(content) + Environment.NewLine;
                     using (StreamWriter sw = new StreamWriter(filename, false))
                     {
                         sw.Write(content);
@@ -2457,7 +2461,6 @@ namespace JeonsoftTeamScriptManager
             {
                 ConnectionSettingsForm f = new ConnectionSettingsForm(true);
                 f.ShowDialog();
-                CheckSqlSyntax();
             }
             else
             {
@@ -2716,6 +2719,7 @@ namespace JeonsoftTeamScriptManager
         }
 
         private readonly FindAndReplaceForm fr = new FindAndReplaceForm();
+        private bool validatePrompt;
 
         private void findToolStripMenuItem_Click(object sender, EventArgs e)
         {

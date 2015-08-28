@@ -166,6 +166,7 @@ namespace JeonsoftTeamScriptManager
             WriteUserSettings(root, "Sql Database Name", SqlDatabaseName);
             WriteUserSettings(root, "Sql Remember Password", SqlRememberPassword);
             WriteUserSettings(root, "Catalog Default Extension", CatalogDefaultExtension);
+            WriteUserSettings(root, "Validate on Save Catalog", ValidateOnSaveCatalog);
             if (root != null)
                 root.Close();
         }
@@ -246,7 +247,7 @@ namespace JeonsoftTeamScriptManager
             SqlDatabaseName = ReadStringUserSettings(root, "Sql DatabaseName");
             SqlRememberPassword = ReadBooleanUserSettings(root, "Sql Remember Password");
             CatalogDefaultExtension = ReadStringUserSettings(root, "Catalog Default Extension");
-            
+            ValidateOnSaveCatalog = ReadBooleanUserSettings(root, "Validate On Save Catalog");
             if (root != null)
                 root.Close();
         }
@@ -394,6 +395,12 @@ namespace JeonsoftTeamScriptManager
             }
             set { postfixedFilesDirectory = value; }
         }
-        
+
+        private bool validateOnSaveCatalog = true;
+        public bool ValidateOnSaveCatalog
+        {
+            get { return validateOnSaveCatalog; }
+            set { validateOnMerge = value; }
+        }
     }
 }

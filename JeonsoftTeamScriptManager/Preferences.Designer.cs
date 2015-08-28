@@ -63,6 +63,7 @@
             this.btnConnectionSettings = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.cboExt = new System.Windows.Forms.ComboBox();
+            this.chbValidateOnSaveCatalog = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnCancel
@@ -341,7 +342,7 @@
             this.chbValidateOnMerge.AutoSize = true;
             this.chbValidateOnMerge.Checked = true;
             this.chbValidateOnMerge.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chbValidateOnMerge.Location = new System.Drawing.Point(341, 389);
+            this.chbValidateOnMerge.Location = new System.Drawing.Point(354, 366);
             this.chbValidateOnMerge.Name = "chbValidateOnMerge";
             this.chbValidateOnMerge.Size = new System.Drawing.Size(112, 17);
             this.chbValidateOnMerge.TabIndex = 22;
@@ -405,6 +406,18 @@
             this.cboExt.Size = new System.Drawing.Size(74, 21);
             this.cboExt.TabIndex = 25;
             // 
+            // chbValidateOnSaveCatalog
+            // 
+            this.chbValidateOnSaveCatalog.AutoSize = true;
+            this.chbValidateOnSaveCatalog.Checked = true;
+            this.chbValidateOnSaveCatalog.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chbValidateOnSaveCatalog.Location = new System.Drawing.Point(354, 385);
+            this.chbValidateOnSaveCatalog.Name = "chbValidateOnSaveCatalog";
+            this.chbValidateOnSaveCatalog.Size = new System.Drawing.Size(154, 17);
+            this.chbValidateOnSaveCatalog.TabIndex = 22;
+            this.chbValidateOnSaveCatalog.Text = "Validate on Saving Catalog";
+            this.chbValidateOnSaveCatalog.UseVisualStyleBackColor = true;
+            // 
             // Preferences
             // 
             this.AcceptButton = this.btnSave;
@@ -416,6 +429,7 @@
             this.Controls.Add(this.cboExt);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.btnConnectionSettings);
+            this.Controls.Add(this.chbValidateOnSaveCatalog);
             this.Controls.Add(this.chbValidateOnMerge);
             this.Controls.Add(this.chbUseFullPath);
             this.Controls.Add(this.chkResolveHosts);
@@ -496,5 +510,6 @@
         private System.Windows.Forms.Button btnConnectionSettings;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox cboExt;
+        private System.Windows.Forms.CheckBox chbValidateOnSaveCatalog;
     }
 }

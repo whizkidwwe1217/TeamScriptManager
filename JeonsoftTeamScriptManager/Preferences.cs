@@ -39,6 +39,7 @@ namespace JeonsoftTeamScriptManager
                 GlobalOptions.Instance.ValidateOnMerge = chbValidateOnMerge.Checked;
                 GlobalOptions.Instance.DefaultWorkspace = txtDefaultWorkspace.Text.Trim();
                 GlobalOptions.Instance.CatalogDefaultExtension = cboExt.Text;
+                GlobalOptions.Instance.ValidateOnSaveCatalog = chbValidateOnSaveCatalog.Checked;
                 GlobalOptions.Instance.SaveSettings();
             }
         }
@@ -60,6 +61,7 @@ namespace JeonsoftTeamScriptManager
             GlobalOptions.Instance.ValidateOnMerge = chbValidateOnMerge.Checked;
             GlobalOptions.Instance.DefaultWorkspace = txtDefaultWorkspace.Text.Trim();
             GlobalOptions.Instance.CatalogDefaultExtension = cboExt.Text;
+            GlobalOptions.Instance.ValidateOnSaveCatalog = chbValidateOnSaveCatalog.Checked;
             GlobalOptions.Instance.SaveSettings();
 
             SaveToRecent();
@@ -84,6 +86,7 @@ namespace JeonsoftTeamScriptManager
             chbValidateOnMerge.Checked = GlobalOptions.Instance.ValidateOnMerge;
             cboExt.SelectedIndex = GlobalOptions.Instance.CatalogDefaultExtension == ".stash" ? 1 : 0;
             txtDefaultWorkspace.Text = GlobalOptions.Instance.DefaultWorkspace;
+            chbValidateOnSaveCatalog.Checked = GlobalOptions.Instance.ValidateOnSaveCatalog;
             if (txtMerge.Text.Trim() == "" || txtStash.Text.Trim() == "")
                 label3.Text = "Alright, first things first. Before we move on, please let me know where to put all these thingies: (1) Stash File, (2) Merged File.";
             else
@@ -211,14 +214,28 @@ namespace JeonsoftTeamScriptManager
                             txtStash.Text = stash.Pairs["Stash Directory"].Value;
                         if (stash.Pairs.ContainsKey("Default Workspace"))
                             txtDefaultWorkspace.Text = stash.Pairs["Default Workspace"].Value;
+                        else
+                            txtDefaultWorkspace.Text = string.Empty;
                         if (stash.Pairs.ContainsKey("Merge Directory"))
                             txtMerge.Text = stash.Pairs["Merge Directory"].Value;
+                        else
+                            txtMerge.Text = string.Empty;
                         if (stash.Pairs.ContainsKey("Enable File Tracking"))
                             chbFileTracking.Checked = stash.Pairs["Enable File Tracking"].Value.Trim().ToLower() == "true";
                         if (stash.Pairs.ContainsKey("Use Absolute Path"))
                             chbUseFullPath.Checked = stash.Pairs["Use Absolute Path"].Value.Trim().ToLower() == "true";
                         if (stash.Pairs.ContainsKey("Validate on Merge"))
                             chbValidateOnMerge.Checked = stash.Pairs["Validate on Merge"].Value.Trim().ToLower() == "true";
+                        if (stash.Pairs.ContainsKey("Validate on Save Catalog"))
+                            chbValidateOnSaveCatalog.Checked = stash.Pairs["Validate on Save Catalog"].Value.Trim().ToLower() == "true";
+                        if (stash.Pairs.ContainsKey("Default Workspace"))
+                            txtDefaultWorkspace.Text = stash.Pairs["Default Workspace"].Value;
+                        else
+                            txtDefaultWorkspace.Text = string.Empty;
+                        if (stash.Pairs.ContainsKey("Default Catalog Extension"))
+                            cboExt.SelectedIndex = stash.Pairs["Default Catalog Extension"].Value == ".stash" ? 1 : 0;
+                        else
+                            cboExt.SelectedIndex = 0;
                     }
 
                     DictionarySection templates = sections["Templates"];
@@ -259,31 +276,34 @@ namespace JeonsoftTeamScriptManager
 
         private void SaveConfiguration(string filename)
         {
-            string config = string.Format(
-            "[Stash]" + Environment.NewLine +
-            "Configuration Name = {0}" + Environment.NewLine +
-            "Stash Directory = {1}" + Environment.NewLine +
-            "Merge Directory = {2}" + Environment.NewLine + Environment.NewLine +
-            "Enable File Tracking = {3}" + Environment.NewLine +
-            "Use Absolute Path = {4}" + Environment.NewLine +
-            "Validate on Merge = {5}" + Environment.NewLine +
+            ConfigFile cf = new ConfigFile();
+            cf.AddGroup("Stash", new ConfigFile.ConfigItem[]
+            {
+                new ConfigFile.ConfigItem() { Key = "Configuration Name", Value = cboRecent.Text },
+                new ConfigFile.ConfigItem() { Key = "Stash Directory", Value = txtStash.Text},
+                new ConfigFile.ConfigItem() { Key = "Merge Directory", Value = txtMerge.Text },
+                new ConfigFile.ConfigItem() { Key = "Enable File Tracking", Value = chbFileTracking.Checked.ToString()},
+                new ConfigFile.ConfigItem() { Key = "Use Absolute Path", Value = chbUseFullPath.Checked.ToString()},
+                new ConfigFile.ConfigItem() { Key = "Validate on Merge", Value = chbValidateOnMerge.Checked.ToString() },
+                new ConfigFile.ConfigItem() { Key = "Default Workspace", Value = txtDefaultWorkspace.Text },
+                new ConfigFile.ConfigItem() { Key = "Default Catalog Extension", Value = cboExt.SelectedIndex == 0 ? ".wcat" : ".stash" },
+                new ConfigFile.ConfigItem() { Key = "Validate on Save Catalog", Value = chbValidateOnSaveCatalog.Checked.ToString() }
+            });
 
-            "[Templates]" + Environment.NewLine +
-            "Include Prefix = {6}" + Environment.NewLine +
-            "Include Postfix = {7}" + Environment.NewLine +
-            "Prefix Directory = {8}" + Environment.NewLine +
-            "Postfix Directory = {9}" + Environment.NewLine + Environment.NewLine +
+            cf.AddGroup("Templates", new ConfigFile.ConfigItem[]
+            {
+                new ConfigFile.ConfigItem() { Key = "Include Prefix", Value = chbIncludePrefixed.Checked.ToString() },
+                new ConfigFile.ConfigItem() { Key = "Include Postfix", Value = chbIncludePostfixed.Checked.ToString()},
+                new ConfigFile.ConfigItem() { Key = "Prefix Directory", Value = txtPrefixed.Text},
+                new ConfigFile.ConfigItem() { Key = "Postfix Directory", Value = txtPostFixed.Text}
+            });
 
-            "[Default Directories]" + Environment.NewLine +
-            "Enable Default Directories = {10}" + Environment.NewLine +
-            "Directory List = {11}" + Environment.NewLine +
-            "Default Workspace = {12}", cboRecent.Text, txtStash.Text, txtMerge.Text, chbFileTracking.Checked.ToString(), 
-                chbUseFullPath.Checked.ToString(), chbValidateOnMerge.Checked.ToString(), 
-                                chbIncludePrefixed.Checked.ToString(),
-                                 chbIncludePostfixed.Checked.ToString(),
-                                 txtPrefixed.Text, txtPostFixed.Text,
-                                 chbDefaultDirs.Checked.ToString(),
-                                 txtDefaultDirs.Text.Trim().Replace(Environment.NewLine, ","), txtDefaultWorkspace.Text);
+            cf.AddGroup("Default Directories", new ConfigFile.ConfigItem[]
+            {
+                new ConfigFile.ConfigItem() { Key = "Enable Default Directories", Value = chbDefaultDirs.Checked.ToString() },
+                new ConfigFile.ConfigItem() { Key = "Directory List", Value = txtDefaultDirs.Text.Trim().Replace(Environment.NewLine, ",")}
+            });
+            string config = cf.ToString();
             try
             {
                 System.IO.File.WriteAllText(filename, config);
@@ -293,6 +313,68 @@ namespace JeonsoftTeamScriptManager
                 MessageBox.Show(ex.Message);
             }
         }
+
+        internal class ConfigFile
+        {
+            internal struct ConfigItem
+            {
+                public string Key { get; set; }
+                public string Value { get; set; }
+
+                public override string ToString()
+                {
+                    return Key + " = " + Value;
+                }
+            }
+
+            internal class ConfigGroup
+            {
+                private List<ConfigItem> items = new List<ConfigItem>();
+
+                public string Name { get; set; }
+                public List<ConfigItem> Items { get { return items; } set { items = value; } }
+
+                public void AddItem(string key, string value)
+                {
+                    items.Add(new ConfigItem() { Key = key, Value = value });
+                }
+
+                public override string ToString()
+                {
+                    return "[" + Name + "]";
+                }
+            }
+
+            private List<ConfigGroup> groups = new List<ConfigGroup>();
+
+            public override string ToString()
+            {
+                StringBuilder sb = new StringBuilder();
+
+                foreach (ConfigGroup cg in groups)
+                {
+                    sb.AppendLine(cg.ToString());
+
+                    foreach (ConfigItem item in cg.Items)
+                    {
+                        sb.AppendLine(item.ToString());
+                    }
+                    sb.AppendLine();
+                }
+
+                return sb.ToString();
+            }
+
+            public void AddGroup(string name, ConfigItem[] items)
+            {
+                ConfigGroup cg = new ConfigGroup();
+                cg.Name = name;
+                foreach (ConfigItem item in items)
+                    cg.AddItem(item.Key, item.Value);
+                groups.Add(cg);
+            }
+        }
+
         private void btnExport_Click(object sender, EventArgs e)
         {
             using (SaveFileDialog sfd = new SaveFileDialog())
