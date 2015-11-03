@@ -117,6 +117,11 @@ namespace JeonsoftTeamScriptManager
             trvFileExplorer.NodeMouseClick += trvFileExplorer_NodeMouseClick;
             contextMenuStrip1.Opening += contextMenuStrip1_Opening;
             this.stashArg = stashArg;
+            if (stashArg != null && stashArg != string.Empty && stashArg.Trim() != "")
+            {
+                GlobalOptions.Instance.RecentCatalogFilename = Path.GetFileNameWithoutExtension(stashArg);
+                GlobalOptions.Instance.SaveSettings();
+            }
         }
 
         void stash_OnItemDoubleClick(object sender, string path)
@@ -133,7 +138,6 @@ namespace JeonsoftTeamScriptManager
         }
 
         private DockContent paneErrors;
-        private 
 
         void trvFileExplorer_AfterSelect(object sender, TreeViewEventArgs e)
         {
@@ -303,6 +307,8 @@ namespace JeonsoftTeamScriptManager
 
             if (GlobalOptions.Instance.EnableAutoCheckUpdates)
                 CheckForUpdates();
+
+
         }
 
         private Dictionary<string, MappedHost> mappedHosts = new Dictionary<string, MappedHost>();
@@ -1733,6 +1739,13 @@ namespace JeonsoftTeamScriptManager
                             }
                         }
                     }
+
+                    string strContent = File.ReadAllText(outputFilename);
+                    strContent = GetCleanString(strContent) + Environment.NewLine;
+                    using (StreamWriter sw = new StreamWriter(outputFilename, false))
+                    {
+                        sw.Write(strContent);
+                    }
                 }
                 else
                 {
@@ -1958,10 +1971,32 @@ namespace JeonsoftTeamScriptManager
         private string GetStashFileName()
         {
             if (GlobalOptions.Instance.CatalogDefaultExtension == null || GlobalOptions.Instance.CatalogDefaultExtension.Trim() == "")
-                return "_catalog";
+                return GetDefaultFileName();
             if (GlobalOptions.Instance.CatalogDefaultExtension == ".wcat")
+                return GetDefaultFileName();
+            return GetOldDefaultFileName();
+        }
+
+        private string GetDefaultFileName()
+        {
+            if (GlobalOptions.Instance.RecentCatalogFilename == null || GlobalOptions.Instance.RecentCatalogFilename.Trim() == "")
+            {
+                GlobalOptions.Instance.RecentCatalogFilename = "_catalog";
+                GlobalOptions.Instance.SaveSettings();
                 return "_catalog";
-            return "_stash";
+            }
+            return GlobalOptions.Instance.RecentCatalogFilename;
+        }
+
+        private string GetOldDefaultFileName()
+        {
+            if (GlobalOptions.Instance.RecentCatalogFilename == null || GlobalOptions.Instance.RecentCatalogFilename.Trim() == "")
+            {
+                GlobalOptions.Instance.RecentCatalogFilename = "_stash";
+                GlobalOptions.Instance.SaveSettings();
+                return "_stash";
+            }
+            return GlobalOptions.Instance.RecentCatalogFilename;
         }
 
         private void mnuRefresh_Click(object sender, EventArgs e)
@@ -2015,7 +2050,9 @@ namespace JeonsoftTeamScriptManager
         private string GetStashFilePath()
         {
             if (stashArg != string.Empty)
+            {
                 return stashArg;
+            }
             string dir = "";
 
             if (GlobalOptions.Instance.StashManifestDirectory == null || GlobalOptions.Instance.StashManifestDirectory.Trim() == "")
@@ -2350,6 +2387,12 @@ namespace JeonsoftTeamScriptManager
             }
         }
 
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            
+        }
+
         private void changeLogsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ChangeLogsForm cf = new ChangeLogsForm();
@@ -2420,7 +2463,7 @@ namespace JeonsoftTeamScriptManager
             foreach (ListViewItem item in lvErrors.Items)
             {
                 sb.AppendLine(string.Format("Message\t\t: {0}\r\nFilename\t: {1}\r\nLine\t\t: {2}\r\nPath\t\t: {3}", item.Text, item.SubItems[1].Text, item.SubItems[2].Text, 
-                    FileUtils.GetRelativePathFromFile(GlobalOptions.Instance.DefaultWorkspace, item.SubItems[3].Text)));
+                    FileUtils.GetRelativePathFromFile(GlobalOptions.Instance.StashManifestDirectory, item.SubItems[3].Text)));
                 sb.AppendLine("---------------------------------------------------------------------------------------");
             }
             Clipboard.SetText(sb.ToString(), TextDataFormat.UnicodeText);
@@ -2444,7 +2487,7 @@ namespace JeonsoftTeamScriptManager
                     foreach (ListViewItem item in lvErrors.Items)
                     {
                         sb.AppendLine(string.Format("Message\t\t: {0}\r\nFilename\t: {1}\r\nLine\t\t: {2}\r\nPath\t\t: {3}", item.Text, item.SubItems[1].Text, item.SubItems[2].Text,
-                            FileUtils.GetRelativePathFromFile(GlobalOptions.Instance.DefaultWorkspace, item.SubItems[3].Text)));
+                            FileUtils.GetRelativePathFromFile(GlobalOptions.Instance.StashManifestDirectory, item.SubItems[3].Text)));
                         sb.AppendLine("---------------------------------------------------------------------------------------");
                     }
                     using (StreamWriter sw = new StreamWriter(sfd.FileName))
@@ -2507,114 +2550,150 @@ namespace JeonsoftTeamScriptManager
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
                     string outputFilename = sfd.FileName;
-                    try
+                    MergeFromFile(filename, outputFilename);
+                }
+            }
+        }
+        public static void MergeCatalogScripts(string filename, string outputfilename)
+        {
+            if (!Path.IsPathRooted(outputfilename))
+            {
+                FileInfo fi = Utils.FileUtils.GetAbsolutePath(GlobalOptions.Instance.MergeFileOutputDirectory, outputfilename);
+                MergeFromFile(filename, fi.FullName);
+            }
+            else
+            {
+                MergeFromFile(filename, outputfilename);
+            }
+        }
+
+        private static void MergeFromFile(string filename, string outputFilename)
+        {
+            try
+            {
+                if (File.Exists(outputFilename))
+                    File.Delete(outputFilename);
+                
+                if (File.Exists(filename))
+                {
+                    if (GlobalOptions.Instance.IncludePrefixedFiles)
                     {
-                        if (File.Exists(outputFilename))
-                            File.Delete(outputFilename);
-                        if (File.Exists(filename))
+                        if (Directory.Exists(GetPreFixedFiles()))
                         {
-                            if (GlobalOptions.Instance.IncludePrefixedFiles)
+                            using (StreamWriter sw = new StreamWriter(outputFilename, true))
                             {
-                                if (Directory.Exists(GetPreFixedFiles()))
+                                foreach (string f in Directory.GetFiles(GetPreFixedFiles(), "*.sql"))
                                 {
-                                    using (StreamWriter sw = new StreamWriter(outputFilename, true))
+                                    using (StreamReader reader = new StreamReader(f))
                                     {
-                                        foreach (string f in Directory.GetFiles(GetPreFixedFiles(), "*.sql"))
-                                        {
-                                            using (StreamReader reader = new StreamReader(f))
-                                            {
-                                                sw.WriteLine(reader.ReadToEnd());
-                                            }
-                                        }
+                                        sw.WriteLine(reader.ReadToEnd());
                                     }
                                 }
                             }
-
-                            if (GlobalOptions.Instance.EnableDefaultDirectories && GlobalOptions.Instance.SaveStashOnMerge == false)
-                            {
-                                string[] delimiter = new string[] { Environment.NewLine };
-                                string[] lines = GlobalOptions.Instance.DefaultDirectories.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
-
-                                foreach (string s in lines)
-                                {
-                                    string indexedFile = s;
-
-                                    string[] dirs = Directory.GetDirectories(Path.GetDirectoryName(indexedFile));
-
-                                    if (Directory.Exists(indexedFile))
-                                    {
-                                        dirs = Directory.GetDirectories(indexedFile);
-                                        MergeCatalogDefaultDirectories(outputFilename, indexedFile, true);
-                                        foreach (string d in dirs)
-                                        {
-                                            MergeCatalogDefaultDirectories(outputFilename, d, false);
-                                        }
-                                    }
-                                }
-                            }
-
-                            using (StreamReader sr = new StreamReader(filename))
-                            {
-                                string file = "";
-
-                                using (StreamWriter sw = new StreamWriter(outputFilename, true))
-                                {
-                                    while ((file = sr.ReadLine()) != null)
-                                    {
-                                        if (!Path.IsPathRooted(file))
-                                        {
-                                            FileInfo fi = Utils.FileUtils.GetAbsolutePath(Path.GetDirectoryName(filename), file);
-                                            file = fi.FullName;
-                                        }
-
-                                        if (!string.IsNullOrEmpty(file) && File.Exists(file))
-                                        {
-                                            FileInfo fi = new FileInfo(file);
-
-                                            string content = File.ReadAllText(file);
-                                            sw.WriteLine(content);
-                                            if (GlobalOptions.Instance.ValidateOnMerge)
-                                                ValidateScriptSilent(file, fi.Name, content);
-                                        }
-                                        else
-                                        {
-                                            //rtbLogs.AppendText("Merge error: Cannot find the file: '" + file + "'");
-                                            //rtbLogs.AppendText(Environment.NewLine);
-                                            AppendToLogFile("Cannot find the file: '" + filename + "'");
-                                        }
-                                    }
-                                }
-                            }
-
-                            if (GlobalOptions.Instance.IncludePostFixedFiles)
-                            {
-                                if (Directory.Exists(GetPostFixedFiles()))
-                                {
-                                    using (StreamWriter sw = new StreamWriter(outputFilename, true))
-                                    {
-                                        foreach (string f in Directory.GetFiles(GetPostFixedFiles(), "*.sql"))
-                                        {
-                                            using (StreamReader reader = new StreamReader(f))
-                                            {
-                                                sw.WriteLine(reader.ReadToEnd());
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            //rtbLogs.AppendText("Cannot find the file: '" + filename + "'");
-                            //rtbLogs.AppendText(Environment.NewLine);
-                            AppendToLogFile("Cannot find the file: '" + filename + "'");
                         }
                     }
-                    finally
-                    {
 
+                    if (GlobalOptions.Instance.EnableDefaultDirectories && GlobalOptions.Instance.SaveStashOnMerge == false)
+                    {
+                        string[] delimiter = new string[] { Environment.NewLine };
+                        string[] lines = GlobalOptions.Instance.DefaultDirectories.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
+
+                        foreach (string s in lines)
+                        {
+                            string indexedFile = s;
+
+                            if (!Path.IsPathRooted(s))
+                            {
+                                FileInfo fi = Utils.FileUtils.GetAbsolutePath(Path.GetDirectoryName(filename), s);
+                                indexedFile = fi.FullName;
+                            }
+
+                            string[] dirs = Directory.GetDirectories(Path.GetDirectoryName(indexedFile));
+
+                            if (Directory.Exists(indexedFile))
+                            {
+                                dirs = Directory.GetDirectories(indexedFile);
+                                MergeCatalogDefaultDirectories(outputFilename, indexedFile, true);
+                                foreach (string d in dirs)
+                                {
+                                    MergeCatalogDefaultDirectories(outputFilename, d, false);
+                                }
+                            }
+
+                            //string[] dirs = Directory.GetDirectories(Path.GetDirectoryName(indexedFile));
+
+                            //if (Directory.Exists(indexedFile))
+                            //{
+                            //    dirs = Directory.GetDirectories(indexedFile);
+                            //    MergeCatalogDefaultDirectories(outputFilename, indexedFile, true);
+                            //    foreach (string d in dirs)
+                            //    {
+                            //        MergeCatalogDefaultDirectories(outputFilename, d, false);
+                            //    }
+                            //}
+                        }
+                    }
+
+                    using (StreamReader sr = new StreamReader(filename))
+                    {
+                        string file = "";
+
+                        using (StreamWriter sw = new StreamWriter(outputFilename, true))
+                        {
+                            while ((file = sr.ReadLine()) != null)
+                            {
+                                if (!Path.IsPathRooted(file))
+                                {
+                                    FileInfo fi = Utils.FileUtils.GetAbsolutePath(Path.GetDirectoryName(filename), file);
+                                    file = fi.FullName;
+                                }
+
+                                if (!string.IsNullOrEmpty(file) && File.Exists(file))
+                                {
+                                    FileInfo fi = new FileInfo(file);
+
+                                    string content = File.ReadAllText(file);
+                                    sw.WriteLine(content);
+                                    if (GlobalOptions.Instance.ValidateOnMerge)
+                                        ValidateScriptSilent(file, fi.Name, content);
+                                }
+                                else
+                                {
+                                    //rtbLogs.AppendText("Merge error: Cannot find the file: '" + file + "'");
+                                    //rtbLogs.AppendText(Environment.NewLine);
+                                    AppendToLogFile("Cannot find the file: '" + filename + "'");
+                                }
+                            }
+                        }
+                    }
+
+                    if (GlobalOptions.Instance.IncludePostFixedFiles)
+                    {
+                        if (Directory.Exists(GetPostFixedFiles()))
+                        {
+                            using (StreamWriter sw = new StreamWriter(outputFilename, true))
+                            {
+                                foreach (string f in Directory.GetFiles(GetPostFixedFiles(), "*.sql"))
+                                {
+                                    using (StreamReader reader = new StreamReader(f))
+                                    {
+                                        sw.WriteLine(reader.ReadToEnd());
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
+                else
+                {
+                    //rtbLogs.AppendText("Cannot find the file: '" + filename + "'");
+                    //rtbLogs.AppendText(Environment.NewLine);
+                    AppendToLogFile("Cannot find the file: '" + filename + "'");
+                }
+            }
+            finally
+            {
+
             }
         }
 
@@ -2647,7 +2726,7 @@ namespace JeonsoftTeamScriptManager
                 sb.AppendLine(string.Format("Message\t\t: {0}\r\nFilename\t: {1}\r\nLine\t\t: {2}\r\nPath\t\t: {3}",
                         message, sqlFile,
                         line.ToString(),
-                        FileUtils.GetRelativePathFromFile(GlobalOptions.Instance.DefaultWorkspace,
+                        FileUtils.GetRelativePathFromFile(GlobalOptions.Instance.StashManifestDirectory,
                         path)));
                 sb.AppendLine("---------------------------------------------------------------------------------------");
                 sw.WriteLine(sb.ToString());

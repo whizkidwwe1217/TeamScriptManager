@@ -16,7 +16,6 @@ D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQ
 D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQLDependencyWalker\bin\Debug\Microsoft.SqlServer.ConnectionInfo.dll
 D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQLDependencyWalker\bin\Debug\Microsoft.SqlServer.Management.Sdk.Sfc.dll
 D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQLDependencyWalker\bin\Debug\Microsoft.SqlServer.Smo.dll
-D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQLDependencyWalker\obj\Debug\SQLDependencyWalker.csprojResolveAssemblyReference.cache
 D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQLDependencyWalker\obj\Debug\SQLDependencyWalker.SQLDependencyWalkerForm.resources
 D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQLDependencyWalker\obj\Debug\SQLDependencyWalker.Properties.Resources.resources
 D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQLDependencyWalker\obj\Debug\SQLDependencyWalker.csproj.GenerateResource.Cache
@@ -25,3 +24,4 @@ D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQ
 D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQLDependencyWalker\bin\Debug\Microsoft.SqlServer.SqlEnum.dll
 D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQLDependencyWalker\bin\Debug\Microsoft.SqlServer.Dmf.dll
 D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQLDependencyWalker\bin\Debug\Microsoft.SqlServer.ServiceBrokerEnum.dll
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\SQLDependencyWalker\obj\Debug\SQLDependencyWalker.csprojResolveAssemblyReference.cache

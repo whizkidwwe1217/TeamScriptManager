@@ -68,6 +68,8 @@ namespace JeonsoftTeamScriptManager
 
         public void SaveStash(string filename)
         {
+            StashManager.Instance.Clear();
+
             using (StreamWriter sw = new StreamWriter(filename))
             {
                 StringBuilder sb = new StringBuilder();
@@ -76,9 +78,13 @@ namespace JeonsoftTeamScriptManager
                     string file = item.SubItems[2].Text;
                     if (!GlobalOptions.Instance.SaveStashFilesWithFullPath)
                     {
-                        file = Utils.FileUtils.GetRelativePathFromFile(Path.GetDirectoryName(filename), Utils.FileUtils.GetAbsolutePath(Path.GetDirectoryName(filename), file).FullName);
+                        file = Utils.FileUtils.GetRelativePathFromFile(GlobalOptions.Instance.StashManifestDirectory, Utils.FileUtils.GetAbsolutePath(Path.GetDirectoryName(filename), file).FullName);
                     }
                     sb.AppendLine(file);
+
+                    FileInfo fi = Utils.FileUtils.GetAbsolutePath(GlobalOptions.Instance.StashManifestDirectory, file);
+                    IndexedFile idx = new IndexedFile(fi.Directory.Name, fi.Directory.FullName, fi.Name, fi.FullName);
+                    StashManager.Instance.Add(idx);
                 }
                 sw.WriteLine(sb.ToString().Trim());
             }

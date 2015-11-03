@@ -167,6 +167,7 @@ namespace JeonsoftTeamScriptManager
             WriteUserSettings(root, "Sql Remember Password", SqlRememberPassword);
             WriteUserSettings(root, "Catalog Default Extension", CatalogDefaultExtension);
             WriteUserSettings(root, "Validate on Save Catalog", ValidateOnSaveCatalog);
+            WriteUserSettings(root, "Recent Catalog Filename", RecentCatalogFilename);
             if (root != null)
                 root.Close();
         }
@@ -185,6 +186,7 @@ namespace JeonsoftTeamScriptManager
             get { return sqlUsername; }
             set { sqlUsername = value; }
         }
+        
         private string sqlDatabaseName;
 
         public string SqlDatabaseName
@@ -248,6 +250,7 @@ namespace JeonsoftTeamScriptManager
             SqlRememberPassword = ReadBooleanUserSettings(root, "Sql Remember Password");
             CatalogDefaultExtension = ReadStringUserSettings(root, "Catalog Default Extension");
             ValidateOnSaveCatalog = ReadBooleanUserSettings(root, "Validate On Save Catalog");
+            RecentCatalogFilename = ReadStringUserSettings(root, "Recent Catalog Filename");
             if (root != null)
                 root.Close();
         }
@@ -401,6 +404,21 @@ namespace JeonsoftTeamScriptManager
         {
             get { return validateOnSaveCatalog; }
             set { validateOnMerge = value; }
+        }
+
+        private string recentCatalogFilename;
+
+        public string RecentCatalogFilename
+        {
+            get
+            {
+                return recentCatalogFilename;
+            }
+
+            set
+            {
+                recentCatalogFilename = value;
+            }
         }
     }
 }

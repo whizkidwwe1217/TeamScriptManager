@@ -16,7 +16,19 @@ namespace JeonsoftTeamScriptManager
             Application.SetCompatibleTextRenderingDefault(false);
             if (args.Length > 0)
             {
-                if (Environment.CommandLine.LastIndexOf("-merge") > 0)
+                if (Environment.CommandLine.LastIndexOf("-mergesilent") > 0)
+                {
+                    try
+                    {
+                        MainForm.MergeCatalogScripts(args[1].Trim(), args[2].Trim());
+                    }
+                    catch (Exception ex)
+                    {
+                        MainForm.AppendToLogFile("Error: " + ex.Message);
+                    }
+                    return;
+                }
+                else if (Environment.CommandLine.LastIndexOf("-merge") > 0)
                 {
                     try
                     {
@@ -26,6 +38,7 @@ namespace JeonsoftTeamScriptManager
                     {
                         MainForm.AppendToLogFile("Error: " + ex.Message);
                     }
+                    return;
                 }
                 else
                     Application.Run(new MainForm(args[0]));
