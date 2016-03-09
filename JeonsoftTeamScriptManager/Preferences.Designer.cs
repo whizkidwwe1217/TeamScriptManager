@@ -64,12 +64,15 @@
             this.label9 = new System.Windows.Forms.Label();
             this.cboExt = new System.Windows.Forms.ComboBox();
             this.chbValidateOnSaveCatalog = new System.Windows.Forms.CheckBox();
+            this.btnGitDir = new System.Windows.Forms.Button();
+            this.label10 = new System.Windows.Forms.Label();
+            this.txtGitDir = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(425, 458);
+            this.btnCancel.Location = new System.Drawing.Point(424, 491);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 15;
@@ -79,7 +82,7 @@
             // btnSave
             // 
             this.btnSave.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnSave.Location = new System.Drawing.Point(344, 458);
+            this.btnSave.Location = new System.Drawing.Point(343, 491);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 14;
@@ -144,7 +147,7 @@
             // label3
             // 
             this.label3.ForeColor = System.Drawing.Color.Olive;
-            this.label3.Location = new System.Drawing.Point(9, 358);
+            this.label3.Location = new System.Drawing.Point(8, 391);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(326, 44);
             this.label3.TabIndex = 8;
@@ -154,7 +157,7 @@
             this.chbIncludePrefixed.AutoSize = true;
             this.chbIncludePrefixed.Checked = true;
             this.chbIncludePrefixed.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chbIncludePrefixed.Location = new System.Drawing.Point(132, 111);
+            this.chbIncludePrefixed.Location = new System.Drawing.Point(131, 144);
             this.chbIncludePrefixed.Name = "chbIncludePrefixed";
             this.chbIncludePrefixed.Size = new System.Drawing.Size(126, 17);
             this.chbIncludePrefixed.TabIndex = 6;
@@ -166,7 +169,7 @@
             this.chbIncludePostfixed.AutoSize = true;
             this.chbIncludePostfixed.Checked = true;
             this.chbIncludePostfixed.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chbIncludePostfixed.Location = new System.Drawing.Point(264, 111);
+            this.chbIncludePostfixed.Location = new System.Drawing.Point(263, 144);
             this.chbIncludePostfixed.Name = "chbIncludePostfixed";
             this.chbIncludePostfixed.Size = new System.Drawing.Size(131, 17);
             this.chbIncludePostfixed.TabIndex = 7;
@@ -175,7 +178,7 @@
             // 
             // btnPrefixed
             // 
-            this.btnPrefixed.Location = new System.Drawing.Point(425, 132);
+            this.btnPrefixed.Location = new System.Drawing.Point(424, 165);
             this.btnPrefixed.Name = "btnPrefixed";
             this.btnPrefixed.Size = new System.Drawing.Size(75, 23);
             this.btnPrefixed.TabIndex = 10;
@@ -185,7 +188,7 @@
             // 
             // btnPostFixed
             // 
-            this.btnPostFixed.Location = new System.Drawing.Point(425, 158);
+            this.btnPostFixed.Location = new System.Drawing.Point(424, 191);
             this.btnPostFixed.Name = "btnPostFixed";
             this.btnPostFixed.Size = new System.Drawing.Size(75, 23);
             this.btnPostFixed.TabIndex = 13;
@@ -196,7 +199,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(9, 137);
+            this.label4.Location = new System.Drawing.Point(8, 170);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(117, 13);
             this.label4.TabIndex = 8;
@@ -204,7 +207,7 @@
             // 
             // txtPrefixed
             // 
-            this.txtPrefixed.Location = new System.Drawing.Point(132, 134);
+            this.txtPrefixed.Location = new System.Drawing.Point(131, 167);
             this.txtPrefixed.Name = "txtPrefixed";
             this.txtPrefixed.Size = new System.Drawing.Size(287, 20);
             this.txtPrefixed.TabIndex = 9;
@@ -212,7 +215,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(9, 163);
+            this.label5.Location = new System.Drawing.Point(8, 196);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(122, 13);
             this.label5.TabIndex = 11;
@@ -220,7 +223,7 @@
             // 
             // txtPostFixed
             // 
-            this.txtPostFixed.Location = new System.Drawing.Point(132, 160);
+            this.txtPostFixed.Location = new System.Drawing.Point(131, 193);
             this.txtPostFixed.Name = "txtPostFixed";
             this.txtPostFixed.Size = new System.Drawing.Size(287, 20);
             this.txtPostFixed.TabIndex = 12;
@@ -228,7 +231,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(9, 212);
+            this.label6.Location = new System.Drawing.Point(8, 245);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(97, 13);
             this.label6.TabIndex = 16;
@@ -239,7 +242,7 @@
             this.chbDefaultDirs.AutoSize = true;
             this.chbDefaultDirs.Checked = true;
             this.chbDefaultDirs.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chbDefaultDirs.Location = new System.Drawing.Point(132, 186);
+            this.chbDefaultDirs.Location = new System.Drawing.Point(131, 219);
             this.chbDefaultDirs.Name = "chbDefaultDirs";
             this.chbDefaultDirs.Size = new System.Drawing.Size(149, 17);
             this.chbDefaultDirs.TabIndex = 17;
@@ -249,7 +252,7 @@
             // txtDefaultDirs
             // 
             this.txtDefaultDirs.AcceptsReturn = true;
-            this.txtDefaultDirs.Location = new System.Drawing.Point(132, 209);
+            this.txtDefaultDirs.Location = new System.Drawing.Point(131, 242);
             this.txtDefaultDirs.Multiline = true;
             this.txtDefaultDirs.Name = "txtDefaultDirs";
             this.txtDefaultDirs.Size = new System.Drawing.Size(368, 99);
@@ -257,7 +260,7 @@
             // 
             // btnImport
             // 
-            this.btnImport.Location = new System.Drawing.Point(132, 314);
+            this.btnImport.Location = new System.Drawing.Point(131, 347);
             this.btnImport.Name = "btnImport";
             this.btnImport.Size = new System.Drawing.Size(117, 23);
             this.btnImport.TabIndex = 19;
@@ -267,7 +270,7 @@
             // 
             // btnExport
             // 
-            this.btnExport.Location = new System.Drawing.Point(255, 314);
+            this.btnExport.Location = new System.Drawing.Point(254, 347);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(117, 23);
             this.btnExport.TabIndex = 20;
@@ -298,7 +301,7 @@
             this.chbFileTracking.AutoSize = true;
             this.chbFileTracking.Checked = true;
             this.chbFileTracking.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chbFileTracking.Location = new System.Drawing.Point(132, 343);
+            this.chbFileTracking.Location = new System.Drawing.Point(131, 376);
             this.chbFileTracking.Name = "chbFileTracking";
             this.chbFileTracking.Size = new System.Drawing.Size(78, 17);
             this.chbFileTracking.TabIndex = 22;
@@ -310,7 +313,7 @@
             this.chbCheckUpdates.AutoSize = true;
             this.chbCheckUpdates.Checked = true;
             this.chbCheckUpdates.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chbCheckUpdates.Location = new System.Drawing.Point(132, 366);
+            this.chbCheckUpdates.Location = new System.Drawing.Point(131, 399);
             this.chbCheckUpdates.Name = "chbCheckUpdates";
             this.chbCheckUpdates.Size = new System.Drawing.Size(200, 17);
             this.chbCheckUpdates.TabIndex = 22;
@@ -320,7 +323,7 @@
             // chkResolveHosts
             // 
             this.chkResolveHosts.AutoSize = true;
-            this.chkResolveHosts.Location = new System.Drawing.Point(219, 343);
+            this.chkResolveHosts.Location = new System.Drawing.Point(218, 376);
             this.chkResolveHosts.Name = "chkResolveHosts";
             this.chkResolveHosts.Size = new System.Drawing.Size(173, 17);
             this.chkResolveHosts.TabIndex = 22;
@@ -330,7 +333,7 @@
             // chbUseFullPath
             // 
             this.chbUseFullPath.AutoSize = true;
-            this.chbUseFullPath.Location = new System.Drawing.Point(132, 389);
+            this.chbUseFullPath.Location = new System.Drawing.Point(131, 422);
             this.chbUseFullPath.Name = "chbUseFullPath";
             this.chbUseFullPath.Size = new System.Drawing.Size(191, 17);
             this.chbUseFullPath.TabIndex = 22;
@@ -342,7 +345,7 @@
             this.chbValidateOnMerge.AutoSize = true;
             this.chbValidateOnMerge.Checked = true;
             this.chbValidateOnMerge.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chbValidateOnMerge.Location = new System.Drawing.Point(354, 366);
+            this.chbValidateOnMerge.Location = new System.Drawing.Point(353, 399);
             this.chbValidateOnMerge.Name = "chbValidateOnMerge";
             this.chbValidateOnMerge.Size = new System.Drawing.Size(112, 17);
             this.chbValidateOnMerge.TabIndex = 22;
@@ -378,7 +381,7 @@
             // 
             // btnConnectionSettings
             // 
-            this.btnConnectionSettings.Location = new System.Drawing.Point(132, 422);
+            this.btnConnectionSettings.Location = new System.Drawing.Point(131, 455);
             this.btnConnectionSettings.Name = "btnConnectionSettings";
             this.btnConnectionSettings.Size = new System.Drawing.Size(117, 23);
             this.btnConnectionSettings.TabIndex = 23;
@@ -389,7 +392,7 @@
             // label9
             // 
             this.label9.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label9.Location = new System.Drawing.Point(132, 417);
+            this.label9.Location = new System.Drawing.Point(131, 450);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(367, 2);
             this.label9.TabIndex = 24;
@@ -411,12 +414,39 @@
             this.chbValidateOnSaveCatalog.AutoSize = true;
             this.chbValidateOnSaveCatalog.Checked = true;
             this.chbValidateOnSaveCatalog.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chbValidateOnSaveCatalog.Location = new System.Drawing.Point(354, 385);
+            this.chbValidateOnSaveCatalog.Location = new System.Drawing.Point(353, 418);
             this.chbValidateOnSaveCatalog.Name = "chbValidateOnSaveCatalog";
             this.chbValidateOnSaveCatalog.Size = new System.Drawing.Size(154, 17);
             this.chbValidateOnSaveCatalog.TabIndex = 22;
             this.chbValidateOnSaveCatalog.Text = "Validate on Saving Catalog";
             this.chbValidateOnSaveCatalog.UseVisualStyleBackColor = true;
+            // 
+            // btnGitDir
+            // 
+            this.btnGitDir.Location = new System.Drawing.Point(424, 109);
+            this.btnGitDir.Name = "btnGitDir";
+            this.btnGitDir.Size = new System.Drawing.Size(75, 23);
+            this.btnGitDir.TabIndex = 5;
+            this.btnGitDir.Text = "Browse";
+            this.btnGitDir.UseVisualStyleBackColor = true;
+            this.btnGitDir.Click += new System.EventHandler(this.btnGitDir_Click);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(8, 114);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(87, 13);
+            this.label10.TabIndex = 3;
+            this.label10.Text = "Git File Directory:";
+            // 
+            // txtGitDir
+            // 
+            this.txtGitDir.Location = new System.Drawing.Point(131, 111);
+            this.txtGitDir.Name = "txtGitDir";
+            this.txtGitDir.Size = new System.Drawing.Size(287, 20);
+            this.txtGitDir.TabIndex = 4;
+            this.txtGitDir.Leave += new System.EventHandler(this.txtStash_Leave);
             // 
             // Preferences
             // 
@@ -424,7 +454,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(520, 494);
+            this.ClientSize = new System.Drawing.Size(520, 545);
             this.ControlBox = false;
             this.Controls.Add(this.cboExt);
             this.Controls.Add(this.label9);
@@ -445,7 +475,9 @@
             this.Controls.Add(this.chbIncludePrefixed);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtPostFixed);
+            this.Controls.Add(this.txtGitDir);
             this.Controls.Add(this.txtMerge);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtPrefixed);
@@ -458,6 +490,7 @@
             this.Controls.Add(this.btnPostFixed);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnPrefixed);
+            this.Controls.Add(this.btnGitDir);
             this.Controls.Add(this.btnBrowseDefaultWorkspace);
             this.Controls.Add(this.btnMerge);
             this.Controls.Add(this.btnStash);
@@ -511,5 +544,8 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox cboExt;
         private System.Windows.Forms.CheckBox chbValidateOnSaveCatalog;
+        private System.Windows.Forms.Button btnGitDir;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox txtGitDir;
     }
 }

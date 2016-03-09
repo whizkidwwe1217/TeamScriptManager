@@ -168,9 +168,12 @@ namespace JeonsoftTeamScriptManager
             WriteUserSettings(root, "Catalog Default Extension", CatalogDefaultExtension);
             WriteUserSettings(root, "Validate on Save Catalog", ValidateOnSaveCatalog);
             WriteUserSettings(root, "Recent Catalog Filename", RecentCatalogFilename);
+            WriteUserSettings(root, "Git File Directory", GitFileDirectory);
             if (root != null)
                 root.Close();
         }
+
+        private string gitFileDirectory;
 
         private bool sqlIsWindowsAuthentication;
 
@@ -186,7 +189,7 @@ namespace JeonsoftTeamScriptManager
             get { return sqlUsername; }
             set { sqlUsername = value; }
         }
-        
+
         private string sqlDatabaseName;
 
         public string SqlDatabaseName
@@ -251,6 +254,7 @@ namespace JeonsoftTeamScriptManager
             CatalogDefaultExtension = ReadStringUserSettings(root, "Catalog Default Extension");
             ValidateOnSaveCatalog = ReadBooleanUserSettings(root, "Validate On Save Catalog");
             RecentCatalogFilename = ReadStringUserSettings(root, "Recent Catalog Filename");
+            GitFileDirectory = ReadStringUserSettings(root, "Git File Directory");
             if (root != null)
                 root.Close();
         }
@@ -258,7 +262,7 @@ namespace JeonsoftTeamScriptManager
 
         public string DefaultWorkspace
         {
-            get 
+            get
             {
                 if (defaultWorkspace.Trim().EndsWith("\\"))
                     return defaultWorkspace;
@@ -335,7 +339,7 @@ namespace JeonsoftTeamScriptManager
         }
 
         private bool includePrefixedFiles;
-        
+
         public bool IncludePrefixedFiles
         {
             get { return includePrefixedFiles; }
@@ -353,8 +357,8 @@ namespace JeonsoftTeamScriptManager
 
         public string MergeFileOutputDirectory
         {
-            get 
-            { 
+            get
+            {
                 if (mergeFileOutputDirectory.Trim().EndsWith("\\"))
                     return mergeFileOutputDirectory;
                 return mergeFileOutputDirectory.Trim() + "\\";
@@ -378,7 +382,7 @@ namespace JeonsoftTeamScriptManager
 
         public string PrefixedFilesDirectory
         {
-            get 
+            get
             {
                 if (prefixedFilesDirectory.Trim().EndsWith("\\"))
                     return prefixedFilesDirectory;
@@ -418,6 +422,21 @@ namespace JeonsoftTeamScriptManager
             set
             {
                 recentCatalogFilename = value;
+            }
+        }
+
+        public string GitFileDirectory
+        {
+            get
+            {
+                if (gitFileDirectory.Trim().EndsWith("\\"))
+                    return gitFileDirectory;
+                return gitFileDirectory.Trim() + "\\";
+            }
+
+            set
+            {
+                gitFileDirectory = value;
             }
         }
     }

@@ -66,6 +66,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\ICSharpCode.TextEditor.dll</HintPath>
     </Reference>
+    <Reference Include="LibGit2Sharp, Version=0.22.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\LibGit2Sharp.dll</HintPath>
+    </Reference>
     <Reference Include="Menees.Windows.Forms">
       <HintPath>..\Third Party\Menees.Windows.Forms.dll</HintPath>
     </Reference>

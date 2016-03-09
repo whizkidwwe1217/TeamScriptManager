@@ -1,0 +1,8 @@
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\FileIntegrityVerifier\bin\Debug\FileIntegrityVerifier.exe
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\FileIntegrityVerifier\bin\Debug\FileIntegrityVerifier.pdb
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\FileIntegrityVerifier\obj\Debug\FileIntegrityVerifier.csprojResolveAssemblyReference.cache
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\FileIntegrityVerifier\obj\Debug\FileIntegrityVerifier.Form1.resources
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\FileIntegrityVerifier\obj\Debug\FileIntegrityVerifier.Properties.Resources.resources
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\FileIntegrityVerifier\obj\Debug\FileIntegrityVerifier.csproj.GenerateResource.Cache
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\FileIntegrityVerifier\obj\Debug\FileIntegrityVerifier.exe
+D:\Wayne Lapstop\Jeonsoft\Software Projects\Yahoo & Team Script\JeonsoftTools\FileIntegrityVerifier\obj\Debug\FileIntegrityVerifier.pdb

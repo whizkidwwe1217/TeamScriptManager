@@ -40,6 +40,7 @@ namespace JeonsoftTeamScriptManager
                 GlobalOptions.Instance.DefaultWorkspace = txtDefaultWorkspace.Text.Trim();
                 GlobalOptions.Instance.CatalogDefaultExtension = cboExt.Text;
                 GlobalOptions.Instance.ValidateOnSaveCatalog = chbValidateOnSaveCatalog.Checked;
+                GlobalOptions.Instance.GitFileDirectory = txtGitDir.Text.Trim();
                 GlobalOptions.Instance.SaveSettings();
             }
         }
@@ -62,6 +63,7 @@ namespace JeonsoftTeamScriptManager
             GlobalOptions.Instance.DefaultWorkspace = txtDefaultWorkspace.Text.Trim();
             GlobalOptions.Instance.CatalogDefaultExtension = cboExt.Text;
             GlobalOptions.Instance.ValidateOnSaveCatalog = chbValidateOnSaveCatalog.Checked;
+            GlobalOptions.Instance.GitFileDirectory = txtGitDir.Text.Trim();
             GlobalOptions.Instance.SaveSettings();
 
             SaveToRecent();
@@ -87,6 +89,7 @@ namespace JeonsoftTeamScriptManager
             cboExt.SelectedIndex = GlobalOptions.Instance.CatalogDefaultExtension == ".stash" ? 1 : 0;
             txtDefaultWorkspace.Text = GlobalOptions.Instance.DefaultWorkspace;
             chbValidateOnSaveCatalog.Checked = GlobalOptions.Instance.ValidateOnSaveCatalog;
+            txtGitDir.Text = GlobalOptions.Instance.GitFileDirectory;
             if (txtMerge.Text.Trim() == "" || txtStash.Text.Trim() == "")
                 label3.Text = "Alright, first things first. Before we move on, please let me know where to put all these thingies: (1) Stash File, (2) Merged File.";
             else
@@ -441,6 +444,17 @@ namespace JeonsoftTeamScriptManager
         {
             ConnectionSettingsForm csf = new ConnectionSettingsForm();
             csf.ShowDialog();
+        }
+
+        private void btnGitDir_Click(object sender, EventArgs e)
+        {
+            using (VistaFolderBrowserDialog fbd = new VistaFolderBrowserDialog())
+            {
+                if (string.IsNullOrEmpty(txtGitDir.Text) == false)
+                    fbd.SelectedPath = txtGitDir.Text + "\\";
+                if (fbd.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+                    txtGitDir.Text = fbd.SelectedPath;
+            }
         }
     }
 }

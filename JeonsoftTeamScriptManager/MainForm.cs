@@ -18,6 +18,7 @@ using System.Threading;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Configuration;
+using LibGit2Sharp;
 
 //using System.Runtime.Caching;
 
@@ -543,6 +544,7 @@ namespace JeonsoftTeamScriptManager
             {
                 trvFileExplorer.EndUpdate();
                 LockControls(false);
+                CheckFileChanges();
             }
         }
 
@@ -2825,6 +2827,30 @@ namespace JeonsoftTeamScriptManager
         private void replaceToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowFindAndReplaceForm(true);
+        }
+
+        private void CheckFileChanges()
+        {
+            ThreadPool.QueueUserWorkItem(new WaitCallback(CheckGitFileStatus), null);
+        }
+
+        private void CheckGitFileStatus(object param)
+        {
+            rtbLogs.AppendText("Checking file modifications...");
+            using (var repo = new Repository(GlobalOptions.Instance.GitFileDirectory))
+            {
+                foreach (TreeEntryChanges c in repo.Diff.Compare<TreeChanges>())
+                {
+                    rtbLogs.AppendText(c.Status.ToString() + " " + c.Path + Environment.NewLine);
+                }
+
+                foreach (TreeEntryChanges c in repo.Diff.Compare<TreeChanges>(repo.Head.Tip.Tree,
+                                                  DiffTargets.Index | DiffTargets.WorkingDirectory))
+                {
+                    rtbLogs.AppendText(c.Status.ToString() + " " + c.Path + Environment.NewLine);
+                }
+            }
+            rtbLogs.AppendText("File checking done.");
         }
     }
 }
