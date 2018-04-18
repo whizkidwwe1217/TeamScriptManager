@@ -296,6 +296,11 @@ namespace JeonsoftTeamScriptManager
         {
             base.OnLoad(e);
 
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
+            }
+
             lblMachineName.Text = MainForm.GetMachineInfo();
 
             if ((GlobalOptions.Instance.DefaultWorkspace == null || GlobalOptions.Instance.DefaultWorkspace.Trim() == "") || (GlobalOptions.Instance.MergeFileOutputDirectory == null || GlobalOptions.Instance.MergeFileOutputDirectory.Trim() == "") ||
@@ -2837,20 +2842,23 @@ namespace JeonsoftTeamScriptManager
         private void CheckGitFileStatus(object param)
         {
             rtbLogs.AppendText("Checking file modifications...");
-            using (var repo = new Repository(GlobalOptions.Instance.GitFileDirectory))
+            if (Directory.Exists(GlobalOptions.Instance.GitFileDirectory) && GlobalOptions.Instance.GitFileDirectory != "\\")
             {
-                foreach (TreeEntryChanges c in repo.Diff.Compare<TreeChanges>())
+                using (var repo = new Repository(GlobalOptions.Instance.GitFileDirectory))
                 {
-                    rtbLogs.AppendText(c.Status.ToString() + " " + c.Path + Environment.NewLine);
-                }
+                    foreach (TreeEntryChanges c in repo.Diff.Compare<TreeChanges>())
+                    {
+                        rtbLogs.AppendText(c.Status.ToString() + " " + c.Path + Environment.NewLine);
+                    }
 
-                foreach (TreeEntryChanges c in repo.Diff.Compare<TreeChanges>(repo.Head.Tip.Tree,
-                                                  DiffTargets.Index | DiffTargets.WorkingDirectory))
-                {
-                    rtbLogs.AppendText(c.Status.ToString() + " " + c.Path + Environment.NewLine);
+                    foreach (TreeEntryChanges c in repo.Diff.Compare<TreeChanges>(repo.Head.Tip.Tree,
+                                                      DiffTargets.Index | DiffTargets.WorkingDirectory))
+                    {
+                        rtbLogs.AppendText(c.Status.ToString() + " " + c.Path + Environment.NewLine);
+                    }
                 }
+                rtbLogs.AppendText("File checking done.");
             }
-            rtbLogs.AppendText("File checking done.");
         }
     }
 }
